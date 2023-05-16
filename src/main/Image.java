@@ -8,7 +8,7 @@ public class Image {
     private int sigma;
     
     public Image(File file, int sigma) {
-        this.matrix = createMatrix(file);
+        // this.matrix = createMatrix(file);
         this.sigma = sigma;
     }
 
