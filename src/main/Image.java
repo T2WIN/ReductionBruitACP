@@ -2,13 +2,14 @@ package src.main;
 import java.util.ArrayList;
 import java.io.File;
 import java.util.Random;
+import java.awt.image.BufferedImage;
 
 public class Image {
     private ArrayList<ArrayList<Integer>> matrix;
     private int sigma;
     
-    public Image(File file, int sigma) {
-        this.matrix = createMatrix(file);
+    public Image(String path, int sigma) {
+        this.matrix = createMatrix(path);
         this.sigma = sigma;
     }
 
@@ -32,6 +33,34 @@ public class Image {
 
     public void setMatrix(ArrayList<ArrayList<Integer>> matrix) {
         this.matrix = matrix;
+    }
+
+    public static void createMatrix(String path) {
+        File fileSelected = new File(path);
+        System.out.println("file to be opened :" + fileSelected);
+
+        BufferedImage image;
+
+        image = ImageIO.read(fileSelected);
+        int x;
+        int y;
+        x=image.getWidth();
+        y=image.getHeight();
+        int [][] tabImage = new int[x][y];
+        // Parcours de l'intégralité des pixels 
+        // Puis création de la matrice associée à l'image
+        for (int i = 0; i < x; i++) {
+            for (int j = 0; j < y; j++) {
+                // Transformation des pixels en couleur en gris
+                Color pixel = new Color(image.getRGB(i, j));
+                int r= pixel.getRed();
+                int g=pixel.getGreen();
+                int b=pixel.getBlue();
+                int gris = (r+g+b)/3;
+                tabImage[i][j]=gris;
+                System.out.println(tabImage[i][j]);
+            }
+        }
     }
 
 }
