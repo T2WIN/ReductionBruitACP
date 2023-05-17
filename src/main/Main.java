@@ -11,5 +11,7 @@ public class Main {
 
         Error error = new Error("src/main/lenaa.png", 20);
         System.out.println(error.MeanSquaredError());
+
+        
     }    
 }
