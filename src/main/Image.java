@@ -1,17 +1,28 @@
 package src.main;
 import java.util.ArrayList;
 import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
+
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+
 public class Image {
+
+    //Matrice de l'image
     private ArrayList<ArrayList<Integer>> matrix;
+
+    //Variance du bruit ajouté à l'image
     private int sigma;
     
     public Image(File file, int sigma) {
-        // this.matrix = createMatrix(file);
+        this.matrix = createMatrix(file);
         this.sigma = sigma;
     }
 
+    //Ajoute un bruit gaussien de variance sigma
     public void noising() {
         Random rand = new Random(123);
         for (int i=0; i<this.matrix.size(); i++) {
@@ -34,4 +45,49 @@ public class Image {
         this.matrix = matrix;
     }
 
+    //Créer une matrice à partir d'un fichier image
+    public static ArrayList<ArrayList<Integer>> createMatrix(String path) {
+        File fileSelected = new File(path);
+        System.out.println("file to be opened :" + fileSelected);
+
+        BufferedImage image;
+        ArrayList<ArrayList<Integer>> tabImage = new ArrayList<ArrayList<Integer>>();
+        
+        try {
+            image = ImageIO.read(fileSelected);
+            int x;
+            int y;
+            x=image.getWidth();
+            y=image.getHeight();
+            // Parcours de l'intégralité des pixels 
+            // Puis création de la matrice associée à l'image
+            for (int i = 0; i < x; i++) {
+                for (int j = 0; j < y; j++) {
+                    // Transformation des pixels en couleur en gris
+                    tabImage.get(i).set(j, calcGreyValue(image, i, j));
+                    System.out.println(tabImage.get(i).get(j));
+                }
+            }
+            return tabImage;
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            System.out.println("Le fichier est inconnu au bataillon");
+            System.exit(-1);
+        }
+        return tabImage;
+    }
+
+    // Transformation des pixels en couleur en gris
+    public static int calcGreyValue(BufferedImage image, int i, int j) {
+        Color pixel = new Color(image.getRGB(i, j));
+        int r= pixel.getRed();
+        int g=pixel.getGreen();
+        int b=pixel.getBlue();
+        int gris = (r+g+b)/3;
+        return gris;
+    }
+
+    public static File createImageFromMatrix() {
+        
+    }
 }
