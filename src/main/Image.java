@@ -17,8 +17,8 @@ public class Image {
     //Variance du bruit ajouté à l'image
     private int sigma;
     
-    public Image(File file, int sigma) {
-        this.matrix = createMatrix(file);
+    public Image(String path, int sigma) {
+        this.matrix = createMatrix(path);
         this.sigma = sigma;
     }
 
@@ -51,6 +51,7 @@ public class Image {
         System.out.println("file to be opened : " + fileSelected);
 
         BufferedImage image;
+        
         ArrayList<ArrayList<Integer>> tabImage = new ArrayList<ArrayList<Integer>>();
         
         try {
