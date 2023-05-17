@@ -34,4 +34,6 @@ public class Image {
         this.matrix = matrix;
     }
 
+    public void extraction()
+
 }
