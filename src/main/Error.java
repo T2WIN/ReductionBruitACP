@@ -27,7 +27,7 @@ public class Error{
         return(MSE);
     }
 
-    public float PeakSignalToNoiseRatio(int[][] X , int[][] Y){
+    public float PeakSignalToNoiseRatio(){
         float mse = MeanSquaredError();
         float PSNR = 10* (float) (Math.log10(255*255 / mse));
         return(PSNR);
