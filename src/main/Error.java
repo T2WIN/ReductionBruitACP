@@ -19,6 +19,8 @@ public class Error{
         for ( int i = 0 ; i < this.matrice1.length ; i++){
             for ( int j = 0 ; j < this.matrice1[0].length ; j++){
                 MSE = MSE + this.matrice1[i][j] - this.matrice2[i][j];
+                System.out.println(this.matrice1[i][j]);
+                System.out.println(this.matrice2[i][j]);
             }
         }
         System.out.println(MSE);
@@ -26,7 +28,7 @@ public class Error{
         return(MSE);
     }
 
-    public float PeakSignalToNoiseRatio(int[][] X , int[][] Y){
+    public float PeakSignalToNoiseRatio(){
         float mse = MeanSquaredError();
         float PSNR = 10* (float) (Math.log10(255*255 / mse));
         return(PSNR);
