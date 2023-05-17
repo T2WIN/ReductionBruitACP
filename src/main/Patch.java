@@ -26,5 +26,6 @@ public class Patch {
         while (i < vector.length) {
             
         }
+    
     }
 }
