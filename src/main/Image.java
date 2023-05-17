@@ -8,7 +8,8 @@ import javax.imageio.ImageIO;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.lang.*;
-
+import java.util.ArrayList;
+import java.util.Scanner;
 public class Image {
 
     //Matrice de l'image
@@ -135,5 +136,41 @@ public class Image {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    public ArrayList<Patch> extractionPatch(int[][] matrix){
+
+        int x= matrix.length;
+        int y= matrix[1].length;
+        Scanner sc;
+		sc = new Scanner(System.in);
+		System.out.print("Saisir l'entier s, taille du patch : ");
+		int s;
+		s = sc.nextInt(); 
+        
+        int [][] patchcourant = new int[s][s];
+        int coint_sup_x;
+        int coint_sup_y;
+        ArrayList<Patch> ListePatch= new ArrayList<Patch>();
+
+
+        for (int i = 0; i < x-s; i++) {
+            for (int j = 0; j < y-s; j++) {
+                // Position du pixel du coin gauche 
+                coint_sup_x= i;
+                coint_sup_y= j;
+                // Création d'un patch à partir de chaque pixel
+                Patch patch = new Patch(patchcourant,coint_sup_x,coint_sup_y);
+                // Ajout des pixels de l'image dans chaque patch
+                for (int k = coint_sup_x; k < coint_sup_x + s;k++){
+                    for (int l = coint_sup_y; l < coint_sup_y + s; l++){
+                        patchcourant[k][l]=matrix[k][l];
+                    }
+                }
+                ListePatch.add(patch);
+            }   
+        }
+        sc.close();
+        return ListePatch;
     }
 }
