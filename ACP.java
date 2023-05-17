@@ -21,7 +21,7 @@ public class ACP {
                 // additions de toute les valeurs
                 meanVector.set(j, meanVector.get(j) + vectorisePatchs.get(i).get(j));
             }
-            // division par le nombre de valeurs pour faire la moyenne de chaque axe
+            // division par le nombre de vecteurs pour faire la moyenne de chaque axe
             meanVector.set(j, meanVector.get(j) / vectorisePatchs.size());
         }
 
@@ -55,6 +55,10 @@ public class ACP {
                 }
                 // calcul de la matrice de covariance 
                 covariance.get(i).add(somme/N);
+                // remplissage de la partie inférieure de la matrice par symétrie
+                if (i!=j) {
+                    covariance.get(j).add(somme/N);
+                }
             }
         }
 
