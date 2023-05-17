@@ -16,7 +16,18 @@ public class Image {
     private int[][] noisedmatrix;
 
     //Variance du bruit ajouté à l'image
-    private int sigma;
+    private Integer sigma;
+
+    public int getSigma() {
+
+        return this.sigma;
+    }
+
+     public void setSigma(Integer sigma) {
+
+        this.sigma = sigma;
+    }
+
     
     public Image(String path, int sigma) {
         this.matrix = createMatrix(path);
