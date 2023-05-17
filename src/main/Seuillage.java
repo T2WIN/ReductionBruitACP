@@ -49,7 +49,7 @@ public class Seuillage {
     }
 
     public int seuilV() {
-        int L = image.getMatrix().size()*image.getMatrix().get(0).size();
+        int L = image.getMatrix().length*image.getMatrix()[0].length;
         visuShrink = image.sigmaMath.sqrt(2Math.log(L));
         return 0;
     }
