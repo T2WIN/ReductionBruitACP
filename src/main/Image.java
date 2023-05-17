@@ -1,5 +1,4 @@
 package src.main;
-import java.util.ArrayList;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
@@ -12,7 +11,7 @@ import java.awt.image.BufferedImage;
 public class Image {
 
     //Matrice de l'image
-    private ArrayList<ArrayList<Integer>> matrix;
+    private int[][] matrix;
 
     //Variance du bruit ajouté à l'image
     private int sigma;
@@ -25,10 +24,10 @@ public class Image {
     //Ajoute un bruit gaussien de variance sigma
     public void noising() {
         Random rand = new Random(123);
-        for (int i=0; i<this.matrix.size(); i++) {
-            for (int j = 0; j<this.matrix.get(0).size(); j++) {
-                int coef = this.matrix.get(i).get(j);
-                this.matrix.get(i).set(j, coef + floor(rand.nextGaussian()*sigma)); 
+        for (int i=0; i<this.matrix.length; i++) {
+            for (int j = 0; j<this.matrix[0].length; j++) {
+                int coef = this.matrix[i][j];
+                this.matrix[i][j] = coef + floor(rand.nextGaussian()*sigma); 
             }
         }
     }
@@ -37,11 +36,11 @@ public class Image {
         return 0;
     }
 
-    public ArrayList<ArrayList<Integer>> getMatrix() {
+    public int[][] getMatrix() {
         return this.matrix;
     }
 
-    public void setMatrix(ArrayList<ArrayList<Integer>> matrix) {
+    public void setMatrix(int[][] matrix) {
         this.matrix = matrix;
     }
 
@@ -91,15 +90,15 @@ public class Image {
         return gris;
     }
 
-    public BufferedImage createImageFromMatrix(ArrayList<ArrayList<Integer>> matrix) {
-        BufferedImage image = new BufferedImage(null, null, false, null);
+    public BufferedImage createImageFromMatrix(int[][] matrix) {
+        BufferedImage image = new BufferedImage(matrix.length, matrix[0].length, BufferedImage.TYPE_INT_RGB);
         try {
             
-            for(int i=0; i<matrix.size(); i++) {
-                for(int j=0; j<matrix.get(0).size(); j++) {
-                    int a = matrix.get(i).get(j);
+            for(int i=0; i<matrix.length; i++) {
+                for(int j=0; j<matrix[0].length; j++) {
+                    int a = matrix[i][j];
                     Color newColor = new Color(a,a,a);
-                    image.setRGB(j,i,newColor.getRGB());
+                    image.setRGB(i,j,newColor.getRGB());
                 }
             }
         }

@@ -7,5 +7,6 @@ public class Main {
         Image image = new Image("src/main/lenaa.png", 2);
         System.out.println(image.getMatrix());
         BufferedImage newImage = image.createImageFromMatrix(image.getMatrix());
+        image.createfile(newImage);
     }
 }
