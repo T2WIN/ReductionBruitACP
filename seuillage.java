@@ -1,0 +1,72 @@
+import java.util.*;
+
+public class seuillage {
+
+    private Integer visuShrink;
+    private Integer bayesShrink;
+    private Image image;
+
+    public int getvisuShrink() {
+        return this.visuShrink;
+    }
+
+     public void setvisuShrink(Integer visuShrink) {
+
+        this.visuShrink = visuShrink;
+    }
+
+    public int getbayesShrink() {
+        return this.bayesShrink;
+    }
+
+     public void setbayesShrink(Integer bayesShrink) {
+        this.bayesShrink = bayesShrink;
+    }
+    public int HardThresholding(int threshold, int alpha) {
+        
+        if (threshold >= Math.abs(alpha)) {
+            return 0;
+        }
+        else {
+            return alpha;
+        }
+    }
+
+    public int SoftThresholding(int threshold, int alpha) {
+
+        if (threshold >= Math.abs(alpha)) {
+            return 0;
+        }
+        if (threshold < alpha) {
+            return (alpha - threshold);
+        }
+        if ((-threshold) >= alpha) {
+            return (alpha + threshold);
+        }
+
+        return 0;
+    }
+
+    public int seuilV() {
+        int L = image.matrix.size()*image.matrix.get(0).size();
+        visuShrink = image.sigma*Math.sqrt(2*Math.log(L));
+        return 0;
+    }
+    public float max(float a, float b) {
+        if (a<=b){
+            return b;
+        }
+        else {
+            return a;
+        }
+    }
+
+    public int seuilB() {
+        float variance;
+        float ecartType = Math.sqrt(max((Math.pow(variance,2)-Math.pow(image.sigma,2),0)));
+        bayesShrink = Math.pow(image.sigma,2)/ecartType;
+        return 0;
+    }
+
+
+}
