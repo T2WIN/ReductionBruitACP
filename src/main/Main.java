@@ -9,11 +9,7 @@ public class Main {
         // BufferedImage newImage = image.createImageFromMatrix();
         // image.createfile(newImage);
 
-        Error error = new Error("src/main/lenaa.png", 200);
+        Error error = new Error("src/main/lenaa.png", 20);
         System.out.println(error.MeanSquaredError());
-    }
-
-        
-        
-    
+    }    
 }
