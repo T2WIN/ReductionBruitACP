@@ -49,7 +49,7 @@ public class Image {
     //Créer une matrice à partir d'un fichier image
     public static ArrayList<ArrayList<Integer>> createMatrix(String path) {
         File fileSelected = new File(path);
-        System.out.println("file to be opened :" + fileSelected);
+        System.out.println("file to be opened : " + fileSelected);
 
         BufferedImage image;
         ArrayList<ArrayList<Integer>> tabImage = new ArrayList<ArrayList<Integer>>();
@@ -65,7 +65,7 @@ public class Image {
             for (int i = 0; i < x; i++) {
                 for (int j = 0; j < y; j++) {
                     // Transformation des pixels en couleur en gris
-                    tabImage.get(i).set(j, calcGreyValue(image, i, j));
+                    tabImage.get(i).add(calcGreyValue(image, i, j));
                     System.out.println(tabImage.get(i).get(j));
                 }
             }
@@ -73,6 +73,7 @@ public class Image {
         } catch (IOException e) {
             // TODO Auto-generated catch block
             System.out.println("Le fichier est inconnu au bataillon");
+            e.printStackTrace();
             System.exit(-1);
         }
         return tabImage;
@@ -88,7 +89,33 @@ public class Image {
         return gris;
     }
 
-    public static File createImageFromMatrix() {
+    public BufferedImage createImageFromMatrix(ArrayList<ArrayList<Integer>> matrix) {
+        BufferedImage image = new BufferedImage(null, null, false, null);
+        try {
+            
+            for(int i=0; i<matrix.size(); i++) {
+                for(int j=0; j<matrix.get(0).size(); j++) {
+                    int a = matrix.get(i).get(j);
+                    Color newColor = new Color(a,a,a);
+                    image.setRGB(j,i,newColor.getRGB());
+                }
+            }
+        }
         
+        catch(Exception e) {
+            System.out.println(("Error creating image"));
+            e.printStackTrace();
+        }
+        return image;
+    }
+
+    public void createfile(BufferedImage image) {
+        File output = new File("GrayScale.jpg");
+        try {
+            ImageIO.write(image, "jpg", output);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }
