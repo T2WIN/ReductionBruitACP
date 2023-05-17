@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.lang.*;
 
 public class Image {
 
@@ -27,9 +28,11 @@ public class Image {
         for (int i=0; i<this.matrix.length; i++) {
             for (int j = 0; j<this.matrix[0].length; j++) {
                 int coef = this.matrix[i][j];
-                this.matrix[i][j] = coef + floor(rand.nextGaussian()*sigma); 
+                this.matrix[i][j] = Math.abs((coef + (int) rand.nextGaussian()*sigma)%255); 
+                System.out.println(this.matrix[i][j]);
             }
         }
+        System.out.println(this.matrix[0][0]);
     }
 
     private int floor(double d) {
@@ -65,7 +68,6 @@ public class Image {
                 for (int j = 0; j < y; j++) {
                     // Transformation des pixels en couleur en gris
                     tabImage[i][j] = calcGreyValue(image, i, j);
-                    System.out.println(tabImage[i][j]);
                 }
             }
             return tabImage;

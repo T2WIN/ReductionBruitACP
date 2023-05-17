@@ -1,63 +1,64 @@
-import java.util.ArrayList;
+
 
 public class ACP {
 
-    ArrayList<ArrayList<Float>> vectorisePatchs;
-    ArrayList<Float> meanVector = new ArrayList<>(Collections.nCopies(vectorisePatchs.get(0).size(), 0.0));;
-    ArrayList<ArrayList<Float>> covariance;
-    ArrayList<ArrayList<Float>> centeredVectors;
+    int [][] vectorisePatchs;
+    double [] meanVector = new double [vectorisePatchs[0].length];
+    double [][] covariance = new double [vectorisePatchs.length][vectorisePatchs.length];
+    double [][] centeredVectors = new double [vectorisePatchs.length][vectorisePatchs[0].length];
 
     
     public void MoyCov() {
 
         // liste des moyennes des vecteurs
-        ArrayList<Float> moyenne_vecteurs = new ArrayList<>(Collections.nCopies(vectorisePatchs.size(), 0.0));;
+        double [] moyenne_vecteurs = new double [vectorisePatchs.length];
 
         // Déterminer le vecteur moyen
         // parcours des axes
-        for (j=0; j<vectorisePatchs.get(0).size(); j++) {
+        for (int j=0; j<vectorisePatchs[0].length; j++) {
+            meanVector[j] = 0.0;
             // parcours de la liste des vecteurs
-            for (i=0; i<vectorisePatchs.size(); i++) {
+            for (int i=0; i<vectorisePatchs.length; i++) {
                 // additions de toute les valeurs
-                meanVector.set(j, meanVector.get(j) + vectorisePatchs.get(i).get(j));
+                meanVector[j] += vectorisePatchs[i][j];
             }
             // division par le nombre de vecteurs pour faire la moyenne de chaque axe
-            meanVector.set(j, meanVector.get(j) / vectorisePatchs.size());
+            meanVector[j] = meanVector[j] / vectorisePatchs.length;
         }
 
         // Centrer les vecteurs
         // parcours de la liste des vecteurs
-        for (i=0; i<vectorisePatchs.size(); i++) {
+        for (int i=0; i<vectorisePatchs.length; i++) {
             // parcours des axes
-            for (j=0; j<vectorisePatchs.get(0).size(); j++) {
+            for (int j=0; j<vectorisePatchs[0].length; j++) {
                 // calcul pour centrer le vecteur
-                centeredVectors.get(i).add(vectorisePatchs.get(i).get(j) - meanVectors.get(j));
+                centeredVectors[i][j] = vectorisePatchs[i][j] - meanVector[j];
                 // additions des valeurs du vecteur (pour la Matrice de Covariance après)
-                moyenne_vecteurs.set(i, moyenne_vecteurs.get(i) + vectorisePatchs.get(i).get(j));
+                moyenne_vecteurs[i] += vectorisePatchs[i][j];
             }
             // calcul de la moyenne du vecteur (pour la Matrice de Covariance après)
-            moyenne_vecteurs.set(i, moyenne_vecteurs.get(i) / vectorisePatchs.get(i).size());
+            moyenne_vecteurs[i] = moyenne_vecteurs[i] / vectorisePatchs[i].length;
         }
 
         // Déterminer la matrice de covariance
         // taille des vecteurs
-        int N = vectorisePatchs.get(0).size();
-        float somme;
+        int N = vectorisePatchs[0].length;
+        double somme;
         // parcours de la liste des vecteurs
-        for (i=0; i<vectorisePatchs.size(); i++) {
+        for (int i=0; i<vectorisePatchs.length; i++) {
             // initialisation de la somme (pour le calcul de la covariance)
             somme = 0.0;
             // 2ème parcours de la liste des vecteurs (on ne remplit que la partie supérieure de la matrice car elle est symétrique)
-            for (j=0; j<i+1; j++) {
+            for (int j=0; j<i+1; j++) {
                 // parcours des axes
-                for (k=0; k<N; k++) {
-                    somme += (vectorisePatchs.get(i).get(k) - moyenne_vecteurs.get(i))*(vectorisePatchs.get(j).get(k) - moyenne_vecteurs.get(j));
+                for (int k=0; k<N; k++) {
+                    somme += (vectorisePatchs[i][k] - moyenne_vecteurs[i]) * (vectorisePatchs[j][k] - moyenne_vecteurs[j]);
                 }
                 // calcul de la matrice de covariance 
-                covariance.get(i).add(somme/N);
+                covariance[i][j] = somme / N;
                 // remplissage de la partie inférieure de la matrice par symétrie
                 if (i!=j) {
-                    covariance.get(j).add(somme/N);
+                    covariance[j][i] = covariance[i][j];
                 }
             }
         }
