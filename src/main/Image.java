@@ -13,6 +13,7 @@ public class Image {
 
     //Matrice de l'image
     private int[][] matrix;
+    private int[][] noisedmatrix;
 
     //Variance du bruit ajouté à l'image
     private int sigma;
@@ -24,19 +25,14 @@ public class Image {
 
     //Ajoute un bruit gaussien de variance sigma
     public void noising() {
+        this.noisedmatrix = new int[this.matrix.length][this.matrix[0].length];
         Random rand = new Random(123);
         for (int i=0; i<this.matrix.length; i++) {
             for (int j = 0; j<this.matrix[0].length; j++) {
                 int coef = this.matrix[i][j];
-                this.matrix[i][j] = Math.abs((coef + (int) rand.nextGaussian()*sigma)%255); 
-                System.out.println(this.matrix[i][j]);
+                this.noisedmatrix[i][j] = Math.abs((coef + (int) (rand.nextGaussian()*sigma))%255); 
             }
         }
-        System.out.println(this.matrix[0][0]);
-    }
-
-    private int floor(double d) {
-        return 0;
     }
 
     public int[][] getMatrix() {
@@ -45,6 +41,14 @@ public class Image {
 
     public void setMatrix(int[][] matrix) {
         this.matrix = matrix;
+    }
+
+    public int[][] getNoisedMatrix() {
+        return this.noisedmatrix;
+    }
+
+    public void setNoisedMatrix(int[][] matrix) {
+        this.noisedmatrix = matrix;
     }
 
     //Créer une matrice à partir d'un fichier image
@@ -92,13 +96,13 @@ public class Image {
         return gris;
     }
 
-    public BufferedImage createImageFromMatrix(int[][] matrix) {
-        BufferedImage image = new BufferedImage(matrix.length, matrix[0].length, BufferedImage.TYPE_INT_RGB);
+    public BufferedImage createImageFromMatrix() {
+        BufferedImage image = new BufferedImage(this.noisedmatrix.length, this.noisedmatrix[0].length, BufferedImage.TYPE_INT_RGB);
         try {
             
-            for(int i=0; i<matrix.length; i++) {
-                for(int j=0; j<matrix[0].length; j++) {
-                    int a = matrix[i][j];
+            for(int i=0; i<this.noisedmatrix.length; i++) {
+                for(int j=0; j<this.noisedmatrix[0].length; j++) {
+                    int a = this.noisedmatrix[i][j];
                     Color newColor = new Color(a,a,a);
                     image.setRGB(i,j,newColor.getRGB());
                 }
