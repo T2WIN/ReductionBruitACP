@@ -46,13 +46,12 @@ public class Image {
     }
 
     //Créer une matrice à partir d'un fichier image
-    public static ArrayList<ArrayList<Integer>> createMatrix(String path) {
+    public static int[][] createMatrix(String path) {
         File fileSelected = new File(path);
         System.out.println("file to be opened : " + fileSelected);
 
         BufferedImage image;
         
-        ArrayList<ArrayList<Integer>> tabImage = new ArrayList<ArrayList<Integer>>();
         
         try {
             image = ImageIO.read(fileSelected);
@@ -60,13 +59,14 @@ public class Image {
             int y;
             x=image.getWidth();
             y=image.getHeight();
+            int [][] tabImage = new int[x][y];
             // Parcours de l'intégralité des pixels 
             // Puis création de la matrice associée à l'image
             for (int i = 0; i < x; i++) {
                 for (int j = 0; j < y; j++) {
                     // Transformation des pixels en couleur en gris
-                    tabImage.get(i).add(calcGreyValue(image, i, j));
-                    System.out.println(tabImage.get(i).get(j));
+                    tabImage[i][j] = calcGreyValue(image, i, j);
+                    System.out.println(tabImage[i][j]);
                 }
             }
             return tabImage;
@@ -76,7 +76,9 @@ public class Image {
             e.printStackTrace();
             System.exit(-1);
         }
-        return tabImage;
+
+        int[][] default2 = new int[1][1];
+        return default2;
     }
 
     // Transformation des pixels en couleur en gris
