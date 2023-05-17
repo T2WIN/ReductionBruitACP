@@ -1,4 +1,6 @@
-
+import org.apache.commons.math3.linear.MatrixUtils;
+import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.linear.EigenDecomposition;
 
 public class ACP {
 
@@ -6,6 +8,8 @@ public class ACP {
     double [] meanVector = new double [vectorisePatchs[0].length];
     double [][] covariance = new double [vectorisePatchs.length][vectorisePatchs.length];
     double [][] centeredVectors = new double [vectorisePatchs.length][vectorisePatchs[0].length];
+    double [][] U = new double [vectorisePatchs[0].length][vectorisePatchs[0].length];
+    double [][] Vcontrib = new double [vectorisePatchs.length][vectorisePatchs[0].length];
 
     
     public void MoyCov() {
@@ -63,6 +67,39 @@ public class ACP {
             }
         }
 
+    }
+
+    public void DoACP() {
+        
+        // Création de la matrice de covariance
+        RealMatrix covarianceMatrix = MatrixUtils.createRealMatrix(covariance);
+
+        // Calcul des valeurs propres et des vecteurs propres
+        EigenDecomposition eigenDecomposition = new EigenDecomposition(covarianceMatrix);
+        RealMatrix eigenVectors = eigenDecomposition.getV();
+
+        // Détermination de la base orthonormée
+        for (int i=0; i<vectorisePatchs[0].length; i++) {
+            for (int j=0; j<vectorisePatchs[0].length; j++) {
+                U[i][j] = eigenVectors.getEntry(i, j);
+            }
+        }
+
+    }
+
+    public void Proj() {
+        // parcours de la liste des vecteurs
+        for (int i=0; i<vectorisePatchs.length; i++) {
+            // parcours des axes
+            for (int j=0; j<vectorisePatchs[0].length; j++) {
+                // calcul du coefficient a(i)(k)
+                int somme = 0;
+                for (int l=0; l<U[j].length; l++) {
+                    somme += U[j][l] * centeredVectors[i][l];
+                }
+                Vcontrib[i][j] = somme;
+            }
+        }
     }
 
 }
