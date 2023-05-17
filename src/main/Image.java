@@ -17,9 +17,8 @@ public class Image {
     //Variance du bruit ajouté à l'image
     private int sigma;
     
-    //Initialise l'objet Image
-    public Image(String path, int sigma) {
-        this.matrix = createMatrix(path);
+    public Image(File file, int sigma) {
+        this.matrix = createMatrix(file);
         this.sigma = sigma;
     }
 
