@@ -62,9 +62,37 @@ public class Seuillage {
             return a;
         }
     }
+    // fonction pour calculer la moyenne d'un echantillon
+    public double mean(int[] entiers) {
+        double moy = 0;
+        for (int i = 0 ; i < entiers.length ; i++) {
+            moy = moy + entiers[i];
+        } 
+        return (moy/entiers.length);
+    }
+    //fonction calculer la variance 
+    public double calculVariance() {
+        double moyenne;
+        double somme = 0;
+        int[] echantillon = new int[this.image.getMatrix().length*this.image.getMatrix()[0].length];
+        for (int i= 0 ; i< this.image.getMatrix().length ; i++) {
+            for (int j= 0 ; j< this.image.getMatrix()[0].length ; j++) {
+                echantillon[i*this.image.getMatrix().length + j] = this.image.getMatrix()[i][j];
+            }
+        }
+        moyenne = mean(echantillon);
+        for (int i = 0 ; i < echantillon.length ; i++) {
+            somme = somme + (echantillon[i] - moyenne)*(echantillon[i] - moyenne);
+        }
+        return somme/(echantillon.length -1);
+
+        
+        
+      
+    }
 
     public int seuilB() {
-        double variance=5;
+        double variance = calculVariance();
         double ecartType = Math.sqrt(max((Math.pow(variance,2)-Math.pow(image.getSigma(),2)) , 0));
         bayesShrink = Math.pow(image.getSigma(),2)/ecartType;
         return 0;
