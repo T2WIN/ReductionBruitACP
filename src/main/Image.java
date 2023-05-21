@@ -7,7 +7,6 @@ import javax.imageio.ImageIO;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.lang.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 public class Image {
