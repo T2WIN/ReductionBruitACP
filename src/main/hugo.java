@@ -3,41 +3,14 @@ package src.main;
 
 // Import Lecture Image
 import java.io.*;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Scanner;
 //import java.util.Arrays;
 
 public class hugo{
     public static void main(String[] args) throws IOException {
-        File fileSelected = new File("lenaa.png");
-        System.out.println("file to be opened :" + fileSelected);
-
-        BufferedImage image;
-
-        image = ImageIO.read(fileSelected);
-        int x;
-        int y;
-        x=image.getWidth();
-        y=image.getHeight();
-        int [][] tabImage = new int[x][y];
-        // Parcours de l'intégralité des pixels 
-        // Puis création de la matrice associée à l'image
-        for (int i = 0; i < x; i++) {
-            for (int j = 0; j < y; j++) {
-                // Transformation des pixels en couleur en gris
-                Color pixel = new Color(image.getRGB(i, j));
-                int r= pixel.getRed();
-                int g=pixel.getGreen();
-                int b=pixel.getBlue();
-                int gris = (r+g+b)/3;
-                tabImage[i][j]=gris;
-                // System.out.println(tabImage[i][j]);
-            }
-        }
+        
         // Extraction Patch Globale
         Scanner sc;
 		sc = new Scanner(System.in);
@@ -50,9 +23,21 @@ public class hugo{
         int coint_sup_y;
         ArrayList<Patch> ListePatch= new ArrayList<Patch>();
 
+        int [][] test = new int[5][5];
+        String newLine = System.getProperty("line.separator");
 
-        for (int i = 0; i < x-s; i++) {
-            for (int j = 0; j < y-s; j++) {
+        for (int index = 0; index < 5; index++) {
+            for (int i = 0; i < 5; i++) {
+                test[index][i]=i;
+                System.out.println(test[index][i]);
+            }
+            System.out.println(newLine);
+        }
+
+        System.out.println("ici");
+
+        for (int i = 0; i < 5-s+1; i++) {
+            for (int j = 0; j < 5-s +1; j++) {
                 // Position du pixel du coin gauche 
                 coint_sup_x= i;
                 coint_sup_y= j;
@@ -61,13 +46,17 @@ public class hugo{
                 // Ajout des pixels de l'image dans chaque patch
                 for (int k = coint_sup_x; k < coint_sup_x + s;k++){
                     for (int l = coint_sup_y; l < coint_sup_y + s; l++){
-                        patchcourant[k][l]=tabImage[k][l];
+                        patchcourant[k - coint_sup_x][l - coint_sup_y] = test[k][l];
+                        System.out.println(test[k][l]);
                     }
                 }
+                System.out.println(newLine);
+
                 ListePatch.add(patch);
             }   
         }
         sc.close();
+
 
 
     }

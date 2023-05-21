@@ -7,7 +7,6 @@ import javax.imageio.ImageIO;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.lang.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 public class Image {
@@ -154,8 +153,8 @@ public class Image {
         ArrayList<Patch> ListePatch= new ArrayList<Patch>();
 
 
-        for (int i = 0; i < x-s; i++) {
-            for (int j = 0; j < y-s; j++) {
+        for (int i = 0; i < x-s+1; i++) {
+            for (int j = 0; j < y-s+1; j++) {
                 // Position du pixel du coin gauche 
                 coint_sup_x= i;
                 coint_sup_y= j;
@@ -164,7 +163,7 @@ public class Image {
                 // Ajout des pixels de l'image dans chaque patch
                 for (int k = coint_sup_x; k < coint_sup_x + s;k++){
                     for (int l = coint_sup_y; l < coint_sup_y + s; l++){
-                        patchcourant[k][l]=matrix[k][l];
+                        patchcourant[k - coint_sup_x][l - coint_sup_y]=matrix[k][l];
                     }
                 }
                 ListePatch.add(patch);
