@@ -95,8 +95,9 @@ public class hugo{
                 else {
                     test2[i][j]= test2[i][j]/4;
                 }
-                
+                System.out.println(test2[i][j]);
             }
+            System.out.println(newLine);
         }
     }
 }
