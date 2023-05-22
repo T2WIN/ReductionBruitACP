@@ -24,6 +24,8 @@ public class Seuillage {
      public void setBayesShrink(Integer bayesShrink) {
         this.bayesShrink = bayesShrink;
     }
+
+    //Seuillage dur
     public int HardThresholding(int threshold, int alpha) {
 
         if (threshold >= Math.abs(alpha)) {
@@ -34,6 +36,7 @@ public class Seuillage {
         }
     }
 
+    //Seuillage doux
     public int SoftThresholding(int threshold, int alpha) {
 
         if (threshold >= Math.abs(alpha)) {
@@ -48,7 +51,7 @@ public class Seuillage {
 
         return 0;
     }
-
+    //Calcul du seuil de VisuShrink
     public int seuilV() {
         int L = image.getMatrix().length*image.getMatrix()[0].length;
         visuShrink = image.sigmaMath.sqrt(2Math.log(L));
@@ -90,7 +93,7 @@ public class Seuillage {
         
       
     }
-
+    //Calcul du seuil de BayesShrink
     public int seuilB() {
         double variance = calculVariance();
         double ecartType = Math.sqrt(max((Math.pow(variance,2)-Math.pow(image.getSigma(),2)) , 0));
