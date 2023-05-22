@@ -1,6 +1,5 @@
 package src.main;
 
-import java.awt.image.BufferedImage;
 
 public class Main {
     public static void main(String[] args) {
@@ -9,11 +8,9 @@ public class Main {
         // BufferedImage newImage = image.createImageFromMatrix(image.getMatrix());
         // image.createfile(newImage);
 
-        Error error = new Error("src/main/lenaa.png", 200);
+        Error error = new Error("src/main/lenaa.png", 20);
         System.out.println(error.MeanSquaredError());
-    }
 
         
-        
-    
+    }    
 }

@@ -1,6 +1,5 @@
 package src.main;
 
-import java.awt.image.BufferedImage;
 import java.lang.Math;
 
 public class Error{

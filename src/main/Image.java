@@ -7,8 +7,8 @@ import javax.imageio.ImageIO;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.lang.*;
-
+import java.util.ArrayList;
+import java.util.Scanner;
 public class Image {
 
     //Matrice de l'image
@@ -16,7 +16,18 @@ public class Image {
     private int[][] noisedmatrix;
 
     //Variance du bruit ajouté à l'image
-    private int sigma;
+    private Integer sigma;
+
+    public int getSigma() {
+
+        return this.sigma;
+    }
+
+     public void setSigma(Integer sigma) {
+
+        this.sigma = sigma;
+    }
+
     
     public Image(String path, int sigma) {
         this.matrix = createMatrix(path);
@@ -124,5 +135,41 @@ public class Image {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    public ArrayList<Patch> extractionPatch(int[][] matrix){
+
+        int x= matrix.length;
+        int y= matrix[1].length;
+        Scanner sc;
+		sc = new Scanner(System.in);
+		System.out.print("Saisir l'entier s, taille du patch : ");
+		int s;
+		s = sc.nextInt(); 
+        
+        int [][] patchcourant = new int[s][s];
+        int coint_sup_x;
+        int coint_sup_y;
+        ArrayList<Patch> ListePatch= new ArrayList<Patch>();
+
+
+        for (int i = 0; i < x-s+1; i++) {
+            for (int j = 0; j < y-s+1; j++) {
+                // Position du pixel du coin gauche 
+                coint_sup_x= i;
+                coint_sup_y= j;
+                // Création d'un patch à partir de chaque pixel
+                Patch patch = new Patch(patchcourant,coint_sup_x,coint_sup_y);
+                // Ajout des pixels de l'image dans chaque patch
+                for (int k = coint_sup_x; k < coint_sup_x + s;k++){
+                    for (int l = coint_sup_y; l < coint_sup_y + s; l++){
+                        patchcourant[k - coint_sup_x][l - coint_sup_y]=matrix[k][l];
+                    }
+                }
+                ListePatch.add(patch);
+            }   
+        }
+        sc.close();
+        return ListePatch;
     }
 }
