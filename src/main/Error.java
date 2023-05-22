@@ -5,7 +5,6 @@ import java.lang.Math;
 public class Error{
     int [][] matrice1;
     int [][] matrice2;
-
     public Error(Image test1, Image test2) {
         this.matrice1 = test1.getMatrix();
         this.matrice2 = test2.getMatrix();
