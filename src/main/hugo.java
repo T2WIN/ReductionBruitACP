@@ -89,6 +89,7 @@ public class hugo{
                 if ((i == 0 || i == x - 1) && (j == 0 || j == y - 1)){
                     //
                 }
+                // 
                 else if (i == 0 || i == s - 1 || j == 0 || j == s - 1){
                     test2[i][j]= test2[i][j]/2;
                 }
