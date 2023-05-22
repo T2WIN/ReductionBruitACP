@@ -1,4 +1,4 @@
-package src.main;
+package src.main.java;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
@@ -14,7 +14,7 @@ public class Image {
     //Matrice de l'image
     private int[][] matrix;
     private int[][] noisedmatrix;
-
+    int s;
     //Variance du bruit ajouté à l'image
     private Integer sigma;
 
@@ -29,9 +29,10 @@ public class Image {
     }
 
     
-    public Image(String path, int sigma) {
+    public Image(String path, int sigma, int s) {
         this.matrix = createMatrix(path);
         this.sigma = sigma;
+        this.s = s;
     }
 
     //Ajoute un bruit gaussien de variance sigma
