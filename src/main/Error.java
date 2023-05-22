@@ -5,12 +5,9 @@ import java.lang.Math;
 public class Error{
     int [][] matrice1;
     int [][] matrice2;
-
-    public Error(String path, int sigma) {
-        Image test1 = new Image(path, sigma);
+    public Error(Image test1, Image test2) {
         this.matrice1 = test1.getMatrix();
-        test1.noising();
-        this.matrice2 = test1.getNoisedMatrix();
+        this.matrice2 = test2.getMatrix();
     }
 
     public float MeanSquaredError(){
