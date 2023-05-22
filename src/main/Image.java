@@ -107,6 +107,7 @@ public class Image {
         return gris;
     }
 
+    //Utilise la matrice décrivant l'image pour la retourner
     public BufferedImage createImageFromMatrix() {
         BufferedImage image = new BufferedImage(this.noisedmatrix.length, this.noisedmatrix[0].length, BufferedImage.TYPE_INT_RGB);
         try {
@@ -127,6 +128,7 @@ public class Image {
         return image;
     }
 
+    //Utilise un objet BufferedImage pour retourner l'image sous forme de fichier jpg
     public void createfile(BufferedImage image) {
         File output = new File("GrayScale.jpg");
         try {
@@ -137,9 +139,11 @@ public class Image {
         }
     }
 
+    //Extraction des patchs à partir de la matrice de l'image
     public ArrayList<Patch> extractionPatch(int[][] matrix){
-
+        //Nombre de vecteurs de la matrice
         int x= matrix.length;
+        //Taille des vecteurs de la matrice
         int y= matrix[1].length;
         Scanner sc;
 		sc = new Scanner(System.in);
