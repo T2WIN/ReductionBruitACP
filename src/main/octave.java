@@ -27,7 +27,7 @@ public class octave {
                 int x = i * W;
                 int y = j * W;
 
-                Image imagette = getSubimage(x,y,W,X);
+                Image imagette = createSubimage(x,y,W,X);
 
                 imagettes.add(imagette);
                 int[][] position =new int[x][y];
@@ -52,5 +52,16 @@ public class octave {
         return(imagettes);
     }
 
+    }
+
+    public List<int[]> VectorPatchs(List<Patch> X){
+        List<int[]> listeVecteurs = new ArrayList<>();
+        for ( int i = 0 ; i < X.size() ; i++){
+            int[] vecteur = X.get(i).vectorize();
+            listeVecteurs.add(vecteur);
+
+
+        }
+        return(listeVecteurs);
     }
 }
