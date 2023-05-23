@@ -129,16 +129,7 @@ public class Image {
         return image;
     }
 
-    //Utilise un objet BufferedImage pour retourner l'image sous forme de fichier jpg
-    public void createfile(BufferedImage image) {
-        File output = new File("sigma30.jpg");
-        try {
-            ImageIO.write(image, "jpg", output);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
+
 
     //Extraction des patchs à partir de la matrice de l'image
     public ArrayList<Patch> extractionPatch(int[][] matrix){
