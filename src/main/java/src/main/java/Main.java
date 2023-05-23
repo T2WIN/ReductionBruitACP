@@ -1,13 +1,13 @@
 package src.main.java;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
 
         Image image = new Image("src/main/lenaa.png", 30, 5);
-        octave i  = new octave();
-        octave.DecoupeImage(image, 100);
+        
 
         // Error error = new Error("src/main/lenaa.png", 20);import java.awt.Color;
         // System.out.println(error.MeanSquaredError());
