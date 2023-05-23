@@ -1,4 +1,4 @@
-package src.main;
+package src.main.java;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
@@ -14,7 +14,7 @@ public class Image {
     //Matrice de l'image
     private int[][] matrix;
     private int[][] noisedmatrix;
-
+    int s;
     //Variance du bruit ajouté à l'image
     private Integer sigma;
 
@@ -29,9 +29,10 @@ public class Image {
     }
 
     
-    public Image(String path, int sigma) {
+    public Image(String path, int sigma, int s) {
         this.matrix = createMatrix(path);
         this.sigma = sigma;
+        this.s = s;
     }
 
     //Ajoute un bruit gaussien de variance sigma
@@ -107,7 +108,7 @@ public class Image {
         return gris;
     }
 
-    //Utilise la matrice décrivant l'image pour la retourner
+    //Utilise la matrice décrivant l'image dégradée pour la retourner
     public BufferedImage createImageFromMatrix() {
         BufferedImage image = new BufferedImage(this.noisedmatrix.length, this.noisedmatrix[0].length, BufferedImage.TYPE_INT_RGB);
         try {
@@ -130,7 +131,7 @@ public class Image {
 
     //Utilise un objet BufferedImage pour retourner l'image sous forme de fichier jpg
     public void createfile(BufferedImage image) {
-        File output = new File("GrayScale.jpg");
+        File output = new File("sigma30.jpg");
         try {
             ImageIO.write(image, "jpg", output);
         } catch (IOException e) {
