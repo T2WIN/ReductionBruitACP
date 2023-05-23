@@ -19,7 +19,6 @@ public class Seuillage {
     }
 
      public void setVisuShrink(Integer visuShrink) {
-
         this.visuShrink = visuShrink;
     }
 
