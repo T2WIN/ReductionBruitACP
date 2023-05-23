@@ -214,41 +214,73 @@ public class Image {
         return imageRecon;
     }
 
-     //Extraction des patchs à partir de la matrice de l'image
-     public ArrayList<Patch> extractionPatch(int[][] matrix){
-        //Nombre de vecteurs de la matrice
-        int x= matrix.length;
-        //Taille des vecteurs de la matrice
-        int y= matrix[1].length;
-        Scanner sc;
-		sc = new Scanner(System.in);
-		System.out.print("Saisir l'entier s, taille du patch : ");
-		int s;
-		s = sc.nextInt(); 
-        
-        int [][] patchcourant = new int[s][s];
-        int coint_sup_x;
-        int coint_sup_y;
-        ArrayList<Patch> ListePatch= new ArrayList<Patch>();
 
+    public static void DecoupeImage(Image X, int W){
 
-        for (int i = 0; i < x-s+1; i++) {
-            for (int j = 0; j < y-s+1; j++) {
-                // Position du pixel du coin gauche 
-                coint_sup_x= i;
-                coint_sup_y= j;
-                // Création d'un patch à partir de chaque pixel
-                Patch patch = new Patch(patchcourant,coint_sup_x,coint_sup_y);
-                // Ajout des pixels de l'image dans chaque patch
-                for (int k = coint_sup_x; k < coint_sup_x + s;k++){
-                    for (int l = coint_sup_y; l < coint_sup_y + s; l++){
-                        patchcourant[k - coint_sup_x][l - coint_sup_y]=matrix[k][l];
-                    }
-                }
-                ListePatch.add(patch);
-            }   
+        int[][] Tab = X.getMatrix();
+
+        int imagettesEnLargeur = Tab.length / W;
+        int imagettesEnHauteur = Tab[0].length / W;
+
+        int nombreTotalImagettes = imagettesEnLargeur * imagettesEnHauteur;
+
+        for ( int i = 0 ; i < imagettesEnHauteur ; i++ ){
+            for ( int j = 0 ; j < imagettesEnLargeur ; j++){
+                int x = i * W;
+                int y = j * W;
+
+                BufferedImage imagette = getSubImage(x,y,W,X);
+                createfile(imagette, "imagette(" + i + "," + j + ")");
+            }
         }
-        sc.close();
-        return ListePatch;
+    }  
+    
+    public static BufferedImage getSubImage(int x, int y, int W, Image X){
+
+        int[][] Tab = X.getMatrix();
+        int[][] imagetteMatrice = new int[W][W];
+        BufferedImage imagette;
+
+        for ( int i = 0 ; i < W ; i++){
+            for ( int j = 0 ; j < W ; j++){
+                
+                imagetteMatrice[i][j] = Tab[x+i][y+j];
+            }
+        }
+        imagette = createImageFromMatrix(imagetteMatrice);
+        return imagette;
     }
+
+    public static BufferedImage createImageFromMatrix(int[][] matrix) {
+        BufferedImage image = new BufferedImage(matrix.length, matrix[0].length, BufferedImage.TYPE_INT_RGB);
+        try {
+            
+            for(int i=0; i<matrix.length; i++) {
+                for(int j=0; j<matrix[0].length; j++) {
+                    int a = matrix[i][j];
+                    Color newColor = new Color(a,a,a);
+                    image.setRGB(i,j,newColor.getRGB());
+                }
+            }
+        }
+        
+        catch(Exception e) {
+            System.out.println(("Error creating image"));
+            e.printStackTrace();
+        }
+        return image;
+    }
+
+    //Utilise un objet BufferedImage pour retourner l'image sous forme de fichier jpg
+    public static void createfile(BufferedImage image, String nom) {
+        File output = new File("./src/main/img/" + nom + ".jpg");
+        try {
+            output.createNewFile();
+            ImageIO.write(image, "jpg", output);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
 }
