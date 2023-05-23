@@ -7,7 +7,7 @@ public class Main {
         Image image = new Image("src/main/lenaa.png", 30, 5);
         octave i  = new octave();
         octave.DecoupeImage(image, 100);
-
+        System.out.println("");
         // Error error = new Error("src/main/lenaa.png", 20);import java.awt.Color;
         // System.out.println(error.MeanSquaredError());
         // int[][] matrix = new int[2][2];
