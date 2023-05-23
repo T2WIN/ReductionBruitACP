@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 
 public class Main {
     public static void main(String[] args) {
+
         Image image = new Image("src/main/lenaa.png", 30, 5);
         octave i  = new octave();
         octave.DecoupeImage(image, 100);
@@ -19,6 +20,15 @@ public class Main {
         // int[] vect = patch.vectorize();
         // patch.intoMatrix(vect);
         // System.out.println(patch.matrix[0][0]);
+        // Extraction Patch Globale
+        
+        int [][] matriceImage = image.createMatrix("src/main/lenaa.png");
+        image.noising(); 
+        int [][] imageBruité = image.getNoisedMatrix();
+        
+        ArrayList<Patch> listePatch = new ArrayList<Patch>();
+        listePatch = image.extractionPatch(matriceImage);   // a faire sur image bruité normalement
 
-    }    
+        
+    }
 }
