@@ -8,7 +8,6 @@ public class Main {
 
         Image image = new Image("src/main/lenaa.png", 30, 5);
         
-
         // Error error = new Error("src/main/lenaa.png", 20);import java.awt.Color;
         // System.out.println(error.MeanSquaredError());
         // int[][] matrix = new int[2][2];
@@ -23,12 +22,23 @@ public class Main {
         // Extraction Patch Globale
         
         int [][] matriceImage = image.createMatrix("src/main/lenaa.png");
+        int l;
+        int c;
         image.noising(); 
         int [][] imageBruité = image.getNoisedMatrix();
         
         ArrayList<Patch> listePatch = new ArrayList<Patch>();
-        listePatch = image.extractionPatch(matriceImage);   // a faire sur image bruité normalement
+        listePatch = image.extractionPatch(imageBruité);   
 
+
+        
+
+
+
+
+        // Après l'ACP et le seuillage, une fois que la liste de patch est modifiée (forme matrice)
+
+        int [][] imageDébruité = image.assemblagePatch(listePatch,l,c);
         
     }
 }
