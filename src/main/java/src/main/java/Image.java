@@ -177,4 +177,40 @@ public class Image {
         sc.close();
         return ListePatch;
     }
+
+    public int[][] assemblagePatch(ArrayList<Patch> ListePatch,int l,int c){
+        int [][] imageRecon = new int[l][c];
+        int [][] matricePoids = new int [l][c]; 
+        for (int i = 0; i < l; i++) {
+            for (int j = 0; j < c; j++) {
+                imageRecon[i][j]=0;
+                matricePoids[i][j]=0;
+            }
+        }
+
+        int cointx;
+        int cointy;
+
+        // Ajout des patchs dans la matrice 
+        for (int k = 0; k < ListePatch.size(); k++) {
+            cointx = ListePatch.get(k).positionX;
+            cointy = ListePatch.get(k).positionY;
+            int[][] patch = ListePatch.get(k).matrix;
+        
+            for (int n = 0; n < s; n++) {
+                for (int m = 0; m < s; m++) {
+                    // Superposition des patchs dans la matrice
+                    imageRecon[n + cointx][m + cointy] += patch[n][m];
+                    // Ajout du poids pour chaque élément de la matrice
+                    matricePoids[cointx + n][cointy + m] += 1;
+                }
+            }
+        }
+        for (int i = 0; i < l; i++) {
+            for (int j = 0; j < c; j++) {
+                imageRecon[i][j] = imageRecon[i][j]/matricePoids[i][j];
+            }
+        }
+        return imageRecon;
+    }
 }
