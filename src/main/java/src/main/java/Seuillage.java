@@ -34,7 +34,7 @@ public class Seuillage {
 
 // seuillage dur avec en paramètre threshold le seuil et alpha le coefficient
     public double HardThresholding(double threshold, double alpha) {
-        System.out.println(threshold + "," + alpha);
+
         if (threshold >= Math.abs(alpha)) {
             return 0;   // met à 0 les coefficients en dessous du seuil
         }
@@ -105,7 +105,6 @@ public class Seuillage {
 
     public double seuilB() {
         double variance = calculVariance();
-        System.out.println(variance);
         double ecartType = Math.sqrt(max(variance-Math.pow(image.getSigma(),2) , 0));
 
         bayesShrink = Math.pow(image.getSigma(),2)/ecartType;

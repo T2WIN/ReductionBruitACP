@@ -1,10 +1,30 @@
 package src.main.java;
-
-import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Image image = new Image("src/main/lenaa.png", 30, 5);
+
+
+        int sigma = readConsole("Saisir un entier sigma pour ajouter à la photo un bruit gaussien : ");
+        int taille = readConsole("donner la taille du patch que vous souhaitez : ");
+        Image image = new Image("src/main/lenaa.png", sigma, taille);
+        int choixMethode = chooseMethode();
+
+        if (choixMethode == 1) {
+            image.noising();
+            ArrayList<Patch> listePatch = image.extractionPatch(image.getNoisedMatrix());
+            int[][] matricePatchs = image.vectorPatch(listePatch);
+            ACP acp = new ACP(matricePatchs);
+            acp.MoyCov();
+            acp.DoACP();
+            acp.Proj();
+            acp.getVcontrib();
+            
+        }
+        
+       
+       
         octave i  = new octave();
         octave.DecoupeImage(image, 100);
         System.out.println("");
@@ -19,6 +39,7 @@ public class Main {
         // int[] vect = patch.vectorize();
         // patch.intoMatrix(vect);
         // System.out.println(patch.matrix[0][0]);
+
         Seuillage seuillage = new Seuillage(image);
 
 
@@ -39,4 +60,39 @@ public class Main {
 
 
     }    
+    public static int readConsole(String message) {
+        try {
+            Scanner sc;
+            sc = new Scanner(System.in);
+            System.out.print(message);
+            int s;
+            s = sc.nextInt();
+            return s;
+        } catch(Exception as) {
+            System.out.println("Erreur de paramètre d'entrée. Il faut que ce soit un entier");
+            readConsole(message);
+        }
+        return -1;
+        
+    }
+    public static int chooseMethode() {
+
+        int choixMethode = readConsole("voulez vous faire la méthode globale ou locale : globale : tapez 1  Locale : tapez 2 : ");
+
+        if (choixMethode == 1) {
+
+            return choixMethode;
+        }
+        if (choixMethode == 2) {
+
+            return choixMethode;
+        }
+        else {
+            System.out.println("Vous n'avez pas tapé un numéro correct pour le choix de la méthode de patchs. Recommencez s'il vous plaît.");
+            chooseMethode();
+        }
+
+        return -1;
+
+    }
 }
