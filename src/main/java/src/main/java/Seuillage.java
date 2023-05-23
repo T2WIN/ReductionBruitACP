@@ -1,4 +1,4 @@
-package src.main;
+package src.main.java;
 
 
 
@@ -51,12 +51,7 @@ public class Seuillage {
 
         return 0;
     }
-    //Calcul du seuil de VisuShrink
-    public int seuilV() {
-        int L = image.getMatrix().length*image.getMatrix()[0].length;
-        visuShrink = image.sigmaMath.sqrt(2Math.log(L));
-        return 0;
-    }
+
     public double max(double a, double b) {
         if (a<=b){
             return b;

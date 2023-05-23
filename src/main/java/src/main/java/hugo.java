@@ -1,4 +1,4 @@
-package src.main;
+package src.main.java;
 // Test Lecteur Image 
 
 // Import Lecture Image
@@ -59,10 +59,15 @@ public class hugo{
 
         // Reconstruction Patch
         
-        int [][] test2 = new int[5][5];
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
+        int x=5;
+        int y=5;
+
+        int [][] test2 = new int[x][y];
+        int [][] matricePoids = new int [x][y]; 
+        for (int i = 0; i < x; i++) {
+            for (int j = 0; j < y; j++) {
                 test2[i][j]=0;
+                matricePoids[i][j]=0;
             }
         }
 
@@ -77,29 +82,27 @@ public class hugo{
                     cointy = ListePatch.get(k).positionY;
                     int [][] patch = new int[s][s];
                     patch = ListePatch.get(k).matrix;
-                    test2[cointx+l][cointy+m]= patch[l][m];
+                    test2[cointx+l][cointy+m] += patch[l][m];
+                    // Ajout du poids pour chaque élément de la matrice 
+                    matricePoids[cointx][cointy] += 1;
                 }
             }
         }
-        int x=5;
-        int y=5;
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {
-                // Test Coin
-                if ((i == 0 || i == x - 1) && (j == 0 || j == y - 1)){
-                    //
-                }
-                // 
-                else if (i == 0 || i == s - 1 || j == 0 || j == s - 1){
-                    test2[i][j]= test2[i][j]/2;
-                }
-                else {
-                    test2[i][j]= test2[i][j]/4;
-                }
-                System.out.println(test2[i][j]);
+                System.out.println(matricePoids[i][j]);
             }
             System.out.println(newLine);
         }
+
+        // Calcul de la moyenne des patchs par image
+        // for (int i = 0; i < x; i++) {
+        //     for (int j = 0; j < y; j++) {
+        //         test2[i][j]= test2[i][j]/matricePoids[i][j];
+        //         System.out.println(test2[i][j]);
+        //     }
+        //     System.out.println(newLine);
+        // }
     }
 }
 
