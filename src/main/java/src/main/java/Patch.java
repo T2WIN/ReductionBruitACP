@@ -10,6 +10,7 @@ public class Patch {
         this.positionX = positionX;
         this.positionY = positionY;
         this.matrix = matrix;
+
     }
     //Transformation du patch sous forme matricielle vers sa forme vectorielle
     public int[] vectorize() {
@@ -36,4 +37,6 @@ public class Patch {
         
         return newMatrix;
     }
+
+  
 }
