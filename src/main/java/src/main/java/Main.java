@@ -19,6 +19,24 @@ public class Main {
         // int[] vect = patch.vectorize();
         // patch.intoMatrix(vect);
         // System.out.println(patch.matrix[0][0]);
+        Seuillage seuillage = new Seuillage(image);
+
+
+        double  threshold = seuillage.getVisuShrink();
+        double alpha = -150;
+        double hardThresholdingResult = seuillage.HardThresholding(threshold, alpha);
+        double softThresholdingResult = seuillage.SoftThresholding(threshold, alpha);
+
+        System.out.println("Résultat du seuillage avec HardThresholding : " + hardThresholdingResult);
+        System.out.println("Résultat du seuillage avec SoftThresholding : " + softThresholdingResult);
+
+        double seuillageV = seuillage.seuilV();
+        double seuillageB = seuillage.seuilB();
+
+
+        System.out.println("Résultat du seuilV : " + seuillageV);
+        System.out.println("Résultat du seuilB : " + seuillageB);
+
 
     }    
 }
