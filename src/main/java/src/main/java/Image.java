@@ -178,7 +178,7 @@ public class Image {
         return ListePatch;
     }
 
-    public int[l][c] assemblagePatch(ArrayList<Patch> ListePatch,int l,int c){
+    public int[][] assemblagePatch(ArrayList<Patch> ListePatch,int l,int c){
         int [][] imageRecon = new int[l][c];
         int [][] matricePoids = new int [l][c]; 
         for (int i = 0; i < l; i++) {
