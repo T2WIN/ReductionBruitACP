@@ -11,6 +11,9 @@ public class Main {
         octave p  = new octave();
         octave.DecoupeImage(image, 100);
         System.out.println("");
+
+        
+
         // Error error = new Error("src/main/lenaa.png", 20);import java.awt.Color;
         // System.out.println(error.MeanSquaredError());
         // int[][] matrix = new int[2][2];
@@ -32,5 +35,18 @@ public class Main {
         listePatch = image.extractionPatch(matriceImage);   // a faire sur image bruité normalement
 
         
+
+
+
+
+
+
+
+
+
+
+        // Après avoir fait ACP et qu'on a modifié l'aspect des patchs
+        
+
     }
 }
