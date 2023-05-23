@@ -213,4 +213,42 @@ public class Image {
         }
         return imageRecon;
     }
+
+     //Extraction des patchs à partir de la matrice de l'image
+     public ArrayList<Patch> extractionPatch(int[][] matrix){
+        //Nombre de vecteurs de la matrice
+        int x= matrix.length;
+        //Taille des vecteurs de la matrice
+        int y= matrix[1].length;
+        Scanner sc;
+		sc = new Scanner(System.in);
+		System.out.print("Saisir l'entier s, taille du patch : ");
+		int s;
+		s = sc.nextInt(); 
+        
+        int [][] patchcourant = new int[s][s];
+        int coint_sup_x;
+        int coint_sup_y;
+        ArrayList<Patch> ListePatch= new ArrayList<Patch>();
+
+
+        for (int i = 0; i < x-s+1; i++) {
+            for (int j = 0; j < y-s+1; j++) {
+                // Position du pixel du coin gauche 
+                coint_sup_x= i;
+                coint_sup_y= j;
+                // Création d'un patch à partir de chaque pixel
+                Patch patch = new Patch(patchcourant,coint_sup_x,coint_sup_y);
+                // Ajout des pixels de l'image dans chaque patch
+                for (int k = coint_sup_x; k < coint_sup_x + s;k++){
+                    for (int l = coint_sup_y; l < coint_sup_y + s; l++){
+                        patchcourant[k - coint_sup_x][l - coint_sup_y]=matrix[k][l];
+                    }
+                }
+                ListePatch.add(patch);
+            }   
+        }
+        sc.close();
+        return ListePatch;
+    }
 }
