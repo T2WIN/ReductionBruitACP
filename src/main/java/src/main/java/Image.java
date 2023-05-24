@@ -215,7 +215,6 @@ public class Image {
         int imagettesEnLargeur = Tab.length / W;
         int imagettesEnHauteur = Tab[0].length / W;
 
-        int nombreTotalImagettes = imagettesEnLargeur * imagettesEnHauteur;
 
         for ( int i = 0 ; i < imagettesEnHauteur ; i++ ){
             for ( int j = 0 ; j < imagettesEnLargeur ; j++){
