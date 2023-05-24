@@ -21,16 +21,16 @@ public class Main {
         // System.out.println(patch.matrix[0][0]);
         // Extraction Patch Globale
         
-        int [][] matriceImage = image.createMatrix("src/main/lenaa.png");
-        int l;
-        int c;
         image.noising(); 
         int [][] imageBruité = image.getNoisedMatrix();
-        
+        int l;
+        int c;
+        l = imageBruité.length;
+        c = imageBruité[1].length;
         ArrayList<Patch> listePatch = new ArrayList<Patch>();
         listePatch = image.extractionPatch(imageBruité);   
 
-
+        
         
 
 
