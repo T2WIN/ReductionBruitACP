@@ -12,6 +12,5 @@ import javax.imageio.ImageIO;
 import java.awt.Color;
 
 public class octave {
-    
-  
+
 }
