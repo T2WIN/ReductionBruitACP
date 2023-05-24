@@ -253,16 +253,8 @@ public class Image {
                     image.setRGB(i,j,newColor.getRGB());
                 }
             }
-    public int[][] vectorPatch(ArrayList<Patch> listePatch) {
-        int[][] matrixPatchs = new int[listePatch.size()][listePatch.get(0).vectorize().length];
-        for (int i =0; i < listePatch.size(); i++) {
-            int[] vector = listePatch.get(i).vectorize();
-            for (int j=0; j<listePatch.get(0).vectorize().length; j++) {
-                matrixPatchs[i][j] = vector[j];
-            }
-        }
         
-        catch(Exception e) {
+        } catch(Exception e) {
             System.out.println(("Error creating image"));
             e.printStackTrace();
         }
@@ -279,8 +271,17 @@ public class Image {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return matrixPatchs;
     }
 
+    public int[][] vectorPatch(ArrayList<Patch> listePatch) {
+        int[][] matrixPatchs = new int[listePatch.size()][listePatch.get(0).vectorize().length];
+        for (int i =0; i < listePatch.size(); i++) {
+            int[] vector = listePatch.get(i).vectorize();
+            for (int j=0; j<listePatch.get(0).vectorize().length; j++) {
+                matrixPatchs[i][j] = vector[j];
+            }
+        }
+        return matrixPatchs;
+    }
 }
 
