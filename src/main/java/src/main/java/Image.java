@@ -72,7 +72,6 @@ public class Image {
 
         BufferedImage image;
         
-        
         try {
             image = ImageIO.read(fileSelected);
             int x;
@@ -139,12 +138,6 @@ public class Image {
         int x= matrix.length;
         //Taille des vecteurs de la matrice
         int y= matrix[1].length;
-        Scanner sc;
-		sc = new Scanner(System.in);
-		System.out.print("Saisir l'entier s, taille du patch : ");
-		int s;
-		s = sc.nextInt(); 
-        
         int [][] patchcourant = new int[s][s];
         int coint_sup_x;
         int coint_sup_y;
@@ -167,7 +160,6 @@ public class Image {
                 ListePatch.add(patch);
             }   
         }
-        sc.close();
         return ListePatch;
     }
 

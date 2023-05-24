@@ -129,7 +129,12 @@ public class ACP {
                 }
             }
         }
-
+        // for (int k = 0; k < alpha.length; k++){
+        //     for (int j = 0; j < alpha[1].length; j++ ) {
+        //         System.out.println(alpha[k][j]);
+        //     }
+        //     System.out.println("ici");
+        // }
     }
 
     public void DoACP() {
@@ -147,7 +152,8 @@ public class ACP {
 
         // On vérifie si la base est bien orthonormale (pour les tests)
         int N = vectorisePatchs[0].length;
-        double [][] produitScalaire = new double [N][N];
+        double [][] produitScalaire = new double[N][N];
+          
         double somme;
         // parcours de la liste des vecteurs de la base
         for (int i=0; i<N; i++) {

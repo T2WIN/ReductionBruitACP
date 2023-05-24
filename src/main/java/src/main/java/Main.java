@@ -9,11 +9,11 @@ public class Main {
         int sigma = readConsole("Saisir un entier sigma pour ajouter à la photo un bruit gaussien : ");
         int taille = readConsole("donner la taille du patch que vous souhaitez : ");
         Image image = new Image("src/main/lenaa.png", sigma, taille);
+        image.noising();
         Seuillage seuillage = new Seuillage(image);
         int choixMethode = chooseMethode();
 
         if (choixMethode == 1) {
-            image.noising();
             int[][] imageBruité = image.getNoisedMatrix();
             int l=imageBruité.length;
             int c=imageBruité[1].length;
@@ -28,9 +28,16 @@ public class Main {
             acp.MoyCov();
             acp.DoACP();
             acp.Proj();
+            acp.afficherResultat();
          
 
             double[][] alpha = acp.getVcontrib();
+            // for (int k = 0; k < alpha.length; k++){
+            //     for (int j = 0; j < alpha[1].length; j++ ) {
+            //         System.out.println(alpha[k][j]);
+            //     }
+            //     System.out.println("ici");
+            // }
             int choixSeuil = chooseSeuil();
             int choixSeuillage = chooseSeuillage();
 
@@ -42,7 +49,7 @@ public class Main {
 
                     for (int i = 0; i < alpha.length; i++) {
 
-                        for (int j = 0; j < alpha.length; j++) {
+                        for (int j = 0; j < alpha[1].length; j++) {
 
                         double hardThresholdingResult = seuillage.HardThresholding(threshold, alpha[i][j]);
                         alpha[i][j] = hardThresholdingResult;
@@ -54,7 +61,7 @@ public class Main {
 
                     for (int i = 0; i < alpha.length; i++) {
 
-                        for (int j = 0; j < alpha.length; j++) {
+                        for (int j = 0; j < alpha[1].length; j++) {
 
                         double softThresholdingResult = seuillage.SoftThresholding(threshold, alpha[i][j]);
                         alpha[i][j] = softThresholdingResult;
@@ -73,7 +80,7 @@ public class Main {
 
                     for (int i = 0; i < alpha.length; i++) {
 
-                        for (int j = 0; j < alpha.length; j++) {
+                        for (int j = 0; j < alpha[1].length; j++) {
 
                         double hardThresholdingResult = seuillage.HardThresholding(threshold, alpha[i][j]);
                         alpha[i][j] = hardThresholdingResult;
@@ -85,18 +92,44 @@ public class Main {
 
                     for (int i = 0; i < alpha.length; i++) {
 
-                        for (int j = 0; j < alpha.length; j++) {
+                        for (int j = 0; j < alpha[1].length; j++) {
 
                         double softThresholdingResult = seuillage.SoftThresholding(threshold, alpha[i][j]);
                         alpha[i][j] = softThresholdingResult;
-                        int[][] assemblerMatrice = image.assemblagePatch(listePatch, l, c);
+                        
 
                 
                     }
                 }
+                
+            }
+
+        }
+        for (int i = 0; i < listePatch.size(); i++) {
+            int x;
+            int y;
+            System.out.println(alpha.length);
+            System.out.println(alpha[0].length);
+            x = listePatch.get(i).positionX;
+            y = listePatch.get(i).positionY;
+            int[][] matPatch = listePatch.get(i).matrix;
+            Patch patch = new Patch(matPatch,x,y);
+            int[][] patchVect = new int[alpha.length][alpha[0].length];
+            for (int k = 0; k < alpha.length; k++){
+                for (int j = 0; j < alpha[1].length; j++ ) {
+                    patchVect[k][j] = (int) alpha[k][j];
+                    System.out.println(alpha[k][j]);
+                }
+            }
+            matPatch = patch.intoMatrix(patchVect[i]);
+            for (int k = 0; k < taille; k++){
+                for (int j = 0; j < taille; j++ ) {
+                        //System.out.println(matPatch[k][j]);
+                }
+                //System.out.println("ici");
             }
         }
-        
+        int[][] assemblerMatrice = image.assemblagePatch(listePatch, l, c);
     }
 
         // Error error = new Error("src/main/lenaa.png", 20);import java.awt.Color;
@@ -130,20 +163,12 @@ public class Main {
 
     }    
     public static int readConsole(String message) {
-        try {
             Scanner sc;
             sc = new Scanner(System.in);
             System.out.print(message);
             int s;
             s = sc.nextInt();
-            sc.close();
             return s;
-        } catch(Exception as) {
-            System.out.println("Erreur de paramètre d'entrée. Il faut que ce soit un entier");
-            readConsole(message);
-        }
-        return -1;
-        
     }
     public static int chooseMethode() {
 
