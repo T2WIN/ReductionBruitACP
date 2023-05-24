@@ -18,12 +18,16 @@ public class ACP {
 
     public ACP(int[][] int_vectorisePatchs) {
         // Conversion : int [][]  -->  double [][]
+        
         vectorisePatchs = new double [int_vectorisePatchs.length][int_vectorisePatchs[0].length];
         for (int i=0; i<vectorisePatchs.length; i++) {
             for (int j=0; j<vectorisePatchs[0].length; j++) {
                 vectorisePatchs[i][j] = Double.valueOf(int_vectorisePatchs[i][j]);
             }
         }
+        // for (int i = 0; i < vectorisePatchs[0].length; i++) {
+        //     System.out.println(vectorisePatchs[1000][i]);
+        // }
 
         meanVector = new double [vectorisePatchs[0].length];
         covariance = new double [vectorisePatchs[0].length][vectorisePatchs[0].length];
@@ -94,9 +98,15 @@ public class ACP {
                 meanVector[j] += vectorisePatchs[i][j];
             }
             // division par le nombre de vecteurs pour faire la moyenne de chaque axe
-            meanVector[j] = meanVector[j] / vectorisePatchs.length;
+            
+            double inverse = 1.0 / vectorisePatchs.length;
+            meanVector[j] = meanVector[j] * inverse;
+            // System.out.println(vectorisePatchs[1000][j]);
+            // System.out.println(meanVector[j]);
         }
-
+        // System.out.println(meanVector[0]);
+        // System.out.println(vectorisePatchs.length);
+        
         // Centrer les vecteurs
         // parcours de la liste des vecteurs
         for (int i=0; i<vectorisePatchs.length; i++) {
