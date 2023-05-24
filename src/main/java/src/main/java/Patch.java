@@ -1,4 +1,5 @@
 package src.main.java;
+import java.util.ArrayList;
 
 public class Patch {
     int[][] matrix;
