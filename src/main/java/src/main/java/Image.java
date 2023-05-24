@@ -138,7 +138,6 @@ public class Image {
         int x= matrix.length;
         //Taille des vecteurs de la matrice
         int y= matrix[1].length;
-        int [][] patchcourant = new int[s][s];
         int coint_sup_x;
         int coint_sup_y;
         ArrayList<Patch> ListePatch= new ArrayList<Patch>();
@@ -147,6 +146,7 @@ public class Image {
         for (int i = 0; i < x-s+1; i++) {
             for (int j = 0; j < y-s+1; j++) {
                 // Position du pixel du coin gauche 
+                int [][] patchcourant = new int[s][s];
                 coint_sup_x= i;
                 coint_sup_y= j;
                 // Création d'un patch à partir de chaque pixel
