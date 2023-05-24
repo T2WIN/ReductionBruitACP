@@ -84,14 +84,31 @@ public class Main {
 
                         double softThresholdingResult = seuillage.SoftThresholding(threshold, alpha[i][j]);
                         alpha[i][j] = softThresholdingResult;
-                        int[][] assemblerMatrice = image.assemblagePatch(listePatch, l, c);
+                        
 
                 
                     }
                 }
+                
             }
+
         }
-        
+        for (int i = 0; i < listePatch.size(); i++) {
+            int x;
+            int y;
+            x = listePatch.get(i).positionX;
+            y = listePatch.get(i).positionY;
+            int[][] matPatch = listePatch.get(i).matrix;
+            Patch patch = new Patch(matPatch,x,y);
+            for (int i = 0; i<alpha.length; i++){
+                for (int j = 0; j<alpha.length; j++){   
+                    int alphaVect = alpha[i][j];   
+                }         
+            }
+            matPatch = patch.intoMatrix(alpha[i]);
+            listePatch
+        }
+        int[][] assemblerMatrice = image.assemblagePatch(listePatch, l, c);
     }
 
         // Error error = new Error("src/main/lenaa.png", 20);import java.awt.Color;
