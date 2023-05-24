@@ -66,6 +66,7 @@ public class Main {
             System.out.print(message);
             int s;
             s = sc.nextInt();
+            sc.close();
             return s;
         } catch(Exception as) {
             System.out.println("Erreur de paramètre d'entrée. Il faut que ce soit un entier");
