@@ -8,7 +8,6 @@ import javax.imageio.ImageIO;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Scanner;
 public class Image {
 
     //Matrice de l'image
