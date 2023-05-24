@@ -38,5 +38,8 @@ public class Patch {
         return newMatrix;
     }
 
+    public void setMatrix(int [][] matrix2){
+        this.matrix = matrix2;
+    }
   
 }
