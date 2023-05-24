@@ -37,6 +37,7 @@ public class Main {
             //     }
             //     System.out.println("ici");
             // }
+            // Les valeurs varient entre +/-30 
             int choixSeuil = chooseSeuil();
             int choixSeuillage = chooseSeuillage();
 
@@ -121,14 +122,11 @@ public class Main {
                 }
             }
             matPatch = patch.intoMatrix(patchVect[i]);
-            for (int k = 0; k < taille; k++){
-                for (int j = 0; j < taille; j++ ) {
-                        //System.out.println(matPatch[k][j]);
-                }
-                //System.out.println("ici");
-            }
+            patch.setMatrix(patchVect);
+            listePatch.set(i, patch);
         }
         int[][] assemblerMatrice = image.assemblagePatch(listePatch, l, c);
+        
     }
 
         
