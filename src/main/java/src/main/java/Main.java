@@ -19,15 +19,14 @@ public class Main {
             acp.MoyCov();
             acp.DoACP();
             acp.Proj();
-            acp.getVcontrib();
-            
+            Seuillage seuillage = new Seuillage(image);
+
+            double[][] alpha = acp.getVcontrib();
+            for (int i = 0; i < alpha.length; i++) {
+                
+            }
         }
-        
-       
-       
-        octave i  = new octave();
-        octave.DecoupeImage(image, 100);
-        System.out.println("");
+
         // Error error = new Error("src/main/lenaa.png", 20);import java.awt.Color;
         // System.out.println(error.MeanSquaredError());
         // int[][] matrix = new int[2][2];

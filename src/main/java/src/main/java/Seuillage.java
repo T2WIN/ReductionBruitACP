@@ -89,10 +89,10 @@ public class Seuillage {
     public double calculVariance() {
         double moyenne;
         double somme = 0;
-        int[] echantillon = new int[this.image.getMatrix().length*this.image.getMatrix()[0].length];
-        for (int i= 0 ; i< this.image.getMatrix().length ; i++) {
-            for (int j= 0 ; j< this.image.getMatrix()[0].length ; j++) {
-                echantillon[i*this.image.getMatrix().length + j] = this.image.getMatrix()[i][j];
+        int[] echantillon = new int[this.image.getNoisedMatrix().length*this.image.getNoisedMatrix()[0].length];
+        for (int i= 0 ; i< this.image.getNoisedMatrix().length ; i++) {
+            for (int j= 0 ; j< this.image.getNoisedMatrix()[0].length ; j++) {
+                echantillon[i*this.image.getNoisedMatrix().length + j] = this.image.getNoisedMatrix()[i][j];
             }
         }
         moyenne = mean(echantillon);

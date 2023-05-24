@@ -42,6 +42,9 @@ public class ACP {
         return output;
     }
 
+    public double[][] getVcontrib() {
+        return this.Vcontrib;
+    }
     public void afficherResultat() {
         System.out.println("\nPatchs vectorisés :");
         for (String[] s : getStrings(vectorisePatchs)){
