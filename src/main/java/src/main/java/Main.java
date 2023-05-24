@@ -19,6 +19,11 @@ public class Main {
             int c=imageBruité[1].length;
             ArrayList<Patch> listePatch = image.extractionPatch(image.getNoisedMatrix());
             int[][] matricePatchs = image.vectorPatch(listePatch);
+            for (int i = 0; i < listePatch.get(0).matrix.length; i++) {
+                for (int j = 0; j < listePatch.get(0).matrix[0].length; j++) {
+                    System.out.println(listePatch.get(0).matrix[i][j]);
+                }
+            }
             ACP acp = new ACP(matricePatchs);
             acp.MoyCov();
             acp.DoACP();
