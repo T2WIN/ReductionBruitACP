@@ -1,4 +1,5 @@
 package src.main.java;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -126,7 +127,8 @@ public class Main {
             listePatch.set(i, patch);
         }
         int[][] assemblerMatrice = image.assemblagePatch(listePatch, l, c);
-        
+        BufferedImage imagefinale = image.createImageFromMatrix(assemblerMatrice);
+        image.createfile(imagefinale, "imagefinale");
     }
 
         
