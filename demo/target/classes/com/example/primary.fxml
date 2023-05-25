@@ -12,7 +12,8 @@
 
 <VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.PrimaryController">
    <children>
-      <Label text="Ecart type du bruit : " />
+
+      <Label text="Choisissez l'écart type du bruit : " />
       <ChoiceBox fx:id="choiceSigma" value="10" onAction="#showValue">
          <items>
             <FXCollections fx:factory="observableArrayList">
@@ -22,13 +23,45 @@
             </FXCollections>
          </items>
       </ChoiceBox>
-      <TextArea fx:id="outputText" prefHeight="100.0" prefWidth="200.0" wrapText="true" />
+  
+     
+      <Label text = "        "/>
+      <Label text="Choisissez la taille des patchs : " />
+      <TextArea fx:id="outputText" prefHeight="5.0" prefWidth="20.0" maxWidth="30.0" wrapText="true" />
+      
+  
+
+      <Label text = "        "/>
+      <Label text="Choisissez le type de seuil : " />
+      <ChoiceBox fx:id="choiceSigma" value="VisuShrink" onAction="#showValue">
+         <items>
+            <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="VisuShrink" />
+                  <String fx:value="BayesShrink" />     
+            </FXCollections>
+         </items>
+      </ChoiceBox>
+
+      <Label text = "        "/>
+      <Label text="Choisissez le type de seuillage : " />
+      <ChoiceBox fx:id="choiceSigma" value="Seuillage dur" onAction="#showValue">
+         <items>
+            <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Seuillage dur" />
+                  <String fx:value="Seuillage doux" />     
+            </FXCollections>
+         </items>
+      </ChoiceBox>
+
+      <Label text = "        "/>
       <Button fx:id="okBtn" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" onAction="#initialiseImage" text="Confirmer" textAlignment="CENTER" />
    </children>
+
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
-</VBox>
+
+</VBox> 
 
 
 
