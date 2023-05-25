@@ -13,7 +13,7 @@
 <VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.PrimaryController">
    <children>
       <Label text="Primary View" />
-      <ChoiceBox fx:id="choiceSigma" value="2 minutes" onAction="#">
+      <ChoiceBox fx:id="choiceSigma" value="2 minutes" onAction="#showValue">
          <items>
             <FXCollections fx:factory="observableArrayList">
                   <String fx:value="2 minutes" />
@@ -28,3 +28,6 @@
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
 </VBox>
+
+
+

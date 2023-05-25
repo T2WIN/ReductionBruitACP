@@ -16,6 +16,6 @@ public class PrimaryController {
 
     @FXML
     private void showValue() throws IOException {
-        System.out.println(choiceSigma.getItems());
+        System.out.println(choiceSigma.getValue());
     }
 }
