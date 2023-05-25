@@ -8,18 +8,21 @@ import javax.imageio.ImageIO;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Scanner;
 public class Image {
 
     //Matrice de l'image
     private int[][] matrix;
     private int[][] noisedmatrix;
     int s;
+<<<<<<< HEAD
     int l;
     int c;  
+=======
+>>>>>>> origin/main
 
     //Variance du bruit ajouté à l'image
     private Integer sigma;
+
 
     public int getSigma() {
 
@@ -72,7 +75,6 @@ public class Image {
         System.out.println("file to be opened : " + fileSelected);
 
         BufferedImage image;
-        
         
         try {
             image = ImageIO.read(fileSelected);
@@ -132,16 +134,7 @@ public class Image {
         return image;
     }
 
-    //Utilise un objet BufferedImage pour retourner l'image sous forme de fichier jpg
-    public void createfile(BufferedImage image) {
-        File output = new File("sigma30.jpg");
-        try {
-            ImageIO.write(image, "jpg", output);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
+
 
     //Extraction des patchs à partir de la matrice de l'image
     public ArrayList<Patch> extractionPatch(int[][] matrix){
@@ -149,13 +142,6 @@ public class Image {
         int x= matrix.length;
         //Taille des vecteurs de la matrice
         int y= matrix[1].length;
-        Scanner sc;
-		sc = new Scanner(System.in);
-		System.out.print("Saisir l'entier s, taille du patch : ");
-		int s;
-		s = sc.nextInt(); 
-        
-        int [][] patchcourant = new int[s][s];
         int coint_sup_x;
         int coint_sup_y;
         ArrayList<Patch> ListePatch= new ArrayList<Patch>();
@@ -164,6 +150,7 @@ public class Image {
         for (int i = 0; i < x-s+1; i++) {
             for (int j = 0; j < y-s+1; j++) {
                 // Position du pixel du coin gauche 
+                int [][] patchcourant = new int[s][s];
                 coint_sup_x= i;
                 coint_sup_y= j;
                 // Création d'un patch à partir de chaque pixel
@@ -177,7 +164,6 @@ public class Image {
                 ListePatch.add(patch);
             }   
         }
-        sc.close();
         return ListePatch;
     }
 
@@ -216,4 +202,83 @@ public class Image {
         }
         return imageRecon;
     }
+
+
+    public static void DecoupeImage(Image X, int W){
+
+        int[][] Tab = X.getMatrix();
+
+        int imagettesEnLargeur = Tab.length / W;
+        int imagettesEnHauteur = Tab[0].length / W;
+
+
+        for ( int i = 0 ; i < imagettesEnHauteur ; i++ ){
+            for ( int j = 0 ; j < imagettesEnLargeur ; j++){
+                int x = i * W;
+                int y = j * W;
+
+                BufferedImage imagette = getSubImage(x,y,W,X);
+                createfile(imagette, "imagette(" + i + "," + j + ")");
+            }
+        }
+    }  
+    
+    public static BufferedImage getSubImage(int x, int y, int W, Image X){
+
+        int[][] Tab = X.getMatrix();
+        int[][] imagetteMatrice = new int[W][W];
+        BufferedImage imagette;
+
+        for ( int i = 0 ; i < W ; i++){
+            for ( int j = 0 ; j < W ; j++){
+                
+                imagetteMatrice[i][j] = Tab[x+i][y+j];
+            }
+        }
+        imagette = createImageFromMatrix(imagetteMatrice);
+        return imagette;
+    }
+
+    public static BufferedImage createImageFromMatrix(int[][] matrix) {
+        BufferedImage image = new BufferedImage(matrix.length, matrix[0].length, BufferedImage.TYPE_INT_RGB);
+        try {
+            
+            for(int i=0; i<matrix.length; i++) {
+                for(int j=0; j<matrix[0].length; j++) {
+                    int a = matrix[i][j];
+                    Color newColor = new Color(a,a,a);
+                    image.setRGB(i,j,newColor.getRGB());
+                }
+            }
+        
+        } catch(Exception e) {
+            System.out.println(("Error creating image"));
+            e.printStackTrace();
+        }
+        return image;
+    }
+
+    //Utilise un objet BufferedImage pour retourner l'image sous forme de fichier jpg
+    public static void createfile(BufferedImage image, String nom) {
+        File output = new File("./src/main/img/" + nom + ".jpg");
+        try {
+            output.createNewFile();
+            ImageIO.write(image, "jpg", output);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    public int[][] vectorPatch(ArrayList<Patch> listePatch) {
+        int[][] matrixPatchs = new int[listePatch.size()][listePatch.get(0).vectorize().length];
+        for (int i =0; i < listePatch.size(); i++) {
+            int[] vector = listePatch.get(i).vectorize();
+            for (int j=0; j<listePatch.get(0).vectorize().length; j++) {
+                matrixPatchs[i][j] = vector[j];
+            }
+        }
+        return matrixPatchs;
+    }
 }
+

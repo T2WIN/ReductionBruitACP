@@ -18,12 +18,16 @@ public class ACP {
 
     public ACP(int[][] int_vectorisePatchs) {
         // Conversion : int [][]  -->  double [][]
+        
         vectorisePatchs = new double [int_vectorisePatchs.length][int_vectorisePatchs[0].length];
         for (int i=0; i<vectorisePatchs.length; i++) {
             for (int j=0; j<vectorisePatchs[0].length; j++) {
                 vectorisePatchs[i][j] = Double.valueOf(int_vectorisePatchs[i][j]);
             }
         }
+        // for (int i = 0; i < vectorisePatchs[0].length; i++) {
+        //     System.out.println(vectorisePatchs[1000][i]);
+        // }
 
         meanVector = new double [vectorisePatchs[0].length];
         covariance = new double [vectorisePatchs[0].length][vectorisePatchs[0].length];
@@ -42,6 +46,9 @@ public class ACP {
         return output;
     }
 
+    public double[][] getVcontrib() {
+        return this.Vcontrib;
+    }
     public void afficherResultat() {
         System.out.println("\nPatchs vectorisés :");
         for (String[] s : getStrings(vectorisePatchs)){
@@ -91,9 +98,15 @@ public class ACP {
                 meanVector[j] += vectorisePatchs[i][j];
             }
             // division par le nombre de vecteurs pour faire la moyenne de chaque axe
-            meanVector[j] = meanVector[j] / vectorisePatchs.length;
+            
+            double inverse = 1.0 / vectorisePatchs.length;
+            meanVector[j] = meanVector[j] * inverse;
+            // System.out.println(vectorisePatchs[1000][j]);
+            // System.out.println(meanVector[j]);
         }
-
+        // System.out.println(meanVector[0]);
+        // System.out.println(vectorisePatchs.length);
+        
         // Centrer les vecteurs
         // parcours de la liste des vecteurs
         for (int i=0; i<vectorisePatchs.length; i++) {
@@ -126,7 +139,12 @@ public class ACP {
                 }
             }
         }
-
+        // for (int k = 0; k < alpha.length; k++){
+        //     for (int j = 0; j < alpha[1].length; j++ ) {
+        //         System.out.println(alpha[k][j]);
+        //     }
+        //     System.out.println("ici");
+        // }
     }
 
     public void DoACP() {
@@ -144,7 +162,8 @@ public class ACP {
 
         // On vérifie si la base est bien orthonormale (pour les tests)
         int N = vectorisePatchs[0].length;
-        double [][] produitScalaire = new double [N][N];
+        double [][] produitScalaire = new double[N][N];
+          
         double somme;
         // parcours de la liste des vecteurs de la base
         for (int i=0; i<N; i++) {

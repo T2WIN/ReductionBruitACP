@@ -19,7 +19,6 @@ public class Seuillage {
     }
 
      public void setVisuShrink(Integer visuShrink) {
-
         this.visuShrink = visuShrink;
     }
 
@@ -34,7 +33,7 @@ public class Seuillage {
 
 // seuillage dur avec en paramètre threshold le seuil et alpha le coefficient
     public double HardThresholding(double threshold, double alpha) {
-        System.out.println(threshold + "," + alpha);
+
         if (threshold >= Math.abs(alpha)) {
             return 0;   // met à 0 les coefficients en dessous du seuil
         }
@@ -90,10 +89,10 @@ public class Seuillage {
     public double calculVariance() {
         double moyenne;
         double somme = 0;
-        int[] echantillon = new int[this.image.getMatrix().length*this.image.getMatrix()[0].length];
-        for (int i= 0 ; i< this.image.getMatrix().length ; i++) {
-            for (int j= 0 ; j< this.image.getMatrix()[0].length ; j++) {
-                echantillon[i*this.image.getMatrix().length + j] = this.image.getMatrix()[i][j];
+        int[] echantillon = new int[this.image.getNoisedMatrix().length*this.image.getNoisedMatrix()[0].length];
+        for (int i= 0 ; i< this.image.getNoisedMatrix().length ; i++) {
+            for (int j= 0 ; j< this.image.getNoisedMatrix()[0].length ; j++) {
+                echantillon[i*this.image.getNoisedMatrix().length + j] = this.image.getNoisedMatrix()[i][j];
             }
         }
         moyenne = mean(echantillon);
@@ -105,7 +104,6 @@ public class Seuillage {
 
     public double seuilB() {
         double variance = calculVariance();
-        System.out.println(variance);
         double ecartType = Math.sqrt(max(variance-Math.pow(image.getSigma(),2) , 0));
 
         bayesShrink = Math.pow(image.getSigma(),2)/ecartType;
