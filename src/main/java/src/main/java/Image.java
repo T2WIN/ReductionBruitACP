@@ -14,11 +14,7 @@ public class Image {
     private int[][] matrix;
     private int[][] noisedmatrix;
     int s;
-<<<<<<< HEAD
-    int l;
-    int c;  
-=======
->>>>>>> origin/main
+
 
     //Variance du bruit ajouté à l'image
     private Integer sigma;
