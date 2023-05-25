@@ -1,4 +1,4 @@
-package src.main.java;
+package com.example;
 
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
