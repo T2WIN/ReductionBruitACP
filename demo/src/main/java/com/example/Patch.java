@@ -1,4 +1,4 @@
-package src.main.java;
+package com.example;
 
 public class Patch {
     int[][] matrix;
