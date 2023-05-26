@@ -8,7 +8,7 @@ public class PrimaryController {
     
     @FXML
     private ChoiceBox<String> choiceSigma;
-
+    private Image image;
 
     @FXML
     private void switchToSecondary() throws IOException {
@@ -16,8 +16,8 @@ public class PrimaryController {
     }
 
     @FXML
-    private void showValue() throws IOException {
-        System.out.println(choiceSigma.getValue());
+    private void fillImage() throws IOException {
+        this.image = new Image("", int sigma, int s);
     }
 
     @FXML
