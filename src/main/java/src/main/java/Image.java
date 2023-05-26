@@ -219,7 +219,7 @@ public class Image {
     }
 
 
-    public static void DecoupeImage(Image X, int W){
+    public static int DecoupeImage(Image X, int W){
 
         int[][] Tab = X.getMatrix();
 
@@ -236,6 +236,7 @@ public class Image {
                 createfile(imagette, "imagette(" + i + "," + j + ")");
             }
         }
+        return imagettesEnHauteur*imagettesEnLargeur;
     }  
     
     public static BufferedImage getSubImage(int x, int y, int W, Image X){
