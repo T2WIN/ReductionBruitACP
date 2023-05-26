@@ -14,7 +14,7 @@
    <children>
 
       <Label text="Choisissez l'écart type du bruit : " />
-      <ChoiceBox fx:id="choiceSigma" value="10" onAction="#showValue">
+      <ChoiceBox fx:id="choiceSigma" value="10">
          <items>
             <FXCollections fx:factory="observableArrayList">
                   <String fx:value="10" />
@@ -42,7 +42,7 @@
 
       <Label text = "        "/>
       <Label text="Choisissez le type de seuil : " />
-      <ChoiceBox fx:id="choiceSigma" value="VisuShrink" onAction="#showValue">
+      <ChoiceBox fx:id="choiceSeuil" value="VisuShrink">
          <items>
             <FXCollections fx:factory="observableArrayList">
                   <String fx:value="VisuShrink" />
@@ -53,7 +53,7 @@
 
       <Label text = "        "/>
       <Label text="Choisissez le type de seuillage : " />
-      <ChoiceBox fx:id="choiceSigma" value="Seuillage dur" onAction="#showValue">
+      <ChoiceBox fx:id="choiceSeuillage" value="Seuillage dur">
          <items>
             <FXCollections fx:factory="observableArrayList">
                   <String fx:value="Seuillage dur" />
@@ -71,6 +71,3 @@
    </padding>
 
 </VBox> 
-
-
-
