@@ -54,7 +54,11 @@ public class ACP {
     public double[][] getU(){
         return this.U;
     }
-    
+
+    public double[] getMoyCov(){
+        return this.meanVector;
+    }
+
     public void afficherResultat() {
         System.out.println("\nPatchs vectorisés :");
         for (String[] s : getStrings(vectorisePatchs)){

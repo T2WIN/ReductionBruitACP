@@ -29,9 +29,12 @@ public class Main {
             acp.MoyCov();
             acp.DoACP();
             acp.Proj();
+            double[][] u = acp.getU();
          
 
             double[][] alpha = acp.getVcontrib();
+            double[] meanVector = acp.getMoyCov();
+            int[] meanVectore;
             // for (int k = 0; k < alpha.length; k++){
             //     for (int j = 0; j < alpha[1].length; j++ ) {
             //         System.out.println(alpha[k][j]);
@@ -110,6 +113,9 @@ public class Main {
 
         int[][] matPatch;
         int[][] patchVect = new int[alpha.length][alpha[0].length];
+        int [] patchVect2 = new int[taille*taille];
+        int [] somme = new int[taille*taille];
+        int a;
 
         //System.out.println(listePatch.size());
         for (int i = 0; i < listePatch.size(); i++) {
@@ -124,11 +130,22 @@ public class Main {
             for (int k = 0; k < alpha.length; k++){
                 for (int j = 0; j < alpha[1].length; j++ ) {
                     patchVect[k][j] = (int) alpha[k][j];
-                    patchVect[k][j] = Math.abs(patchVect[k][j]);
-                    // System.out.println(patchVect[k][j]);
                 }
             }
-            matPatch = patch.intoMatrix(patchVect[i]);
+
+            for (int m=0; m<taille*taille;m++){
+                for(int n=0; n<taille*taille;n++){
+                    a = patchVect[i][m] * (int) u[m][n];
+                    somme[m] = somme[m] + a;
+                }
+            for (int o=0;o<taille*taille;o++){
+                meanVectore[o]= (int) meanVector[o];
+            }
+            for (int p=0;p<taille*taille;p++){
+                patchVect2[p] = meanVectore[p] + somme[p];
+            }
+            
+            matPatch = patch.intoMatrix(patchVect2);
             patch.setMatrix(patchVect);
             listePatch.set(i, patch);
         }
