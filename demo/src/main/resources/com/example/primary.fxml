@@ -31,7 +31,7 @@
       
        <Label text = "        "/>
       <Label text="Choisissez le type d'extraction de patchs : " />
-      <ChoiceBox fx:id="choiceSigma" value="Local" onAction="#showValue">
+      <ChoiceBox fx:id="choiceMethode" value="Local">
          <items>
             <FXCollections fx:factory="observableArrayList">
                   <String fx:value="Local" />

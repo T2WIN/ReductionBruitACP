@@ -27,11 +27,12 @@ public class PrimaryController {
     @FXML
     private void switchToSecondary() throws IOException {
         App.setRoot("secondary");
+        fillImage();
     }
 
     @FXML
     private void fillImage() throws IOException {
-        this.image = new Image("demo/src/main/resources/com/example/lena.jpg", Integer.parseInt(choiceSigma.getValue()),  Integer.parseInt(outputText.getText()));
+        this.image = new Image("demo/src/main/java/com/example/lena.jpg", Integer.parseInt(choiceSigma.getValue()),  Integer.parseInt(outputText.getText()));
         this.image.noising();
     }
 
