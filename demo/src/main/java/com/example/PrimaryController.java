@@ -123,6 +123,8 @@ public class PrimaryController {
         }
 
     }
+    
+    int[][] patchVect = new int[alpha.length][alpha[0].length];
     for (int i = 0; i < listePatch.size(); i++) {
         int x;
         int y;
@@ -130,7 +132,7 @@ public class PrimaryController {
         y = listePatch.get(i).positionY;
         int[][] matPatch = listePatch.get(i).matrix;
         Patch patch = new Patch(matPatch,x,y);
-        int[][] patchVect = new int[alpha.length][alpha[0].length];
+        
         for (int k = 0; k < alpha.length; k++){
             for (int j = 0; j < alpha[1].length; j++ ) {
                 patchVect[k][j] = (int) alpha[k][j];
