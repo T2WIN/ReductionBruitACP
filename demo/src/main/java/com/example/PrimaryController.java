@@ -126,8 +126,6 @@ public class PrimaryController {
     for (int i = 0; i < listePatch.size(); i++) {
         int x;
         int y;
-        System.out.println(alpha.length);
-        System.out.println(alpha[0].length);
         x = listePatch.get(i).positionX;
         y = listePatch.get(i).positionY;
         int[][] matPatch = listePatch.get(i).matrix;
@@ -136,7 +134,6 @@ public class PrimaryController {
         for (int k = 0; k < alpha.length; k++){
             for (int j = 0; j < alpha[1].length; j++ ) {
                 patchVect[k][j] = (int) alpha[k][j];
-                System.out.println(alpha[k][j]);
             }
         }
         matPatch = patch.intoMatrix(patchVect[i]);
