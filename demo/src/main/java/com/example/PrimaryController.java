@@ -12,6 +12,12 @@ public class PrimaryController {
     @FXML
     private TextArea outputText;
 
+    @FXML
+    private ChoiceBox<String> choiceSeuil;
+    
+    @FXML
+    private ChoiceBox<String> choiceSeuillage;
+
     private Image image;
 
     @FXML
