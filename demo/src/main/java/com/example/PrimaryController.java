@@ -9,7 +9,7 @@ public class PrimaryController {
     
     @FXML
     private ChoiceBox<String> choiceSigma;
-
+    private Image image;
 
     @FXML
     private void switchToSecondary() throws IOException {
@@ -23,7 +23,7 @@ public class PrimaryController {
 
     @FXML
     private void initialiseImage() {
-
+        
     }
 
   
