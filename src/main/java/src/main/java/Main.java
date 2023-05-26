@@ -113,24 +113,24 @@ public class Main {
         double [] somme = new double[taille*taille];
         double a;
         
-        for (int i = 0; i < 10; i++) {
-            Patch patch = listePatch.get(i);
+        for (int k = 0; k < listePatch.size(); k++) {
+            Patch patch = listePatch.get(k);
             double [] patchVect2 = new double[taille*taille];
             
             //Pour chaque (alpha(i), u(i)), on applique la formule
-            for (int m=0; m<taille*taille;m++){
+            for (int i=0; i<taille*taille; i++){
                 //On calcule le produit alpha(i) * u(i)
                 for(int n=0; n<taille*taille;n++){
-                    a = alpha[i][m] * u[m][n];
-                    somme[m] = somme[m] + a;
-                    System.out.println(a);
+                    a = alpha[k][i] * u[i][n];
+                    somme[i] = somme[i] + a;
                 }
             }   
-            System.out.println("Patch " + i);
-            for (int o=0;o<taille*taille;o++){
+
+            System.out.println("Patch " + k);
+            for (int i=0; i<taille*taille; i++){
                 // System.out.println(somme[o]);
                 //On décentre les vecteurs
-                patchVect2[o] = meanVector[o] + somme[o];
+                patchVect2[i] = meanVector[i] + somme[i];
             }
 
             
@@ -141,7 +141,7 @@ public class Main {
             for (int f = 0; f < patchVect2.length; f++) {
                 if (patchVect2[f] < 0) {
                     System.out.println("Négatif");
-                    System.exit(0);
+                    System.
                 }
             }
 
@@ -155,7 +155,7 @@ public class Main {
             //     }    
             // }
             patch.setMatrix(patchMatrixEntier);
-            listePatch.set(i, patch);
+            listePatch.set(k, patch);
         }
         
         int[][] assemblerMatrice = image.assemblagePatch(listePatch, l, c);
