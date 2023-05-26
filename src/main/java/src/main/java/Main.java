@@ -138,28 +138,28 @@ public class Main {
                     a = patchVect[i][m] * (int) u[m][n];
                     somme[m] = somme[m] + a;
                 }
-            for (int o=0;o<taille*taille;o++){
-                meanVectore[o]= (int) meanVector[o];
-            }
-            for (int p=0;p<taille*taille;p++){
-                patchVect2[p] = meanVectore[p] + somme[p];
+                for (int o=0;o<taille*taille;o++){
+                    meanVectore[o]= (int) meanVector[o];
+                    patchVect2[o] = meanVectore[o] + somme[o];
+                }
             }
             
             matPatch = patch.intoMatrix(patchVect2);
             patch.setMatrix(patchVect);
             listePatch.set(i, patch);
         }
+        
+        
         int[][] assemblerMatrice = image.assemblagePatch(listePatch, l, c);
         for (int index = 0; index < l; index++) {
-            for (int i = 0; i < c; i++) {
-                System.out.println(assemblerMatrice[index][i]);
+            for (int index2 = 0; index2 < c; index2++) {
+                System.out.println(assemblerMatrice[index][index2]);
             }
             
         }
         BufferedImage imagefinale = image.createImageFromMatrix(assemblerMatrice);
         image.createfile(imagefinale, "imagefinale");
     }
-
         
 
 
@@ -176,10 +176,8 @@ public class Main {
 
 
         // System.out.println("Résultat du seuilV : " + seuillageV);
-        // System.out.println("Résultat du seuilB : " + seuillageB);
-
-
-    }    
+        // System.out.println("Résultat du seuilB : " + seuillageB); 
+}
     public static int readConsole(String message) {
             Scanner sc;
             sc = new Scanner(System.in);
@@ -188,6 +186,7 @@ public class Main {
             s = sc.nextInt();
             return s;
     }
+    
     public static int chooseMethode() {
 
         int choixMethode = readConsole("voulez vous faire la méthode globale ou locale : globale : tapez 1  Locale : tapez 2 : ");
@@ -249,5 +248,5 @@ public class Main {
         return -1;
 
     }
-    
 }
+
