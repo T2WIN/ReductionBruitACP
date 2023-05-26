@@ -11,13 +11,14 @@ public class Main {
         int taille = readConsole("donner la taille du patch que vous souhaitez : ");
         Image image = new Image("src/main/img/lenaa.png", sigma, taille);
         image.noising();
+        int[][] imageBruité = image.getNoisedMatrix();
+        int l=imageBruité.length;
+        int c=imageBruité[1].length;
         Seuillage seuillage = new Seuillage(image);
         int choixMethode = chooseMethode();
 
         if (choixMethode == 1) {
-            int[][] imageBruité = image.getNoisedMatrix();
-            int l=imageBruité.length;
-            int c=imageBruité[1].length;
+            
             ArrayList<Patch> listePatch = image.extractionPatch(image.getNoisedMatrix());
             int[][] matricePatchs = image.vectorPatch(listePatch);
             // for (int i = 0; i < listePatch.get(0).matrix.length; i++) {
@@ -106,6 +107,10 @@ public class Main {
                 }
                 
             }
+
+        }
+        if (choixMethode==2){
+            
 
         }
         
@@ -265,4 +270,3 @@ public class Main {
 
     }
 }
-
