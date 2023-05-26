@@ -9,7 +9,7 @@ public class Main {
         
         int sigma = readConsole("Saisir un entier sigma pour ajouter à la photo un bruit gaussien : ");
         int taille = readConsole("donner la taille du patch que vous souhaitez : ");
-        Image image = new Image("src/main/lenaa.png", sigma, taille);
+        Image image = new Image("src/main/img/imagette(2,3).jpg", sigma, taille);
         image.noising();
         Seuillage seuillage = new Seuillage(image);
         int choixMethode = chooseMethode();
@@ -106,6 +106,12 @@ public class Main {
             }
 
         }
+        
+
+        int[][] matPatch;
+        int[][] patchVect = new int[alpha.length][alpha[0].length];
+
+        //System.out.println(listePatch.size());
         for (int i = 0; i < listePatch.size(); i++) {
             int x;
             int y;
@@ -113,13 +119,13 @@ public class Main {
             // System.out.println(alpha[0].length);
             x = listePatch.get(i).positionX;
             y = listePatch.get(i).positionY;
-            int[][] matPatch = listePatch.get(i).matrix;
+            matPatch = listePatch.get(i).matrix;
             Patch patch = new Patch(matPatch,x,y);
-            int[][] patchVect = new int[alpha.length][alpha[0].length];
             for (int k = 0; k < alpha.length; k++){
                 for (int j = 0; j < alpha[1].length; j++ ) {
                     patchVect[k][j] = (int) alpha[k][j];
-                    //System.out.println(alpha[k][j]);
+                    patchVect[k][j] = Math.abs(patchVect[k][j]);
+                    // System.out.println(patchVect[k][j]);
                 }
             }
             matPatch = patch.intoMatrix(patchVect[i]);
@@ -127,6 +133,12 @@ public class Main {
             listePatch.set(i, patch);
         }
         int[][] assemblerMatrice = image.assemblagePatch(listePatch, l, c);
+        for (int index = 0; index < l; index++) {
+            for (int i = 0; i < c; i++) {
+                System.out.println(assemblerMatrice[index][i]);
+            }
+            
+        }
         BufferedImage imagefinale = image.createImageFromMatrix(assemblerMatrice);
         image.createfile(imagefinale, "imagefinale");
     }
