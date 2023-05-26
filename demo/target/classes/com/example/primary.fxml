@@ -29,7 +29,16 @@
       <Label text="Choisissez la taille des patchs : " />
       <TextArea fx:id="outputText" prefHeight="5.0" prefWidth="20.0" maxWidth="30.0" wrapText="true" />
       
-  
+       <Label text = "        "/>
+      <Label text="Choisissez le type d'extraction de patchs : " />
+      <ChoiceBox fx:id="choiceSigma" value="Local" onAction="#showValue">
+         <items>
+            <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Local" />
+                  <String fx:value="Global" />     
+            </FXCollections>
+         </items>
+      </ChoiceBox>
 
       <Label text = "        "/>
       <Label text="Choisissez le type de seuil : " />
@@ -54,8 +63,8 @@
       </ChoiceBox>
 
       <Label text = "        "/>
-      <Button fx:id="okBtn" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" onAction="#fillImage" text="Confirmer" textAlignment="CENTER" />
    </children>
+   <Button fx:id="myButton" text="Commencer" onAction="#switchToSecondary" />
 
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
