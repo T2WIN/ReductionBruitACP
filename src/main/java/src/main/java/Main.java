@@ -107,6 +107,7 @@ public class Main {
 
         }
         
+        
 
         int[][] matPatch;
         int[][] patchVect = new int[alpha.length][alpha[0].length];
@@ -234,3 +235,4 @@ public class Main {
     }
     
 }
+
