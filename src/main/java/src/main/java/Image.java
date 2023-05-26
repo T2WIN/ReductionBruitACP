@@ -176,12 +176,25 @@ public class Image {
         int cointx;
         int cointy;
 
+        // for (int x = 0; x < 10; x++) {
+        //     System.out.println("Patch n° " + x);
+        //     for (int j = 0; j<ListePatch.get(0).getMatrix().length; j++) {
+        //         for (int k = 0; k<ListePatch.get(0).getMatrix()[0].length; k++) {
+        //             System.out.println(ListePatch.get(x).getMatrix()[j][k]);
+        //         }
+        //     }
+        // }
         // Ajout des patchs dans la matrice 
         for (int k = 0; k < ListePatch.size(); k++) {
-            cointx = ListePatch.get(k).positionX;
-            cointy = ListePatch.get(k).positionY;
-            int[][] patch = ListePatch.get(k).matrix;
-        
+            cointx = ListePatch.get(k).getPositionX();
+            cointy = ListePatch.get(k).getPositionY();
+            int[][] patch = ListePatch.get(k).getMatrix();
+            // for (int i = 0; i < 1; i++) {
+            //     for (int j = 0; j < patch[i].length; j++) {
+            //         System.out.println(patch[i][j]);
+            //     }
+               
+            // }
             for (int n = 0; n < s; n++) {
                 for (int m = 0; m < s; m++) {
                     // Superposition des patchs dans la matrice
@@ -196,6 +209,12 @@ public class Image {
                 imageRecon[i][j] = imageRecon[i][j]/matricePoids[i][j];
             }
         }
+        // for (int i = 0; i < 1; i++) {
+        //     for (int j = 0; j < imageRecon[0].length; j++) {
+        //         System.out.println(imageRecon[i][j]);
+        //     }
+               
+        // }
         return imageRecon;
     }
 
