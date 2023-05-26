@@ -256,20 +256,26 @@ public class Image {
 
     public static BufferedImage createImageFromMatrix(int[][] matrix) {
         BufferedImage image = new BufferedImage(matrix.length, matrix[0].length, BufferedImage.TYPE_INT_RGB);
-        try {
+        
             
             for(int i=0; i<matrix.length; i++) {
                 for(int j=0; j<matrix[0].length; j++) {
                     int a = matrix[i][j];
-                    Color newColor = new Color(a,a,a);
-                    image.setRGB(i,j,newColor.getRGB());
+                    if (a > 250) {
+                        System.out.println(a);
+                    }
+                    try {
+                        Color newColor = new Color(a,a,a);
+                        image.setRGB(i,j,newColor.getRGB());
+                    } catch(Exception e) {
+                        // System.out.println(("Error creating image"));
+                        // System.out.println(a);
+                        // e.printStackTrace();
+                    }
                 }
             }
         
-        } catch(Exception e) {
-            System.out.println(("Error creating image"));
-            e.printStackTrace();
-        }
+        
         return image;
     }
 
