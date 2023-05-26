@@ -1,9 +1,9 @@
 package src.main.java;
 
 public class Patch {
-    int[][] matrix;
-    int positionX;
-    int positionY;
+    private int[][] matrix;
+    private int positionX;
+    private int positionY;
 
     //Un patch est une matrice carrée dont le coin en haut à gauche est (positionX, positionY)
     public Patch(int[][] matrix, int positionX, int positionY) {
@@ -33,7 +33,12 @@ public class Patch {
             int l = i - c*this.matrix[0].length;
             newMatrix[l][c] = vector[i];
         }
-            
+        
+        // for (int i = 0; i <newMatrix.length; i++){
+        //     for (int j = 0; j < newMatrix[0].length; j++) {
+        //         System.out.println(newMatrix[i][j]);
+        //     }
+        // }
         
         return newMatrix;
     }
@@ -41,5 +46,21 @@ public class Patch {
     public void setMatrix(int [][] matrix2){
         this.matrix = matrix2;
     }
-  
+
+    public int[][] getMatrix() {
+        return this.matrix;
+    }
+
+    public int getPositionX() {
+        return positionX;
+    }
+    public void setPositionX(int positionX) {
+        this.positionX = positionX;
+    }
+    public int getPositionY() {
+        return positionY;
+    }
+    public void setPositionY(int positionY) {
+        this.positionY = positionY;
+    }
 }

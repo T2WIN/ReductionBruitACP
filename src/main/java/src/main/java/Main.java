@@ -9,7 +9,7 @@ public class Main {
         
         int sigma = readConsole("Saisir un entier sigma pour ajouter à la photo un bruit gaussien : ");
         int taille = readConsole("donner la taille du patch que vous souhaitez : ");
-        Image image = new Image("src/main/img/imagette(2,3).jpg", sigma, taille);
+        Image image = new Image("src/main/img/lenaa.png", sigma, taille);
         image.noising();
         Seuillage seuillage = new Seuillage(image);
         int choixMethode = chooseMethode();
@@ -29,9 +29,11 @@ public class Main {
             acp.MoyCov();
             acp.DoACP();
             acp.Proj();
+            double[][] u = acp.getU();
          
 
             double[][] alpha = acp.getVcontrib();
+            double[] meanVector = acp.getMoyCov();
             // for (int k = 0; k < alpha.length; k++){
             //     for (int j = 0; j < alpha[1].length; j++ ) {
             //         System.out.println(alpha[k][j]);
@@ -107,43 +109,73 @@ public class Main {
 
         }
         
-        
-
-        int[][] matPatch;
+        //On crée la matrice qui contient tous les patchs vectorisés (à valeurs entières)
         int[][] patchVect = new int[alpha.length][alpha[0].length];
+        for (int k = 0; k < alpha.length; k++){
+            for (int j = 0; j < alpha[1].length; j++ ) {
+                patchVect[k][j] = (int) alpha[k][j];
+            }
+        }
 
-        //System.out.println(listePatch.size());
-        for (int i = 0; i < listePatch.size(); i++) {
-            int x;
-            int y;
-            // System.out.println(alpha.length);
-            // System.out.println(alpha[0].length);
-            x = listePatch.get(i).positionX;
-            y = listePatch.get(i).positionY;
-            matPatch = listePatch.get(i).matrix;
-            Patch patch = new Patch(matPatch,x,y);
-            for (int k = 0; k < alpha.length; k++){
-                for (int j = 0; j < alpha[1].length; j++ ) {
-                    patchVect[k][j] = (int) alpha[k][j];
-                    patchVect[k][j] = Math.abs(patchVect[k][j]);
-                    // System.out.println(patchVect[k][j]);
+        
+        int [] somme = new int[taille*taille];
+        int[] meanVectore = new int[meanVector.length];
+        int a;
+        
+        for (int i = 0; i < 10; i++) {
+            Patch patch = listePatch.get(i);
+            System.out.println("Patch " + i);
+            for (int index = 0; index < patch.getMatrix().length; index++) {
+                for (int index2 = 0; index2 < patch.getMatrix()[0].length; index2++) {
+                    System.out.println(patch.getMatrix()[index][index2]);
+                }
+            
+            }
+            int [] patchVect2 = new int[taille*taille];
+            
+            //Pour chaque (alpha(i), u(i)), on applique la formule
+            for (int m=0; m<taille*taille;m++){
+                //On calcule le produit alpha(i) * u(i)
+                for(int n=0; n<taille*taille;n++){
+                    a = patchVect[i][m] * (int) u[m][n];
+                    somme[m] = somme[m] + a;
+                }
+
+                for (int o=0;o<taille*taille;o++){
+                    //Cette première ligne sert à transformer le vecteur moyen en vecteur d'entiers
+                    meanVectore[o]= (int) meanVector[o];
+
+                    patchVect2[o] = meanVectore[o] + somme[o];
                 }
             }
-            matPatch = patch.intoMatrix(patchVect[i]);
-            patch.setMatrix(patchVect);
+
+            //Verifie si un des vecteurs contient un élément négatif
+            for (int f = 0; f < patchVect2.length; f++) {
+                if (patchVect2[f] < 0) {
+                    System.out.println("Négatif");
+                    System.exit(0);
+                }
+            }
+            // int[] test = patchVect2;
+            // System.out.println("Patch n° " + i);
+            // for (int j = 0; j<test.length; j++) {
+                
+            //     System.out.println(test[j]);
+                
+            // }
+            patch.setMatrix(patch.intoMatrix(patchVect2));
             listePatch.set(i, patch);
         }
-        int[][] assemblerMatrice = image.assemblagePatch(listePatch, l, c);
-        for (int index = 0; index < l; index++) {
-            for (int i = 0; i < c; i++) {
-                System.out.println(assemblerMatrice[index][i]);
-            }
+
+        for (int x = 0; x < 10; x++) {
             
         }
-        BufferedImage imagefinale = image.createImageFromMatrix(assemblerMatrice);
-        image.createfile(imagefinale, "imagefinale");
+        
+        
+        int[][] assemblerMatrice = image.assemblagePatch(listePatch, l, c);
+        BufferedImage imagefinale = Image.createImageFromMatrix(assemblerMatrice);
+        Image.createfile(imagefinale, "imagefinalee");
     }
-
         
 
 
@@ -160,10 +192,8 @@ public class Main {
 
 
         // System.out.println("Résultat du seuilV : " + seuillageV);
-        // System.out.println("Résultat du seuilB : " + seuillageB);
-
-
-    }    
+        // System.out.println("Résultat du seuilB : " + seuillageB); 
+}
     public static int readConsole(String message) {
             Scanner sc;
             sc = new Scanner(System.in);
@@ -172,6 +202,7 @@ public class Main {
             s = sc.nextInt();
             return s;
     }
+    
     public static int chooseMethode() {
 
         int choixMethode = readConsole("voulez vous faire la méthode globale ou locale : globale : tapez 1  Locale : tapez 2 : ");
@@ -233,6 +264,5 @@ public class Main {
         return -1;
 
     }
-    
 }
 
