@@ -17,9 +17,7 @@ public class Main {
         int c=imageBruité[1].length;
         Seuillage seuillage = new Seuillage(image);
         int choixMethode = chooseMethode();
-        int[][] imageBruité = image.getNoisedMatrix();
-        int l=imageBruité.length;
-        int c=imageBruité[1].length;
+        
 
         if (choixMethode == 1) {
             
