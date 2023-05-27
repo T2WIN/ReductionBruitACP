@@ -24,8 +24,8 @@ public class Patch {
     }
 
     //Met à jour la version matricielle d'un patch à partir d'un vecteur
-    public int[][] intoMatrix(int[] vector) {
-        int [][] newMatrix = new int[this.matrix.length][this.matrix[0].length];
+    public double[][] intoMatrix(double[] vector) {
+        double [][] newMatrix = new double[this.matrix.length][this.matrix[0].length];
         for (int i = 0; i<this.matrix.length*this.matrix[0].length; i++) {
             //L'indice de colonne (le numéro du vecteur auquel appartient le coefficient)
             //est le résultat de la division entière entre l'indice dans le vecteur d'origine et la longueur d'un vecteur dans la matrice

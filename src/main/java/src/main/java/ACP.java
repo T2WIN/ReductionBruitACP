@@ -4,6 +4,7 @@ import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.EigenDecomposition;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 
 public class ACP {
@@ -149,6 +150,9 @@ public class ACP {
                 }
             }
         }
+        // System.out.println(vectorisePatchs[0][1]-89);
+        // System.out.println(centeredVectors[0][1]);
+        // System.exit(0);
         // for (int k = 0; k < alpha.length; k++){
         //     for (int j = 0; j < alpha[1].length; j++ ) {
         //         System.out.println(alpha[k][j]);
@@ -192,13 +196,11 @@ public class ACP {
                 }
             }
         }
-        /* 
-        System.out.println("\nVérification de la base :");
-        for (String[] s : getStrings(produitScalaire)) {
-            System.out.println(Arrays.toString(s));
-        }
-        */
-
+        
+        // System.out.println("\nVérification de la base :");
+        // for (String[] s : getStrings(produitScalaire)) {
+        //     System.out.println(Arrays.toString(s));
+        // }
     }
 
     // Détermination des vecteurs de contribution (Projection)
@@ -214,6 +216,23 @@ public class ACP {
                 }
                 Vcontrib[k][i] = somme;
             }
+        }
+        // verifyContriv();
+        // System.exit(0);
+    }
+
+    public void verifyContriv() {
+        for (int k = 0; k < 100; k++) {
+            double[] somme = new double[centeredVectors[0].length];
+            for (int j = 0; j < centeredVectors[0].length; j++) {
+                for (int i = 0; i <U[0].length; i++) {
+                    somme[j] += Vcontrib[k][i] * U[i][j];
+                }
+
+            }
+            System.out.println("Patch " + k);
+            System.out.println(Arrays.toString(somme));
+            System.out.println(Arrays.toString(centeredVectors[k]));
         }
     }
 
