@@ -1,6 +1,7 @@
 package src.main.java;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -34,6 +35,7 @@ public class Main {
          
 
             double[][] alpha = acp.getVcontrib();
+            
             double[] meanVector = acp.getMoyCov();
             // for (int k = 0; k < alpha.length; k++){
             //     for (int j = 0; j < alpha[1].length; j++ ) {
@@ -44,7 +46,6 @@ public class Main {
             // Les valeurs varient entre +/-30 
             int choixSeuil = chooseSeuil();
             int choixSeuillage = chooseSeuillage();
-
             if (choixSeuil == 1) {
 
                 double  threshold = seuillage.getVisuShrink();
@@ -52,7 +53,6 @@ public class Main {
                 if (choixSeuillage == 1) {
 
                     for (int i = 0; i < alpha.length; i++) {
-
                         for (int j = 0; j < alpha[1].length; j++) {
 
                         double hardThresholdingResult = seuillage.HardThresholding(threshold, alpha[i][j]);
@@ -109,52 +109,62 @@ public class Main {
             }
 
         }
-
-        
-        double [] somme = new double[taille*taille];
-        double a;
-        
         for (int k = 0; k < listePatch.size(); k++) {
+            double [] somme = new double[taille*taille];
             Patch patch = listePatch.get(k);
             double [] patchVect2 = new double[taille*taille];
-            
             //Pour chaque (alpha(i), u(i)), on applique la formule
-            for (int i=0; i<taille*taille; i++){
-                //On calcule le produit alpha(i) * u(i)
-                for(int n=0; n<taille*taille;n++){
-                    a = alpha[k][i] * u[i][n];
-                    somme[i] = somme[i] + a;
+            for (int j = 0; j < alpha[0].length; j++) {
+                for (int i = 0; i <alpha[0].length; i++) {
+                    somme[j] += alpha[k][i] * u[i][j];
                 }
-            }   
-
-            System.out.println("Patch " + k);
+            }
+            // System.out.println(Arrays.toString(somme));
+            // System.out.println(Arrays.toString(centeredVectors[k]));
+            
+            // for (int i=0; i<taille*taille; i++){
+            //     //On calcule le produit alpha(i) * u(i)
+            //     for(int n=0; n<taille*taille;n++){
+            //         a = alphak[i] * u[i][n];
+            //         somme[i] += a;
+            //     }
+            //     // System.out.println("Somme1 : " + i + " = " + somme[i]);
+            // }   
+            // System.out.println("Vect Moyen");
+            // System.out.println("Patch " + k);
             for (int i=0; i<taille*taille; i++){
-                // System.out.println(somme[o]);
                 //On décentre les vecteurs
                 patchVect2[i] = meanVector[i] + somme[i];
-            }
+                // if (patchVect2[i] > 255) {
+                //     System.out.println("Sup 255");
+                // }
+    
+                // if (patchVect2[i] < 0) {
+                //     System.out.println("Inf 0");
+                // }
 
             
+            }
             // for (int index = 0; index < patchVect2.length; index++) {
             //     System.out.println(patchVect2[index]);
             // }
             //Verifie si un des vecteurs contient un élément négatif
-            for (int f = 0; f < patchVect2.length; f++) {
-                if (patchVect2[f] < 0) {
-                    System.out.println("Négatif");
-                    System.
-                }
-            }
+            // for (int f = 0; f < patchVect2.length; f++) {
+            //     if (patchVect2[f] < 0) {
+            //         System.out.println("Négatif");
+            //     }
+            //     System.out.println(meanVector[f]);
+            // }
 
             //Transformation de la matrice de patch de double vers entier
             double[][] patchMatrixDouble = patch.intoMatrix(patchVect2);
             int[][] patchMatrixEntier = new int[patchMatrixDouble.length][patchMatrixDouble[0].length];
             
-            // for (int j = 0; j<patchMatrixEntier.length; j++) {
-            //     for (int k = 0; k<patchMatrixEntier[0].length; k++) {
-            //         patchMatrixEntier[j][k] = (int) patchMatrixDouble[j][k];
-            //     }    
-            // }
+            for (int indexC = 0; indexC<patchMatrixEntier.length; indexC++) {
+                for (int indexL = 0; indexL<patchMatrixEntier[0].length; indexL++) {
+                    patchMatrixEntier[indexC][indexL] = (int) patchMatrixDouble[indexC][indexL];      
+                }    
+            }
             patch.setMatrix(patchMatrixEntier);
             listePatch.set(k, patch);
         }
