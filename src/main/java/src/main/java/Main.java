@@ -29,13 +29,14 @@ public class Main {
          int [][] imageBruit = image.getNoisedMatrix();
          ArrayList<Patch> listeImagette = image.extractImagettes(image.getMatrix(), W, n);
          ArrayList<Patch> listeImagetteBruité = image.extractImagettes(imageBruit, W, n);
-         int [][] imagette = new int[W][W];
-         int [][] imagetteBruité = new int[W][W];
          for (int i = 0; i < listeImagetteBruité.size(); i++) {
+            int [][] imagette = new int[W][W];
+            int [][] imagetteBruité = new int[W][W];
             imagette = listeImagette.get(i).getMatrix();
             imagetteBruité = listeImagetteBruité.get(i).getMatrix();
             Image objImagette = new Image(imagette, imagetteBruité, taille);
             imagetteBruité = methodeGlobale(objImagette, seuillage, taille, choixSeuil, choixSeuillage);
+            listeImagetteBruité.get(i).setMatrix(imagetteBruité);
 
             // imagette = listeImagette.get(i).getMatrix();
             // imagetteBruité = listeImagetteBruité.get(i).getMatrix();
@@ -46,7 +47,7 @@ public class Main {
          }
          int l = imageBruit.length;
          int c = imageBruit[0].length;
-         int[][] imageRecon = image.assemblageImagette(listeImagetteBruité, imageBruit, l,c);
+         int[][] imageRecon = image.assemblageImagette(listeImagetteBruité, imageBruit, l,c, W);
          BufferedImage imagefinale = Image.createImageFromMatrix(imageRecon);
          Image.createfile(imagefinale,"local");
       }

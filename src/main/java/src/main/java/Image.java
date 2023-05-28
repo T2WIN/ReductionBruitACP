@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
 public class Image {
 
     //Matrice de l'image
@@ -324,11 +325,10 @@ public ArrayList<Patch> extractImagettes(int[][] X, int W, int n) {
     return ListeImagette;
 }
 
-public int[][] assemblageImagette(ArrayList<Patch> ListeImagette, int[][] imageDepart, int l,int c){
+public int[][] assemblageImagette(ArrayList<Patch> ListeImagette, int[][] imageDepart, int l,int c, int W){
     
     int [][] imageRecon = new int[l][c];
     int [][] matricePoids = new int [l][c]; 
-
     int cointx;
     int cointy;
 
@@ -338,8 +338,8 @@ public int[][] assemblageImagette(ArrayList<Patch> ListeImagette, int[][] imageD
         cointy = ListeImagette.get(k).getPositionY();
         int[][] patch = ListeImagette.get(k).getMatrix();
         
-        for (int n = 0; n < s; n++) {
-            for (int m = 0; m < s; m++) {
+        for (int n = 0; n < W; n++) {
+            for (int m = 0; m < W; m++) {
                 // Superposition des patchs dans la matrice
                 imageRecon[n + cointx][m + cointy] += patch[n][m];
                 // Ajout du poids pour chaque élément de la matrice
