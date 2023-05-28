@@ -6,32 +6,16 @@ public class Seuillage {
     private double bayesShrink;
     private Image image;
 
-// constructeur de seuillage
+    // constructeur de seuillage
     public Seuillage(Image image) {
         this.image = image;
         this.bayesShrink = seuilB();
         this.visuShrink = seuilV();
     }
 
-// getter et setter de visuShrink
-    public double getVisuShrink() {
-        return this.visuShrink;
-    }
 
-     public void setVisuShrink(Integer visuShrink) {
-        this.visuShrink = visuShrink;
-    }
 
-// getter et setter de bayesShrink
-    public double getBayesShrink() {
-        return this.bayesShrink;
-    }
-
-     public void setBayesShrink(Integer bayesShrink) {
-        this.bayesShrink = bayesShrink;
-    }
-
-// seuillage dur avec en paramètre threshold le seuil et alpha le coefficient
+    // seuillage dur avec en paramètre threshold le seuil et alpha le coefficient
     public double HardThresholding(double threshold, double alpha) {
 
         if (threshold >= Math.abs(alpha)) {
@@ -42,7 +26,7 @@ public class Seuillage {
         }
     }
 
-//seuillage doux avec en paramètre threshold le seuil et alpha le coefficient
+    //seuillage doux avec en paramètre threshold le seuil et alpha le coefficient
     public double SoftThresholding(double threshold, double alpha) {
 
         if (threshold >= Math.abs(alpha)) {
@@ -66,7 +50,7 @@ public class Seuillage {
         return visuShrink;
     }
 
-//Fonction pour calculer le maximum entre deux nombres
+    //Fonction pour calculer le maximum entre deux nombres
     public double max(double a, double b) {
         if (a<=b){
             return b;
@@ -90,12 +74,15 @@ public class Seuillage {
         double moyenne;
         double somme = 0;
         int[] echantillon = new int[this.image.getNoisedMatrix().length*this.image.getNoisedMatrix()[0].length];
+
+        //On transforme d'abord la matrice bruitée en vecteur
         for (int i= 0 ; i< this.image.getNoisedMatrix().length ; i++) {
             for (int j= 0 ; j< this.image.getNoisedMatrix()[0].length ; j++) {
                 echantillon[i*this.image.getNoisedMatrix().length + j] = this.image.getNoisedMatrix()[i][j];
             }
         }
         moyenne = mean(echantillon);
+        //On peut alors calculer la variance
         for (int i = 0 ; i < echantillon.length ; i++) {
             somme = somme + (echantillon[i] - moyenne)*(echantillon[i] - moyenne);
         }
@@ -110,5 +97,22 @@ public class Seuillage {
         return bayesShrink;
     }
 
+    // getter et setter de visuShrink
+    public double getVisuShrink() {
+        return this.visuShrink;
+    }
+
+     public void setVisuShrink(Integer visuShrink) {
+        this.visuShrink = visuShrink;
+    }
+
+    // getter et setter de bayesShrink
+    public double getBayesShrink() {
+        return this.bayesShrink;
+    }
+
+     public void setBayesShrink(Integer bayesShrink) {
+        this.bayesShrink = bayesShrink;
+    }
 
 }

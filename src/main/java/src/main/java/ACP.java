@@ -3,8 +3,6 @@ package src.main.java;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.EigenDecomposition;
-
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 public class ACP {
@@ -27,9 +25,6 @@ public class ACP {
                 vectorisePatchs[i][j] = Double.valueOf(int_vectorisePatchs[i][j]);
             }
         }
-        // for (int i = 0; i < vectorisePatchs[0].length; i++) {
-        //     System.out.println(vectorisePatchs[1000][i]);
-        // }
 
         meanVector = new double [vectorisePatchs[0].length];
         covariance = new double [vectorisePatchs[0].length][vectorisePatchs[0].length];
@@ -112,11 +107,7 @@ public class ACP {
             
             double inverse = 1.0 / vectorisePatchs.length;
             meanVector[j] = meanVector[j] * inverse;
-            // System.out.println(vectorisePatchs[1000][j]);
-            // System.out.println(meanVector[j]);
         }
-        // System.out.println(meanVector[0]);
-        // System.out.println(vectorisePatchs.length);
         
         // Centrer les vecteurs
         // parcours de la liste des vecteurs
@@ -150,15 +141,6 @@ public class ACP {
                 }
             }
         }
-        // System.out.println(vectorisePatchs[0][1]-89);
-        // System.out.println(centeredVectors[0][1]);
-        // System.exit(0);
-        // for (int k = 0; k < alpha.length; k++){
-        //     for (int j = 0; j < alpha[1].length; j++ ) {
-        //         System.out.println(alpha[k][j]);
-        //     }
-        //     System.out.println("ici");
-        // }
     }
 
     public void DoACP() {
@@ -196,11 +178,6 @@ public class ACP {
                 }
             }
         }
-        
-        // System.out.println("\nVérification de la base :");
-        // for (String[] s : getStrings(produitScalaire)) {
-        //     System.out.println(Arrays.toString(s));
-        // }
     }
 
     // Détermination des vecteurs de contribution (Projection)
@@ -217,8 +194,6 @@ public class ACP {
                 Vcontrib[k][i] = somme;
             }
         }
-        // verifyContriv();
-        // System.exit(0);
     }
 
     public void verifyContriv() {

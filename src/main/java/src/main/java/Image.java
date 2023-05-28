@@ -8,7 +8,6 @@ import javax.imageio.ImageIO;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Arrays;
 public class Image {
 
     //Matrice de l'image
@@ -16,28 +15,17 @@ public class Image {
     private int[][] noisedmatrix;
     int s;
 
-
     //Variance du bruit ajouté à l'image
     private Integer sigma;
 
-
-    public int getSigma() {
-
-        return this.sigma;
-    }
-
-     public void setSigma(Integer sigma) {
-
-        this.sigma = sigma;
-    }
-
-    
+    //Constructeur utilisant directement le chemin d'un fichier image
     public Image(String path, int sigma, int s) {
         this.matrix = createMatrix(path);
         this.sigma = sigma;
         this.s = s;
     }
 
+    //Constructeur utilisant les matrices de représentation bruitée et non bruitée et la taille des patchs pour initialiser l'image
     public Image(int[][] matrix,int[][] noisedmatrix, int taille){
         this.matrix = matrix;
         this.noisedmatrix = noisedmatrix;
@@ -56,36 +44,18 @@ public class Image {
         }
     }
 
-    public int[][] getMatrix() {
-        return this.matrix;
-    }
-
-    public void setMatrix(int[][] matrix) {
-        this.matrix = matrix;
-    }
-
-    public int[][] getNoisedMatrix() {
-        return this.noisedmatrix;
-    }
-
-    public void setNoisedMatrix(int[][] matrix) {
-        this.noisedmatrix = matrix;
-    }
-
     //Créer une matrice à partir d'un fichier image
     public static int[][] createMatrix(String path) {
         File fileSelected = new File(path);
-        System.out.println("file to be opened : " + fileSelected);
-
         BufferedImage image;
         
         try {
+            
             image = ImageIO.read(fileSelected);
-            int x;
-            int y;
-            x=image.getWidth();
-            y=image.getHeight();
+            int x = image.getWidth();
+            int y = image.getHeight();
             int [][] tabImage = new int[x][y];
+
             // Parcours de l'intégralité des pixels 
             // Puis création de la matrice associée à l'image
             for (int i = 0; i < x; i++) {
@@ -172,7 +142,7 @@ public class Image {
 
     public int[][] assemblagePatch(ArrayList<Patch> ListePatch,int l,int c){
         int [][] imageRecon = new int[l][c];
-        int [][] matricePoids = new int [l][c]; 
+        int [][] matricePoids = new int [l][c]; //Matrice qui contient le nombre de patchs auquel appartient chaque pixel
         for (int i = 0; i < l; i++) {
             for (int j = 0; j < c; j++) {
                 imageRecon[i][j]=0;
@@ -193,13 +163,14 @@ public class Image {
                 for (int m = 0; m < s; m++) {
                     // Superposition des patchs dans la matrice
                     imageRecon[n + cointx][m + cointy] += patch[n][m];
-                    // Ajout du poids pour chaque élément de la matrice
+                    // On compte le nombre de patchs ayant été superposés pour ce pixel
                     matricePoids[cointx + n][cointy + m] += 1;
                 }
             }
         }
         for (int i = 0; i < l; i++) {
             for (int j = 0; j < c; j++) {
+                //La valeur RGB de chaque pixel est la moyenne de la valeur de tous les patchs s'étant superposés en ce pixel
                 imageRecon[i][j] = imageRecon[i][j]/matricePoids[i][j];
             }
         }
@@ -208,13 +179,13 @@ public class Image {
     }
 
     public static BufferedImage createImageFromMatrix(int[][] matrix) {
+        //On crée une BufferedImage qui pourra ensuite être transformée en fichier
         BufferedImage image = new BufferedImage(matrix.length, matrix[0].length, BufferedImage.TYPE_INT_RGB);
-        
-            
             for(int i=0; i<matrix.length; i++) {
                 for(int j=0; j<matrix[0].length; j++) {
                     int a = matrix[i][j];
                     try {
+                        //Trois fois le même coef pour les couleurs RGB car cela donne un degré de gris
                         Color newColor = new Color(a,a,a);
                         image.setRGB(i,j,newColor.getRGB());
                     } catch(Exception e) {
@@ -239,6 +210,7 @@ public class Image {
         }
     }
 
+    //Transformation de la liste de patch en une matrice donc chaque ligne correspond à 1 patch sous forme de vecteur
     public int[][] vectorPatch(ArrayList<Patch> listePatch) {
         int[][] matrixPatchs = new int[listePatch.size()][listePatch.get(0).vectorize().length];
         for (int i =0; i < listePatch.size(); i++) {
@@ -250,69 +222,98 @@ public class Image {
         return matrixPatchs;
     }
 
+    //On extrait les imagettes de l'image de manière aléatoire
+    public ArrayList<Patch> extractImagettes(int[][] X, int W, int n) {
+        // Récupérer la taille de l'image
+        int x = X.length;
+        int y = X[0].length;
 
-public ArrayList<Patch> extractImagettes(int[][] X, int W, int n) {
-    // Récupérer la taille de l'image
-    int x = X.length;
-    int y = X[0].length;
+        ArrayList<Patch> ListeImagette = new ArrayList<Patch>();
+        Random random = new Random();
 
-    ArrayList<Patch> ListeImagette = new ArrayList<Patch>();
-    Random random = new Random();
+        // Extraire les imagettes
+        for (int i = 0; i < n; i++) {
+            // Générer des coordonnées aléatoires pour l'origine de l'imagette
+            int cointx = random.nextInt(x - W + 1);
+            int cointy = random.nextInt(y - W + 1);
 
-    // Extraire les imagettes
-    for (int i = 0; i < n; i++) {
-        // Générer des coordonnées aléatoires pour l'origine de l'imagette
-        int cointx = random.nextInt(x - W + 1);
-        int cointy = random.nextInt(y - W + 1);
+            // Extraire l'imagette à partir de l'image d'intérêt
+            int[][] imagette = new int[W][W];
+            for (int j = 0; j < W; j++) {
+                System.arraycopy(X[cointx + j], cointy, imagette[j], 0, W);
+            }
+    
+            // Ajouter l'imagette et ses coords dans liste imagette
+            Patch patch = new Patch(imagette, cointx, cointy);
+            ListeImagette.add(patch);
 
-        // Extraire l'imagette à partir de l'image d'intérêt
-        int[][] imagette = new int[W][W];
-        for (int j = 0; j < W; j++) {
-            System.arraycopy(X[cointx + j], cointy, imagette[j], 0, W);
+            
         }
-  
-        // Ajouter l'imagette et ses coords dans liste imagette
-        Patch patch = new Patch(imagette, cointx, cointy);
-        ListeImagette.add(patch);
 
-        
+        return ListeImagette;
     }
 
-    return ListeImagette;
-}
-
-public int[][] assemblageImagette(ArrayList<Patch> ListeImagette, int[][] imageDepart, int l,int c, int W){
-    
-    int [][] imageRecon = new int[l][c];
-    int [][] matricePoids = new int [l][c]; 
-    int cointx;
-    int cointy;
-
-    // Ajout des patchs dans la matrice 
-    for (int k = 0; k < ListeImagette.size(); k++) {
-        cointx = ListeImagette.get(k).getPositionX();
-        cointy = ListeImagette.get(k).getPositionY();
-        int[][] patch = ListeImagette.get(k).getMatrix();
+    //On réassemble les imagettes pour obtenir notre image débruitée
+    public int[][] assemblageImagette(ArrayList<Patch> ListeImagette, int[][] imageDepart, int l,int c, int W){
         
-        for (int n = 0; n < W; n++) {
-            for (int m = 0; m < W; m++) {
-                // Superposition des patchs dans la matrice
-                imageRecon[n + cointx][m + cointy] += patch[n][m];
-                // Ajout du poids pour chaque élément de la matrice
-                matricePoids[cointx + n][cointy + m] += 1;
+        int [][] imageRecon = new int[l][c];
+        int [][] matricePoids = new int [l][c]; 
+        int cointx;
+        int cointy;
+
+        // Ajout des patchs dans la matrice 
+        for (int k = 0; k < ListeImagette.size(); k++) {
+            cointx = ListeImagette.get(k).getPositionX();
+            cointy = ListeImagette.get(k).getPositionY();
+            int[][] patch = ListeImagette.get(k).getMatrix();
+            
+            for (int n = 0; n < W; n++) {
+                for (int m = 0; m < W; m++) {
+                    // Superposition des patchs dans la matrice
+                    imageRecon[n + cointx][m + cointy] += patch[n][m];
+                    // Ajout du poids pour chaque élément de la matrice
+                    matricePoids[cointx + n][cointy + m] += 1;
+                }
             }
         }
-    }
-    for (int i = 0; i < l; i++) {
-        for (int j = 0; j < c; j++) {
-            if (matricePoids[i][j] >= 1) {
-                imageRecon[i][j] = imageRecon[i][j]/matricePoids[i][j];
-            } else {
-                imageRecon[i][j] = imageDepart[i][j];
+        for (int i = 0; i < l; i++) {
+            for (int j = 0; j < c; j++) {
+                //Si le pixel a été traité dans une des imagette
+                if (matricePoids[i][j] >= 1) {
+                    imageRecon[i][j] = imageRecon[i][j]/matricePoids[i][j];
+                //S'il ne faisait partie d'aucune imagette, on le remplace par le pixel bruité
+                } else {
+                    imageRecon[i][j] = imageDepart[i][j];
+                }
             }
         }
+        
+        return imageRecon;
     }
-    
-    return imageRecon;
-}
+
+    public int getSigma() {
+
+        return this.sigma;
+    }
+
+    public void setSigma(Integer sigma) {
+
+        this.sigma = sigma;
+    }
+
+    public int[][] getMatrix() {
+        return this.matrix;
+    }
+
+    public void setMatrix(int[][] matrix) {
+        this.matrix = matrix;
+    }
+
+    public int[][] getNoisedMatrix() {
+        return this.noisedmatrix;
+    }
+
+    public void setNoisedMatrix(int[][] matrix) {
+        this.noisedmatrix = matrix;
+    }
 }

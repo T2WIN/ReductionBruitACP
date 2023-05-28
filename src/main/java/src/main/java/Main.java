@@ -1,7 +1,6 @@
 package src.main.java;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -37,13 +36,6 @@ public class Main {
             Image objImagette = new Image(imagette, imagetteBruité, taille);
             imagetteBruité = methodeGlobale(objImagette, seuillage, taille, choixSeuil, choixSeuillage);
             listeImagetteBruité.get(i).setMatrix(imagetteBruité);
-
-            // imagette = listeImagette.get(i).getMatrix();
-            // imagetteBruité = listeImagetteBruité.get(i).getMatrix();
-            // Image objImagette = new Image(imagette, imagetteBruité);
-            // BufferedImage imagetteFinale;
-            // imagetteFinale = methodeGlobale(objImagette,seuillage, taille, choixSeuil, choixSeuillage);
-            // Image.createfile(imagetteFinale, "img_local/local" + i);
          }
          int l = imageBruit.length;
          int c = imageBruit[0].length;
