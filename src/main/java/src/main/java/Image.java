@@ -253,9 +253,6 @@ public class Image {
             for(int i=0; i<matrix.length; i++) {
                 for(int j=0; j<matrix[0].length; j++) {
                     int a = matrix[i][j];
-                    if (a > 250) {
-                        System.out.println(a);
-                    }
                     try {
                         Color newColor = new Color(a,a,a);
                         image.setRGB(i,j,newColor.getRGB());
