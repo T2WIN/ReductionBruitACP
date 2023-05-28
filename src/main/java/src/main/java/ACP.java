@@ -7,12 +7,19 @@ import java.util.Arrays;
 
 public class ACP {
 
+    //Matrice des patchs vectorisés
     double [][] vectorisePatchs;
+    //Vecteur moyen
     double [] meanVector;
+    //Matrice des patchs vectorisés centrés
     double [][] centeredVectors;
+    //Matrice de covariance
     double [][] covariance;
+    //Vecteurs des valeurs propres
     double [] eigenValues;
+    //Matrice des vecteurs propres
     double [][] U;
+    //Matrice des vecteurs de contribution
     double [][] Vcontrib;
 
 
@@ -43,17 +50,7 @@ public class ACP {
         return output;
     }
 
-    public double[][] getVcontrib() {
-        return this.Vcontrib;
-    }
-
-    public double[][] getU(){
-        return this.U;
-    }
-
-    public double[] getMoyCov(){
-        return this.meanVector;
-    }
+    
 
     public void afficherResultat() {
         System.out.println("\nPatchs vectorisés :");
@@ -92,6 +89,7 @@ public class ACP {
         }
     }
     
+
     public void MoyCov() {
 
         // Déterminer le vecteur moyen
@@ -142,6 +140,7 @@ public class ACP {
             }
         }
     }
+
 
     public void DoACP() {
         
@@ -196,6 +195,7 @@ public class ACP {
         }
     }
 
+
     public void verifyContriv() {
         for (int k = 0; k < 100; k++) {
             double[] somme = new double[centeredVectors[0].length];
@@ -209,6 +209,21 @@ public class ACP {
             System.out.println(Arrays.toString(somme));
             System.out.println(Arrays.toString(centeredVectors[k]));
         }
+    }
+
+
+    public double[][] getVcontrib() {
+        return this.Vcontrib;
+    }
+
+
+    public double[][] getU(){
+        return this.U;
+    }
+
+
+    public double[] getMoyCov(){
+        return this.meanVector;
     }
 
 }

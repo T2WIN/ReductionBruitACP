@@ -13,8 +13,6 @@ public class Seuillage {
         this.visuShrink = seuilV();
     }
 
-
-
     // seuillage dur avec en paramètre threshold le seuil et alpha le coefficient
     public double HardThresholding(double threshold, double alpha) {
 
@@ -41,7 +39,6 @@ public class Seuillage {
 
         return 0;
     }
-
 
     public double seuilV() {
         int L = image.getMatrix().length*image.getMatrix()[0].length;
@@ -89,6 +86,7 @@ public class Seuillage {
         return somme/(echantillon.length -1);      
     }
 
+
     public double seuilB() {
         double variance = calculVariance();
         double ecartType = Math.sqrt(max(variance-Math.pow(image.getSigma(),2) , 0));
@@ -102,6 +100,7 @@ public class Seuillage {
         return this.visuShrink;
     }
 
+
      public void setVisuShrink(Integer visuShrink) {
         this.visuShrink = visuShrink;
     }
@@ -111,7 +110,8 @@ public class Seuillage {
         return this.bayesShrink;
     }
 
-     public void setBayesShrink(Integer bayesShrink) {
+    
+    public void setBayesShrink(Integer bayesShrink) {
         this.bayesShrink = bayesShrink;
     }
 
