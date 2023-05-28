@@ -106,7 +106,7 @@ public class Main {
     }
     public static int chooseSeuil() {
 
-        int choixSeuil = readConsole("Souhaitez vous un seuil visuShrink ou un seuil bayesShrink ? pour le seuil visuShrink : tapez 1  pour le seuil bayesShrink : tapez 2");
+        int choixSeuil = readConsole("Souhaitez vous un seuil visuShrink ou un seuil bayesShrink ? pour le seuil visuShrink : tapez 1  pour le seuil bayesShrink : tapez 2 : ");
 
         if (choixSeuil == 1) {
 
@@ -127,7 +127,7 @@ public class Main {
 
     public static int chooseSeuillage() {
 
-        int choixSeuillage = readConsole("Souhaitez vous un seuillage dur ou un seuillage doux ? pour le seuillage dur : tapez 1  pour le seuillage doux : tapez 2");
+        int choixSeuillage = readConsole("Souhaitez vous un seuillage dur ou un seuillage doux ? pour le seuillage dur : tapez 1  pour le seuillage doux : tapez 2 : ");
 
         if (choixSeuillage == 1) {
 
