@@ -142,7 +142,7 @@ public class Main {
       double[] meanVector = acp.getMoyCov();
       double[][] u = acp.getU();
  
-    
+      
       // Modification de la matrice alpha par les seuillages
       if (choixSeuil == 1) {
          double  threshold = seuillage.getVisuShrink();
@@ -163,6 +163,7 @@ public class Main {
             }
          }
       }
+      
       if (choixSeuil == 2) {
          double  threshold = seuillage.getBayesShrink();
          if (choixSeuillage == 1) {
@@ -181,36 +182,36 @@ public class Main {
                }
             }       
          }
-         for (int k = 0; k < listePatch.size(); k++) {
-            double [] somme = new double[taille*taille];
-            Patch patch = listePatch.get(k);
-            double [] patchVect2 = new double[taille*taille];
-            //Pour chaque (alpha(i), u(i)), on applique la formule
-            for (int j = 0; j < alpha[0].length; j++) {
-               for (int i = 0; i <alpha[0].length; i++) {
-                  somme[j] += alpha[k][i] * u[i][j];
-               }
-            }
-            for (int i=0; i<taille*taille; i++){
-            //On décentre les vecteurs
-               patchVect2[i] = meanVector[i] + somme[i];
-            }
-            double[][] patchMatrixDouble = patch.intoMatrix(patchVect2);
-            int[][] patchMatrixEntier = new int[patchMatrixDouble.length][patchMatrixDouble[0].length];
-                   
-            for (int indexC = 0; indexC<patchMatrixEntier.length; indexC++) {
-               for (int indexL = 0; indexL<patchMatrixEntier[0].length; indexL++) {
-                  patchMatrixEntier[indexC][indexL] = (int) patchMatrixDouble[indexC][indexL];      
-               }    
-            }
-            patch.setMatrix(patchMatrixEntier);
-            listePatch.set(k, patch);
-         }
-               
-         int[][] assemblerMatrice = image.assemblagePatch(listePatch, l, c);
-         BufferedImage imagefinale = Image.createImageFromMatrix(assemblerMatrice);
-         Image.createfile(imagefinale,fichier);
       }
+      for (int k = 0; k < listePatch.size(); k++) {
+         double [] somme = new double[taille*taille];
+         Patch patch = listePatch.get(k);
+         double [] patchVect2 = new double[taille*taille];
+         //Pour chaque (alpha(i), u(i)), on applique la formule
+         for (int j = 0; j < alpha[0].length; j++) {
+            for (int i = 0; i <alpha[0].length; i++) {
+               somme[j] += alpha[k][i] * u[i][j];
+            }
+         }
+         for (int i=0; i<taille*taille; i++){
+            //On décentre les vecteurs
+            patchVect2[i] = meanVector[i] + somme[i];
+         }
+         double[][] patchMatrixDouble = patch.intoMatrix(patchVect2);
+         int[][] patchMatrixEntier = new int[patchMatrixDouble.length][patchMatrixDouble[0].length];
+                   
+         for (int indexC = 0; indexC<patchMatrixEntier.length; indexC++) {
+            for (int indexL = 0; indexL<patchMatrixEntier[0].length; indexL++) {
+               patchMatrixEntier[indexC][indexL] = (int) patchMatrixDouble[indexC][indexL];      
+            }    
+         }
+         patch.setMatrix(patchMatrixEntier);
+         listePatch.set(k, patch);
+      }
+      int[][] assemblerMatrice = image.assemblagePatch(listePatch, l, c);
+      BufferedImage imagefinale = Image.createImageFromMatrix(assemblerMatrice);
+      Image.createfile(imagefinale,fichier);
    }
 }
+
 
