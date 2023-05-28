@@ -29,9 +29,9 @@ public class Main {
          int [][] imageBruit = image.getNoisedMatrix();
          ArrayList<Patch> listeImagette = image.extractImagettes(image.getMatrix(), W, n);
          ArrayList<Patch> listeImagetteBruité = image.extractImagettes(imageBruit, W, n);
+         int [][] imagette = new int[W][W];
+         int [][] imagetteBruité = new int[W][W];
          for (int i = 0; i < listeImagetteBruité.size(); i++) {
-            int [][] imagette = new int[W][W];
-            int [][] imagetteBruité = new int[W][W];
             imagette = listeImagette.get(i).getMatrix();
             imagetteBruité = listeImagetteBruité.get(i).getMatrix();
             Image objImagette = new Image(imagette, imagetteBruité, taille);
