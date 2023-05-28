@@ -272,6 +272,15 @@ public class Main {
     //     acp.afficherResultat();
     //     double[][] alpha = acp.getVcontrib();
     // }
+    //     ArrayList<Patch> listePatch = image.extractionPatch(image.getNoisedMatrix());
+    //     int[][] matricePatchs = image.vectorPatch(listePatch);
+    //     ACP acp = new ACP(matricePatchs);
+    //     acp.MoyCov();
+    //     acp.DoACP();
+    //     acp.Proj();
+    //     acp.afficherResultat();
+    //     double[][] alpha = acp.getVcontrib();
+    // }
 
     // public static Image methodeLocale(Image image) {
     //     int tailleim = readConsole("donnez la taille de l'imagette que vous souhaitez : ");
