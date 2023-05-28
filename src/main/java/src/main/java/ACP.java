@@ -4,7 +4,6 @@ import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.EigenDecomposition;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 public class ACP {
@@ -217,8 +216,6 @@ public class ACP {
                 Vcontrib[k][i] = somme;
             }
         }
-        // verifyContriv();
-        // System.exit(0);
     }
 
     public void verifyContriv() {

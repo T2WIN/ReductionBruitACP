@@ -1,7 +1,6 @@
 package src.main.java;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -262,35 +261,35 @@ public class Main {
 
     }
 
-    public static image methodeGlobale(Image image) {
+    // public static Image methodeGlobale(Image image) {
 
-        ArrayList<Patch> listePatch = image.extractionPatch(image.getNoisedMatrix());
-        int[][] matricePatchs = image.vectorPatch(listePatch);
-        ACP acp = new ACP(matricePatchs);
-        acp.MoyCov();
-        acp.DoACP();
-        acp.Proj();
-        acp.afficherResultat();
-        double[][] alpha = acp.getVcontrib();
-    }
+    //     ArrayList<Patch> listePatch = image.extractionPatch(image.getNoisedMatrix());
+    //     int[][] matricePatchs = image.vectorPatch(listePatch);
+    //     ACP acp = new ACP(matricePatchs);
+    //     acp.MoyCov();
+    //     acp.DoACP();
+    //     acp.Proj();
+    //     acp.afficherResultat();
+    //     double[][] alpha = acp.getVcontrib();
+    // }
 
-    public static image methodeLocale(Image image) {
-        int tailleim = readConsole("donnez la taille de l'imagette que vous souhaitez : ");
-        int[] coord = DecoupeImage(image, tailleim);
-        Image imagette;
-        ArrayList<int[][]> listeImagettes = new ArrayList<int[][]>();
-        for (int i = 0 ; i< coord[0] ; i++) {
-            for (int j = 0 ; j< coord[1] ; j++) {
-                int[][] imagetteMatrice;
-                imagetteMatrice = image.createMatrix("src/main/img/imagette("+ i +","+ j +").jpg");
-                listeImagettes.add(methodeGlobale(imagetteMatrice));
-            }
-        }
-        for (int i = 0 ; i< coord[0] ; i++) {
-            for (int j = 0 ; j< coord[1] ; j++) {
+    // public static Image methodeLocale(Image image) {
+    //     int tailleim = readConsole("donnez la taille de l'imagette que vous souhaitez : ");
+    //     int[] coord = DecoupeImage(image, tailleim);
+    //     Image imagette;
+    //     ArrayList<int[][]> listeImagettes = new ArrayList<int[][]>();
+    //     for (int i = 0 ; i< coord[0] ; i++) {
+    //         for (int j = 0 ; j< coord[1] ; j++) {
+    //             int[][] imagetteMatrice;
+    //             imagetteMatrice = image.createMatrix("src/main/img/imagette("+ i +","+ j +").jpg");
+    //             listeImagettes.add(methodeGlobale(imagetteMatrice));
+    //         }
+    //     }
+    //     for (int i = 0 ; i< coord[0] ; i++) {
+    //         for (int j = 0 ; j< coord[1] ; j++) {
             
-            }
-        }
-    }
+    //         }
+    //     }
+    // }
 }
 
