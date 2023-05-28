@@ -18,7 +18,7 @@ public class Main {
         
 
       if (choixMethode == 1) {
-         methodeGlobale(image,"src/main/img/global",seuillage,taille,choixSeuil,choixSeuillage);
+         methodeGlobale(image,"global",seuillage,taille,choixSeuil,choixSeuillage);
       }
    }
 
