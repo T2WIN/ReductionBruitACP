@@ -37,9 +37,10 @@ public class Image {
         this.s = s;
     }
 
-    public Image(int[][] matrix,int[][] noisedmatrix){
+    public Image(int[][] matrix,int[][] noisedmatrix, int taille){
         this.matrix = matrix;
         this.noisedmatrix = noisedmatrix;
+        this.s = taille;
     }
 
     //Ajoute un bruit gaussien de variance sigma
@@ -321,5 +322,41 @@ public ArrayList<Patch> extractImagettes(int[][] X, int W, int n) {
     }
 
     return ListeImagette;
+}
+
+public int[][] assemblageImagette(ArrayList<Patch> ListeImagette, int[][] imageDepart, int l,int c){
+    
+    int [][] imageRecon = new int[l][c];
+    int [][] matricePoids = new int [l][c]; 
+
+    int cointx;
+    int cointy;
+
+    // Ajout des patchs dans la matrice 
+    for (int k = 0; k < ListeImagette.size(); k++) {
+        cointx = ListeImagette.get(k).getPositionX();
+        cointy = ListeImagette.get(k).getPositionY();
+        int[][] patch = ListeImagette.get(k).getMatrix();
+        
+        for (int n = 0; n < s; n++) {
+            for (int m = 0; m < s; m++) {
+                // Superposition des patchs dans la matrice
+                imageRecon[n + cointx][m + cointy] += patch[n][m];
+                // Ajout du poids pour chaque élément de la matrice
+                matricePoids[cointx + n][cointy + m] += 1;
+            }
+        }
+    }
+    for (int i = 0; i < l; i++) {
+        for (int j = 0; j < c; j++) {
+            if (matricePoids[i][j] >= 1) {
+                imageRecon[i][j] = imageRecon[i][j]/matricePoids[i][j];
+            } else {
+                imageRecon[i][j] = imageDepart[i][j];
+            }
+        }
+    }
+    
+    return imageRecon;
 }
 }
