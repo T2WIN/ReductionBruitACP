@@ -3,8 +3,8 @@ package src.main.java;
 import java.lang.Math;
 
 public class Error{
-    int [][] matrice1;
-    int [][] matrice2;
+    private int [][] matrice1;
+    private int [][] matrice2;
     public Error(Image test1, Image test2) {
         this.matrice1 = test1.getMatrix();
         this.matrice2 = test2.getMatrix();
@@ -15,9 +15,7 @@ public class Error{
         
         for ( int i = 0 ; i < this.matrice1.length ; i++){
             for ( int j = 0 ; j < this.matrice1[0].length ; j++){
-                System.out.println(this.matrice1[i][j] + "," + this.matrice2[i][j]);
                 MSE = MSE + (this.matrice1[i][j] - this.matrice2[i][j])*(this.matrice1[i][j] - this.matrice2[i][j]);
-                System.out.println(MSE);
             }
         }
         MSE = MSE / (matrice1.length*this.matrice1[0].length);

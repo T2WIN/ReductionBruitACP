@@ -10,6 +10,10 @@ public class Main {
         int sigma = readConsole("Saisir un entier sigma pour ajouter à la photo un bruit gaussien : ");
         int taille = readConsole("donner la taille du patch que vous souhaitez : ");
         Image image = new Image("src/main/img/lenaa.png", sigma, taille);
+        Error error2 = new Error(image, new Image("sigma30.jpg", sigma, 1));
+        
+
+        System.out.println();
         image.noising();
         Seuillage seuillage = new Seuillage(image);
         int choixMethode = chooseMethode();
@@ -171,6 +175,15 @@ public class Main {
         int[][] assemblerMatrice = image.assemblagePatch(listePatch, l, c);
         BufferedImage imagefinale = Image.createImageFromMatrix(assemblerMatrice);
         Image.createfile(imagefinale, "imagefinalee");
+        Error error = new Error(new Image("src/main/img/lenaa.png", 0, choixSeuillage), new Image("src/main/img/imagefinalee.jpg", sigma, choixSeuillage));
+
+        System.out.println("Erreur de départ");
+        System.out.println(error2.MeanSquaredError());
+        System.out.println(error2.PeakSignalToNoiseRatio());
+        
+        System.out.println("Erreur entre l'image de départ et l'image débruitée");
+        System.out.println(error.MeanSquaredError());
+        System.out.println(error.PeakSignalToNoiseRatio());
     }
         
 
