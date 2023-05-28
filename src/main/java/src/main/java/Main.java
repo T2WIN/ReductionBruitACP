@@ -19,6 +19,15 @@ public class Main {
       //Si on choisit la méthode globale
       if (choixMethode == 1) {
          int[][] assemblerMatrice = methodeGlobale(image,seuillage,taille,choixSeuil,choixSeuillage);
+         Error error = new Error(image, new Image(image.getNoisedMatrix(), image.getNoisedMatrix(), taille));
+         Error error2 = new Error(image, new Image(assemblerMatrice, assemblerMatrice, taille));
+
+         System.out.println("Erreur de départ");
+         System.out.println(error.MeanSquaredError());
+         System.out.println(error.PeakSignalToNoiseRatio());
+         System.out.println("Erreur de fin");
+         System.out.println(error2.MeanSquaredError());
+         System.out.println(error2.PeakSignalToNoiseRatio());
          BufferedImage imagefinale = Image.createImageFromMatrix(assemblerMatrice);
          Image.createfile(imagefinale,"global");
       }
@@ -46,6 +55,17 @@ public class Main {
          int c = imageBruit[0].length;
          //On rassemble ensuite les n imagettes débruitées pour obtenir l'image finale
          int[][] imageRecon = image.assemblageImagette(listeImagetteBruité, imageBruit, l,c, W);
+
+         Error error = new Error(image, new Image(imageBruit, imageBruit, taille));
+         Error error2 = new Error(image, new Image(imageRecon, imageRecon, taille));
+
+         System.out.println("Erreur de départ");
+         System.out.println(error.MeanSquaredError());
+         System.out.println(error.PeakSignalToNoiseRatio());
+         System.out.println("Erreur de fin");
+         System.out.println(error2.MeanSquaredError());
+         System.out.println(error2.PeakSignalToNoiseRatio());
+         
          BufferedImage imagefinale = Image.createImageFromMatrix(imageRecon);
          Image.createfile(imagefinale,"local");
       }
