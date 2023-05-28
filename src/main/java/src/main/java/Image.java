@@ -176,25 +176,12 @@ public class Image {
         int cointx;
         int cointy;
 
-        // for (int x = 0; x < 10; x++) {
-        //     System.out.println("Patch n° " + x);
-        //     for (int j = 0; j<ListePatch.get(0).getMatrix().length; j++) {
-        //         for (int k = 0; k<ListePatch.get(0).getMatrix()[0].length; k++) {
-        //             System.out.println(ListePatch.get(x).getMatrix()[j][k]);
-        //         }
-        //     }
-        // }
         // Ajout des patchs dans la matrice 
         for (int k = 0; k < ListePatch.size(); k++) {
             cointx = ListePatch.get(k).getPositionX();
             cointy = ListePatch.get(k).getPositionY();
             int[][] patch = ListePatch.get(k).getMatrix();
-            // for (int i = 0; i < 1; i++) {
-            //     for (int j = 0; j < patch[i].length; j++) {
-            //         System.out.println(patch[i][j]);
-            //     }
-               
-            // }
+            
             for (int n = 0; n < s; n++) {
                 for (int m = 0; m < s; m++) {
                     // Superposition des patchs dans la matrice
@@ -209,12 +196,7 @@ public class Image {
                 imageRecon[i][j] = imageRecon[i][j]/matricePoids[i][j];
             }
         }
-        // for (int i = 0; i < 1; i++) {
-        //     for (int j = 0; j < imageRecon[0].length; j++) {
-        //         System.out.println(imageRecon[i][j]);
-        //     }
-               
-        // }
+        
         return imageRecon;
     }
 
@@ -304,15 +286,14 @@ public class Image {
         }
         return matrixPatchs;
     }
-}
 
-public static ArrayList<int[][]> extractImagettes(int[][] X, int W, int n) {
+
+public static ArrayList<Patch> extractImagettes(int[][] X, int W, int n) {
     // Récupérer la taille de l'image
     int x = X.length;
     int y = X[0].length;
 
-    ArrayList<int[][]> imagettes = new ArrayList<>();
-    ArrayList<int[]> positions = new ArrayList<>();
+    ArrayList<Patch> ListeImagette = new ArrayList<Patch>();
     Random random = new Random();
 
     // Extraire les imagettes
@@ -326,13 +307,14 @@ public static ArrayList<int[][]> extractImagettes(int[][] X, int W, int n) {
         for (int j = 0; j < W; j++) {
             System.arraycopy(X[cointx + j], cointy, imagette[j], 0, W);
         }
+  
+        // Ajouter l'imagette et ses coords dans liste imagette
+        Patch patch = new Patch(imagette, cointx, cointy);
+        ListeImagette.add(patch);
 
-        // Ajouter l'imagette à la liste
-        imagettes.add(imagette);
-
-        // Enregistrer les positions de l'imagette
-        positions.add(new int[]{cointx, cointy});
+        
     }
 
-    return imagettes;
+    return ListeImagette;
+}
 }
