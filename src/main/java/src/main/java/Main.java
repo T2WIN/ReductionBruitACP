@@ -16,29 +16,35 @@ public class Main {
       int choixSeuil = chooseSeuil();
       int choixSeuillage = chooseSeuillage();
         
-
+      //Si on choisit la méthode globale
       if (choixMethode == 1) {
          int[][] assemblerMatrice = methodeGlobale(image,seuillage,taille,choixSeuil,choixSeuillage);
          BufferedImage imagefinale = Image.createImageFromMatrix(assemblerMatrice);
          Image.createfile(imagefinale,"global");
       }
+      //Si on choisit la méthode locale
       else {
          int W = readConsole("Saisir un entier W, taille de l'imagette : ");
          int n = readConsole("Saisir un entier n, nombre d'imagette : ");
          int [][] imageBruit = image.getNoisedMatrix();
+
+         //On sépare l'image de départ en n imagettes de taille W
          ArrayList<Patch> listeImagette = image.extractImagettes(image.getMatrix(), W, n);
          ArrayList<Patch> listeImagetteBruité = image.extractImagettes(imageBruit, W, n);
+
          int [][] imagette = new int[W][W];
          int [][] imagetteBruité = new int[W][W];
          for (int i = 0; i < listeImagetteBruité.size(); i++) {
             imagette = listeImagette.get(i).getMatrix();
             imagetteBruité = listeImagetteBruité.get(i).getMatrix();
             Image objImagette = new Image(imagette, imagetteBruité, taille);
+            //On applique la méthode globale aux n imagettes bruitées
             imagetteBruité = methodeGlobale(objImagette, seuillage, taille, choixSeuil, choixSeuillage);
             listeImagetteBruité.get(i).setMatrix(imagetteBruité);
          }
          int l = imageBruit.length;
          int c = imageBruit[0].length;
+         //On rassemble ensuite les n imagettes débruitées pour obtenir l'image finale
          int[][] imageRecon = image.assemblageImagette(listeImagetteBruité, imageBruit, l,c, W);
          BufferedImage imagefinale = Image.createImageFromMatrix(imageRecon);
          Image.createfile(imagefinale,"local");
@@ -120,43 +126,16 @@ public class Main {
 
     }
 
-    // public static image methodeGlobale(Image image) {
-
-    //     ArrayList<Patch> listePatch = image.extractionPatch(image.getNoisedMatrix());
-    //     int[][] matricePatchs = image.vectorPatch(listePatch);
-    //     ACP acp = new ACP(matricePatchs);
-    //     acp.MoyCov();
-    //     acp.DoACP();
-    //     acp.Proj();
-    //     acp.afficherResultat();
-    //     double[][] alpha = acp.getVcosc = new Scanner(System.in)ntrib();
-    // }
-
-    // // public static image methodeLocale(Image image) {
-    // //     int tailleim = readConsole("donnez la taille de l'imagette que vous souhaitez : ");
-    // //     int[] coord = DecoupeImage(image, tailleim);
-    // //     Image imagette;
-    // //     ArrayList<int[][]> listeImagettes = new ArrayList<int[][]>();
-    // //     for (int i = 0 ; i< coord[0] ; i++) {
-    // //         for (int j = 0 ; j< coord[1] ; j++) {
-    // //             int[][] imagetteMatrice;
-    // //             imagetteMatrice = image.createMatrix("src/main/img/imagette("+ i +","+ j +").jpg");
-    // //             listeImagettes.add(methodeGlobale(imagetteMatrice));
-    // //         }
-    // //     }
-    // //     for (int i = 0 ; i< coord[0] ; i++) {
-    // //         for (int j = 0 ; j< coord[1] ; j++) {
-            
-    // //         }
-    // //     }
-    // }
-   
-
    public static int[][] methodeGlobale(Image image,Seuillage seuillage,int taille,int choixSeuil,int choixSeuillage) {
+      //Etape 1 : Extraction des patchs
       ArrayList<Patch> listePatch = image.extractionPatch(image.getNoisedMatrix());
       int l = image.getNoisedMatrix().length;
       int c = image.getNoisedMatrix()[1].length;
+
+      //Etape 2 : Transformation des patchs en vecteurs
       int[][] matricePatchs = image.vectorPatch(listePatch);
+
+      //Etape 3 : On réalise l'ACP sur les patchs vectorisés
       ACP acp = new ACP(matricePatchs);
       acp.MoyCov();
       acp.DoACP();
@@ -166,7 +145,7 @@ public class Main {
       double[][] u = acp.getU();
  
       
-      // Modification de la matrice alpha par les seuillages
+      //Etape 4 : Seuillage des vecteurs de contribution
       if (choixSeuil == 1) {
          double  threshold = seuillage.getVisuShrink();
          if (choixSeuillage == 1) {
@@ -206,6 +185,8 @@ public class Main {
             }       
          }
       }
+
+      //Etape 5 : Calcul des patchs vectorisés dans la nouvelle base
       for (int k = 0; k < listePatch.size(); k++) {
          double [] somme = new double[taille*taille];
          Patch patch = listePatch.get(k);
@@ -222,7 +203,8 @@ public class Main {
          }
          double[][] patchMatrixDouble = patch.intoMatrix(patchVect2);
          int[][] patchMatrixEntier = new int[patchMatrixDouble.length][patchMatrixDouble[0].length];
-                   
+         
+         //On a réalisé l'ACP sur des doubles, maintenant pour revenir au code RGB, on a besoin d'entiers
          for (int indexC = 0; indexC<patchMatrixEntier.length; indexC++) {
             for (int indexL = 0; indexL<patchMatrixEntier[0].length; indexL++) {
                patchMatrixEntier[indexC][indexL] = (int) patchMatrixDouble[indexC][indexL];      
@@ -231,6 +213,8 @@ public class Main {
          patch.setMatrix(patchMatrixEntier);
          listePatch.set(k, patch);
       }
+
+      //Etape 6 : Assemblage des patchs pour obtenir l'image débruitée
       int[][] assemblerMatrice = image.assemblagePatch(listePatch, l, c);
       return assemblerMatrice;
    }
