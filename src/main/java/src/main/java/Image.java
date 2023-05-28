@@ -207,45 +207,6 @@ public class Image {
         return imageRecon;
     }
 
-
-    // public static int DecoupeImage(Image X, int W){
-
-    //     int[][] Tab = X.getMatrix();
-
-    //     int imagettesEnLargeur = Tab.length / W;
-    //     int imagettesEnHauteur = Tab[0].length / W;
-        
-    //     int[] ij = new int[2];
-    //     ij[0]= imagettesEnLargeur;
-    //     ij[1]= imagettesEnHauteur;
-    //     for ( int i = 0 ; i < imagettesEnHauteur ; i++ ){
-    //         for ( int j = 0 ; j < imagettesEnLargeur ; j++){
-    //             int x = i * W;
-    //             int y = j * W;
-
-    //             BufferedImage imagette = getSubImage(x,y,W,X);
-    //             createfile(imagette, "imagette(" + i + "," + j + ")");
-    //         }
-    //     }
-    //     return imagettesEnHauteur*imagettesEnLargeur;
-    // }  
-    
-    // public static BufferedImage getSubImage(int x, int y, int W, Image X){
-
-    //     int[][] Tab = X.getMatrix();
-    //     int[][] imagetteMatrice = new int[W][W];
-    //     BufferedImage imagette;
-
-    //     for ( int i = 0 ; i < W ; i++){
-    //         for ( int j = 0 ; j < W ; j++){
-                
-    //             imagetteMatrice[i][j] = Tab[x+i][y+j];
-    //         }
-    //     }
-    //     imagette = createImageFromMatrix(imagetteMatrice);
-    //     return imagette;
-    // }
-
     public static BufferedImage createImageFromMatrix(int[][] matrix) {
         BufferedImage image = new BufferedImage(matrix.length, matrix[0].length, BufferedImage.TYPE_INT_RGB);
         
@@ -257,9 +218,7 @@ public class Image {
                         Color newColor = new Color(a,a,a);
                         image.setRGB(i,j,newColor.getRGB());
                     } catch(Exception e) {
-                        // System.out.println(("Error creating image"));
-                        // System.out.println(a);
-                        // e.printStackTrace();
+                        e.printStackTrace();
                     }
                 }
             }
