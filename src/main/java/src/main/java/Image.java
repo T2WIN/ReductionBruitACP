@@ -219,43 +219,43 @@ public class Image {
     }
 
 
-    public static int DecoupeImage(Image X, int W){
+    // public static int DecoupeImage(Image X, int W){
 
-        int[][] Tab = X.getMatrix();
+    //     int[][] Tab = X.getMatrix();
 
-        int imagettesEnLargeur = Tab.length / W;
-        int imagettesEnHauteur = Tab[0].length / W;
+    //     int imagettesEnLargeur = Tab.length / W;
+    //     int imagettesEnHauteur = Tab[0].length / W;
         
-        int[] ij = new int[2];
-        ij[0]= imagettesEnLargeur;
-        ij[1]= imagettesEnHauteur;
-        for ( int i = 0 ; i < imagettesEnHauteur ; i++ ){
-            for ( int j = 0 ; j < imagettesEnLargeur ; j++){
-                int x = i * W;
-                int y = j * W;
+    //     int[] ij = new int[2];
+    //     ij[0]= imagettesEnLargeur;
+    //     ij[1]= imagettesEnHauteur;
+    //     for ( int i = 0 ; i < imagettesEnHauteur ; i++ ){
+    //         for ( int j = 0 ; j < imagettesEnLargeur ; j++){
+    //             int x = i * W;
+    //             int y = j * W;
 
-                BufferedImage imagette = getSubImage(x,y,W,X);
-                createfile(imagette, "imagette(" + i + "," + j + ")");
-            }
-        }
-        return imagettesEnHauteur*imagettesEnLargeur;
-    }  
+    //             BufferedImage imagette = getSubImage(x,y,W,X);
+    //             createfile(imagette, "imagette(" + i + "," + j + ")");
+    //         }
+    //     }
+    //     return imagettesEnHauteur*imagettesEnLargeur;
+    // }  
     
-    public static BufferedImage getSubImage(int x, int y, int W, Image X){
+    // public static BufferedImage getSubImage(int x, int y, int W, Image X){
 
-        int[][] Tab = X.getMatrix();
-        int[][] imagetteMatrice = new int[W][W];
-        BufferedImage imagette;
+    //     int[][] Tab = X.getMatrix();
+    //     int[][] imagetteMatrice = new int[W][W];
+    //     BufferedImage imagette;
 
-        for ( int i = 0 ; i < W ; i++){
-            for ( int j = 0 ; j < W ; j++){
+    //     for ( int i = 0 ; i < W ; i++){
+    //         for ( int j = 0 ; j < W ; j++){
                 
-                imagetteMatrice[i][j] = Tab[x+i][y+j];
-            }
-        }
-        imagette = createImageFromMatrix(imagetteMatrice);
-        return imagette;
-    }
+    //             imagetteMatrice[i][j] = Tab[x+i][y+j];
+    //         }
+    //     }
+    //     imagette = createImageFromMatrix(imagetteMatrice);
+    //     return imagette;
+    // }
 
     public static BufferedImage createImageFromMatrix(int[][] matrix) {
         BufferedImage image = new BufferedImage(matrix.length, matrix[0].length, BufferedImage.TYPE_INT_RGB);
@@ -306,3 +306,33 @@ public class Image {
     }
 }
 
+public static ArrayList<int[][]> extractImagettes(int[][] X, int W, int n) {
+    // Récupérer la taille de l'image
+    int x = X.length;
+    int y = X[0].length;
+
+    ArrayList<int[][]> imagettes = new ArrayList<>();
+    ArrayList<int[]> positions = new ArrayList<>();
+    Random random = new Random();
+
+    // Extraire les imagettes
+    for (int i = 0; i < n; i++) {
+        // Générer des coordonnées aléatoires pour l'origine de l'imagette
+        int cointx = random.nextInt(x - W + 1);
+        int cointy = random.nextInt(y - W + 1);
+
+        // Extraire l'imagette à partir de l'image d'intérêt
+        int[][] imagette = new int[W][W];
+        for (int j = 0; j < W; j++) {
+            System.arraycopy(X[cointx + j], cointy, imagette[j], 0, W);
+        }
+
+        // Ajouter l'imagette à la liste
+        imagettes.add(imagette);
+
+        // Enregistrer les positions de l'imagette
+        positions.add(new int[]{cointx, cointy});
+    }
+
+    return imagettes;
+}
