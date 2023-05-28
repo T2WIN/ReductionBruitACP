@@ -18,7 +18,31 @@ public class Main {
         
 
       if (choixMethode == 1) {
-         methodeGlobale(image,"global",seuillage,taille,choixSeuil,choixSeuillage);
+         int[][] assemblerMatrice = methodeGlobale(image,seuillage,taille,choixSeuil,choixSeuillage);
+         BufferedImage imagefinale = Image.createImageFromMatrix(assemblerMatrice);
+         Image.createfile(imagefinale,"global");
+      }
+      else {
+         int W = readConsole("Saisir un entier W, taille de l'imagette : ");
+         int n = readConsole("Saisir un entier n, nombre d'imagette : ");
+         int [][] imageBruit = image.getNoisedMatrix();
+         ArrayList<Patch> listeImagette = image.extractImagettes(image.getMatrix(), W, n);
+         ArrayList<Patch> listeImagetteBruité = image.extractImagettes(imageBruit, W, n);
+         int [][] imagette = new int[W][W];
+         int [][] imagetteBruité = new int[W][W];
+         for (int i = 0; i < listeImagetteBruité.size(); i++) {
+            imagette = listeImagette.get(i).getMatrix();
+            imagetteBruité = listeImagetteBruité.get(i).getMatrix();
+            Image objImagette = new Image(imagette, imagetteBruité);
+            imagetteBruité = methodeGlobale(objImagette, seuillage, taille, choixSeuil, choixSeuillage);
+
+            // imagette = listeImagette.get(i).getMatrix();
+            // imagetteBruité = listeImagetteBruité.get(i).getMatrix();
+            // Image objImagette = new Image(imagette, imagetteBruité);
+            // BufferedImage imagetteFinale;
+            // imagetteFinale = methodeGlobale(objImagette,seuillage, taille, choixSeuil, choixSeuillage);
+            // Image.createfile(imagetteFinale, "img_local/local" + i);
+         }
       }
    }
 
@@ -129,7 +153,7 @@ public class Main {
     // }
    
 
-   public static void methodeGlobale(Image image,String fichier,Seuillage seuillage,int taille,int choixSeuil,int choixSeuillage) {
+   public static int[][] methodeGlobale(Image image,Seuillage seuillage,int taille,int choixSeuil,int choixSeuillage) {
       ArrayList<Patch> listePatch = image.extractionPatch(image.getNoisedMatrix());
       int l = image.getNoisedMatrix().length;
       int c = image.getNoisedMatrix()[1].length;
@@ -209,8 +233,7 @@ public class Main {
          listePatch.set(k, patch);
       }
       int[][] assemblerMatrice = image.assemblagePatch(listePatch, l, c);
-      BufferedImage imagefinale = Image.createImageFromMatrix(assemblerMatrice);
-      Image.createfile(imagefinale,fichier);
+      return assemblerMatrice;
    }
 }
 

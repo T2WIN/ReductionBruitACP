@@ -37,6 +37,11 @@ public class Image {
         this.s = s;
     }
 
+    public Image(int[][] matrix,int[][] noisedmatrix){
+        this.matrix = matrix;
+        this.noisedmatrix = noisedmatrix;
+    }
+
     //Ajoute un bruit gaussien de variance sigma
     public void noising() {
         this.noisedmatrix = new int[this.matrix.length][this.matrix[0].length];
@@ -288,7 +293,7 @@ public class Image {
     }
 
 
-public static ArrayList<Patch> extractImagettes(int[][] X, int W, int n) {
+public ArrayList<Patch> extractImagettes(int[][] X, int W, int n) {
     // Récupérer la taille de l'image
     int x = X.length;
     int y = X[0].length;
