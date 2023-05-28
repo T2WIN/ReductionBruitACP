@@ -34,12 +34,6 @@ public class Patch {
             newMatrix[l][c] = vector[i];
         }
         
-        // for (int i = 0; i <newMatrix.length; i++){
-        //     for (int j = 0; j < newMatrix[0].length; j++) {
-        //         System.out.println(newMatrix[i][j]);
-        //     }
-        // }
-        
         return newMatrix;
     }
 
