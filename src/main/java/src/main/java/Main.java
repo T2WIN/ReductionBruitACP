@@ -23,36 +23,6 @@ public class Main {
    }
 
       
-            
-            
-        
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     public static int readConsole(String message) {
@@ -239,7 +209,7 @@ public class Main {
                
          int[][] assemblerMatrice = image.assemblagePatch(listePatch, l, c);
          BufferedImage imagefinale = Image.createImageFromMatrix(assemblerMatrice);
-         Image.createfile(imagefinale, fichier);
+         Image.createfile(imagefinale,fichier);
       }
    }
 }
