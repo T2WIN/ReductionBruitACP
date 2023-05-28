@@ -18,7 +18,7 @@ public class Main {
         
 
       if (choixMethode == 1) {
-         methodeGlobale(image,"img/global",seuillage,taille,choixSeuil,choixSeuillage);
+         methodeGlobale(image,"src/main/img/global",seuillage,taille,choixSeuil,choixSeuillage);
       }
    }
 
@@ -136,7 +136,7 @@ public class Main {
     //     acp.DoACP();
     //     acp.Proj();
     //     acp.afficherResultat();
-    //     double[][] alpha = acp.getVcontrib();
+    //     double[][] alpha = acp.getVcosc = new Scanner(System.in)ntrib();
     // }
 
     // // public static image methodeLocale(Image image) {
