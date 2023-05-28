@@ -94,8 +94,13 @@ public class Image {
             for(int i=0; i<this.noisedmatrix.length; i++) {
                 for(int j=0; j<this.noisedmatrix[0].length; j++) {
                     int a = this.noisedmatrix[i][j];
-                    Color newColor = new Color(a,a,a);
-                    image.setRGB(i,j,newColor.getRGB());
+                    try {
+                        Color newColor = new Color(a,a,a);
+                        image.setRGB(i,j,newColor.getRGB());
+                    } catch (Exception as) {
+                        
+                    }
+                    
                 }
             }
         }
