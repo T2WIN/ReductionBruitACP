@@ -4,205 +4,56 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+   public static void main(String[] args) {
 
         
-        int sigma = readConsole("Saisir un entier sigma pour ajouter à la photo un bruit gaussien : ");
-        int taille = readConsole("donner la taille du patch que vous souhaitez : ");
-        Image image = new Image("src/main/img/lenaa.png", sigma, taille);
-        Error error2 = new Error(image, new Image("sigma30.jpg", sigma, 1));
+      int sigma = readConsole("Saisir un entier sigma pour ajouter à la photo un bruit gaussien : ");
+      int taille = readConsole("donner la taille du patch que vous souhaitez : ");
+      Image image = new Image("src/main/img/lenaa.png", sigma, taille);
+      image.noising();
+      Seuillage seuillage = new Seuillage(image);
+      int choixMethode = chooseMethode();
+      int choixSeuil = chooseSeuil();
+      int choixSeuillage = chooseSeuillage();
         
+      //Si on choisit la méthode globale
+      if (choixMethode == 1) {
+         int[][] assemblerMatrice = methodeGlobale(image,seuillage,taille,choixSeuil,choixSeuillage);
+         BufferedImage imagefinale = Image.createImageFromMatrix(assemblerMatrice);
+         Image.createfile(imagefinale,"global");
+      }
+      //Si on choisit la méthode locale
+      else {
+         int W = readConsole("Saisir un entier W, taille de l'imagette : ");
+         int n = readConsole("Saisir un entier n, nombre d'imagette : ");
+         int [][] imageBruit = image.getNoisedMatrix();
 
-        System.out.println();
-        image.noising();
-        Seuillage seuillage = new Seuillage(image);
-        int choixMethode = chooseMethode();
-        int[][] imageBruité = image.getNoisedMatrix();
-        int l=imageBruité.length;
-        int c=imageBruité[1].length;
+         //On sépare l'image de départ en n imagettes de taille W
+         ArrayList<Patch> listeImagette = image.extractImagettes(image.getMatrix(), W, n);
+         ArrayList<Patch> listeImagetteBruité = image.extractImagettes(imageBruit, W, n);
 
-        if (choixMethode == 1) {
-            
-            ArrayList<Patch> listePatch = image.extractionPatch(image.getNoisedMatrix());
-            int[][] matricePatchs = image.vectorPatch(listePatch);
-            // for (int i = 0; i < listePatch.get(0).matrix.length; i++) {
-            //     for (int j = 0; j < listePatch.get(0).matrix[0].length; j++) {
-            //         System.out.println(listePatch.get(0).matrix[i][j]);
-            //     }
-            // }
-            ACP acp = new ACP(matricePatchs);
-            acp.MoyCov();
-            acp.DoACP();
-            acp.Proj();
-            double[][] u = acp.getU();
-         
+         int [][] imagette = new int[W][W];
+         int [][] imagetteBruité = new int[W][W];
+         for (int i = 0; i < listeImagetteBruité.size(); i++) {
+            imagette = listeImagette.get(i).getMatrix();
+            imagetteBruité = listeImagetteBruité.get(i).getMatrix();
+            Image objImagette = new Image(imagette, imagetteBruité, taille);
+            //On applique la méthode globale aux n imagettes bruitées
+            imagetteBruité = methodeGlobale(objImagette, seuillage, taille, choixSeuil, choixSeuillage);
+            listeImagetteBruité.get(i).setMatrix(imagetteBruité);
+         }
+         int l = imageBruit.length;
+         int c = imageBruit[0].length;
+         //On rassemble ensuite les n imagettes débruitées pour obtenir l'image finale
+         int[][] imageRecon = image.assemblageImagette(listeImagetteBruité, imageBruit, l,c, W);
+         BufferedImage imagefinale = Image.createImageFromMatrix(imageRecon);
+         Image.createfile(imagefinale,"local");
+      }
+   }
 
-            double[][] alpha = acp.getVcontrib();
-            
-            double[] meanVector = acp.getMoyCov();
-            // for (int k = 0; k < alpha.length; k++){
-            //     for (int j = 0; j < alpha[1].length; j++ ) {
-            //         System.out.println(alpha[k][j]);
-            //     }
-            //     System.out.println("ici");
-            // }
-            // Les valeurs varient entre +/-30 
-            int choixSeuil = chooseSeuil();
-            int choixSeuillage = chooseSeuillage();
-            if (choixSeuil == 1) {
-
-                double  threshold = seuillage.getVisuShrink();
-
-                if (choixSeuillage == 1) {
-
-                    for (int i = 0; i < alpha.length; i++) {
-                        for (int j = 0; j < alpha[1].length; j++) {
-
-                        double hardThresholdingResult = seuillage.HardThresholding(threshold, alpha[i][j]);
-                        alpha[i][j] = hardThresholdingResult;
-
-                        }
-                    }
-                }
-                if (choixSeuillage == 2) {
-
-                    for (int i = 0; i < alpha.length; i++) {
-
-                        for (int j = 0; j < alpha[1].length; j++) {
-
-                        double softThresholdingResult = seuillage.SoftThresholding(threshold, alpha[i][j]);
-                        alpha[i][j] = softThresholdingResult;
-
-                        }
-                
-                    }
-                }
-            }
-
-            if (choixSeuil == 2) {
-
-                double  threshold = seuillage.getBayesShrink();
-
-                if (choixSeuillage == 1) {
-
-                    for (int i = 0; i < alpha.length; i++) {
-
-                        for (int j = 0; j < alpha[1].length; j++) {
-
-                        double hardThresholdingResult = seuillage.HardThresholding(threshold, alpha[i][j]);
-                        alpha[i][j] = hardThresholdingResult;
-
-                        }
-                    }
-                }
-                if (choixSeuillage == 2) {
-
-                    for (int i = 0; i < alpha.length; i++) {
-
-                        for (int j = 0; j < alpha[1].length; j++) {
-
-                        double softThresholdingResult = seuillage.SoftThresholding(threshold, alpha[i][j]);
-                        alpha[i][j] = softThresholdingResult;
-                        
-
-                
-                    }
-                }
-                
-            }
-
-        }
-        for (int k = 0; k < listePatch.size(); k++) {
-            double [] somme = new double[taille*taille];
-            Patch patch = listePatch.get(k);
-            double [] patchVect2 = new double[taille*taille];
-            //Pour chaque (alpha(i), u(i)), on applique la formule
-            for (int j = 0; j < alpha[0].length; j++) {
-                for (int i = 0; i <alpha[0].length; i++) {
-                    somme[j] += alpha[k][i] * u[i][j];
-                }
-            }
-            // System.out.println(Arrays.toString(somme));
-            // System.out.println(Arrays.toString(centeredVectors[k]));
-            
-            // for (int i=0; i<taille*taille; i++){
-            //     //On calcule le produit alpha(i) * u(i)
-            //     for(int n=0; n<taille*taille;n++){
-            //         a = alphak[i] * u[i][n];
-            //         somme[i] += a;
-            //     }
-            //     // System.out.println("Somme1 : " + i + " = " + somme[i]);
-            // }   
-            // System.out.println("Vect Moyen");
-            // System.out.println("Patch " + k);
-            for (int i=0; i<taille*taille; i++){
-                //On décentre les vecteurs
-                patchVect2[i] = meanVector[i] + somme[i];
-                // if (patchVect2[i] > 255) {
-                //     System.out.println("Sup 255");
-                // }
-    
-                // if (patchVect2[i] < 0) {
-                //     System.out.println("Inf 0");
-                // }
-
-            
-            }
-            // for (int index = 0; index < patchVect2.length; index++) {
-            //     System.out.println(patchVect2[index]);
-            // }
-            //Verifie si un des vecteurs contient un élément négatif
-            // for (int f = 0; f < patchVect2.length; f++) {
-            //     if (patchVect2[f] < 0) {
-            //         System.out.println("Négatif");
-            //     }
-            //     System.out.println(meanVector[f]);
-            // }
-
-            //Transformation de la matrice de patch de double vers entier
-            double[][] patchMatrixDouble = patch.intoMatrix(patchVect2);
-            int[][] patchMatrixEntier = new int[patchMatrixDouble.length][patchMatrixDouble[0].length];
-            
-            for (int indexC = 0; indexC<patchMatrixEntier.length; indexC++) {
-                for (int indexL = 0; indexL<patchMatrixEntier[0].length; indexL++) {
-                    patchMatrixEntier[indexC][indexL] = (int) patchMatrixDouble[indexC][indexL];      
-                }    
-            }
-            patch.setMatrix(patchMatrixEntier);
-            listePatch.set(k, patch);
-        }
-        
-        int[][] assemblerMatrice = image.assemblagePatch(listePatch, l, c);
-        BufferedImage imagefinale = Image.createImageFromMatrix(assemblerMatrice);
-        Image.createfile(imagefinale, "imagefinalee");
-        Error error = new Error(new Image("src/main/img/lenaa.png", 0, choixSeuillage), new Image("src/main/img/imagefinalee.jpg", sigma, choixSeuillage));
-
-        System.out.println("Erreur de départ");
-        System.out.println(error2.MeanSquaredError());
-        System.out.println(error2.PeakSignalToNoiseRatio());
-        
-        System.out.println("Erreur entre l'image de départ et l'image débruitée");
-        System.out.println(error.MeanSquaredError());
-        System.out.println(error.PeakSignalToNoiseRatio());
-    }
-        
+      
 
 
-        // double  threshold = seuillage.getVisuShrink();
-        // double alpha = -150;
-        // double hardThresholdingResult = seuillage.HardThresholding(threshold, alpha);
-        // double softThresholdingResult = seuillage.SoftThresholding(threshold, alpha);
-
-        // System.out.println("Résultat du seuillage avec HardThresholding : " + hardThresholdingResult);
-        // System.out.println("Résultat du seuillage avec SoftThresholding : " + softThresholdingResult);
-
-        // double seuillageV = seuillage.seuilV();
-        // double seuillageB = seuillage.seuilB();
-
-
-        // System.out.println("Résultat du seuilV : " + seuillageV);
-        // System.out.println("Résultat du seuilB : " + seuillageB); 
-}
     public static int readConsole(String message) {
             Scanner sc;
             sc = new Scanner(System.in);
@@ -212,6 +63,7 @@ public class Main {
             return s;
     }
     
+
     public static int chooseMethode() {
 
         int choixMethode = readConsole("voulez vous faire la méthode globale ou locale : globale : tapez 1  Locale : tapez 2 : ");
@@ -274,44 +126,98 @@ public class Main {
 
     }
 
-    // public static Image methodeGlobale(Image image) {
+   public static int[][] methodeGlobale(Image image,Seuillage seuillage,int taille,int choixSeuil,int choixSeuillage) {
+      //Etape 1 : Extraction des patchs
+      ArrayList<Patch> listePatch = image.extractionPatch(image.getNoisedMatrix());
+      int l = image.getNoisedMatrix().length;
+      int c = image.getNoisedMatrix()[1].length;
 
-    //     ArrayList<Patch> listePatch = image.extractionPatch(image.getNoisedMatrix());
-    //     int[][] matricePatchs = image.vectorPatch(listePatch);
-    //     ACP acp = new ACP(matricePatchs);
-    //     acp.MoyCov();
-    //     acp.DoACP();
-    //     acp.Proj();
-    //     acp.afficherResultat();
-    //     double[][] alpha = acp.getVcontrib();
-    // }
-    //     ArrayList<Patch> listePatch = image.extractionPatch(image.getNoisedMatrix());
-    //     int[][] matricePatchs = image.vectorPatch(listePatch);
-    //     ACP acp = new ACP(matricePatchs);
-    //     acp.MoyCov();
-    //     acp.DoACP();
-    //     acp.Proj();
-    //     acp.afficherResultat();
-    //     double[][] alpha = acp.getVcontrib();
-    // }
+      //Etape 2 : Transformation des patchs en vecteurs
+      int[][] matricePatchs = image.vectorPatch(listePatch);
 
-    // public static Image methodeLocale(Image image) {
-    //     int tailleim = readConsole("donnez la taille de l'imagette que vous souhaitez : ");
-    //     int[] coord = DecoupeImage(image, tailleim);
-    //     Image imagette;
-    //     ArrayList<int[][]> listeImagettes = new ArrayList<int[][]>();
-    //     for (int i = 0 ; i< coord[0] ; i++) {
-    //         for (int j = 0 ; j< coord[1] ; j++) {
-    //             int[][] imagetteMatrice;
-    //             imagetteMatrice = image.createMatrix("src/main/img/imagette("+ i +","+ j +").jpg");
-    //             listeImagettes.add(methodeGlobale(imagetteMatrice));
-    //         }
-    //     }
-    //     for (int i = 0 ; i< coord[0] ; i++) {
-    //         for (int j = 0 ; j< coord[1] ; j++) {
-            
-    //         }
-    //     }
-    // }
+      //Etape 3 : On réalise l'ACP sur les patchs vectorisés
+      ACP acp = new ACP(matricePatchs);
+      acp.MoyCov();
+      acp.DoACP();
+      acp.Proj();
+      double[][] alpha = acp.getVcontrib();
+      double[] meanVector = acp.getMoyCov();
+      double[][] u = acp.getU();
+ 
+      
+      //Etape 4 : Seuillage des vecteurs de contribution
+      if (choixSeuil == 1) {
+         double  threshold = seuillage.getVisuShrink();
+         if (choixSeuillage == 1) {
+            for (int i = 0; i < alpha.length; i++) {
+               for (int j = 0; j < alpha[1].length; j++) {
+                  double hardThresholdingResult = seuillage.HardThresholding(threshold, alpha[i][j]);
+                  alpha[i][j] = hardThresholdingResult;
+               }
+            }
+         }
+         if (choixSeuillage == 2) {
+            for (int i = 0; i < alpha.length; i++) {
+               for (int j = 0; j < alpha[1].length; j++) {
+                  double softThresholdingResult = seuillage.SoftThresholding(threshold, alpha[i][j]);
+                  alpha[i][j] = softThresholdingResult;
+               }    
+            }
+         }
+      }
+      
+      if (choixSeuil == 2) {
+         double  threshold = seuillage.getBayesShrink();
+         if (choixSeuillage == 1) {
+            for (int i = 0; i < alpha.length; i++) {
+               for (int j = 0; j < alpha[1].length; j++) {
+                  double hardThresholdingResult = seuillage.HardThresholding(threshold, alpha[i][j]);
+                  alpha[i][j] = hardThresholdingResult;
+               }
+            }
+         }
+         if (choixSeuillage == 2) {
+            for (int i = 0; i < alpha.length; i++) {
+               for (int j = 0; j < alpha[1].length; j++) {
+                  double softThresholdingResult = seuillage.SoftThresholding(threshold, alpha[i][j]);
+                  alpha[i][j] = softThresholdingResult;                        
+               }
+            }       
+         }
+      }
+
+      //Etape 5 : Calcul des patchs vectorisés dans la nouvelle base
+      for (int k = 0; k < listePatch.size(); k++) {
+         double [] somme = new double[taille*taille];
+         Patch patch = listePatch.get(k);
+         double [] patchVect2 = new double[taille*taille];
+         //Pour chaque (alpha(i), u(i)), on applique la formule
+         for (int j = 0; j < alpha[0].length; j++) {
+            for (int i = 0; i <alpha[0].length; i++) {
+               somme[j] += alpha[k][i] * u[i][j];
+            }
+         }
+         for (int i=0; i<taille*taille; i++){
+            //On décentre les vecteurs
+            patchVect2[i] = meanVector[i] + somme[i];
+         }
+         double[][] patchMatrixDouble = patch.intoMatrix(patchVect2);
+         int[][] patchMatrixEntier = new int[patchMatrixDouble.length][patchMatrixDouble[0].length];
+         
+         //On a réalisé l'ACP sur des doubles, maintenant pour revenir au code RGB, on a besoin d'entiers
+         for (int indexC = 0; indexC<patchMatrixEntier.length; indexC++) {
+            for (int indexL = 0; indexL<patchMatrixEntier[0].length; indexL++) {
+               patchMatrixEntier[indexC][indexL] = (int) patchMatrixDouble[indexC][indexL];      
+            }    
+         }
+         patch.setMatrix(patchMatrixEntier);
+         listePatch.set(k, patch);
+      }
+
+      //Etape 6 : Assemblage des patchs pour obtenir l'image débruitée
+      int[][] assemblerMatrice = image.assemblagePatch(listePatch, l, c);
+      return assemblerMatrice;
+   }
 }
+
 
