@@ -11,6 +11,8 @@ public class Main {
       int taille = readConsole("donner la taille du patch que vous souhaitez : ");
       Image image = new Image("src/main/img/lenaa.png", sigma, taille);
       image.noising();
+      BufferedImage sigma10 = Image.createImageFromMatrix(image.getNoisedMatrix());
+      Image.createfile(sigma10, "test10");
       Seuillage seuillage = new Seuillage(image);
       int choixMethode = chooseMethode();
       int choixSeuil = chooseSeuil();

@@ -35,20 +35,25 @@ public class Image {
     //Ajoute un bruit gaussien de variance sigma
     public void noising() {
         this.noisedmatrix = new int[this.matrix.length][this.matrix[0].length];
-        Random rand = new Random(123);
-        for (int i=0; i<this.matrix.length; i++) {
-            for (int j = 0; j<this.matrix[0].length; j++) {
-                int coef = this.matrix[i][j];
-                this.noisedmatrix[i][j] = Math.abs((coef + (int) (rand.nextGaussian()*sigma))%255); 
-                // if (this.noisedmatrix[i][j] < 0){
-                //     this.noisedmatrix[i][j] = 1;
-                // }
-                // if (this.noisedmatrix[i][j] > 255){
-                //     this.noisedmatrix[i][j] = 254;
-                // }
+        
+        // Appliquer le bruitage à chaque pixel de l'image
+        for (int i = 0; i < this.matrix.length; i++) {
+            for (int j = 0; j < this.matrix[0].length; j++) {
+                // Ajouter un bruit aléatoire au pixel
+                int noise = (int) (Math.random() * 256); // Valeur de bruit aléatoire entre 0 et 255
+                
+                // Ajouter le bruit au pixel d'origine
+                int noisedPixel = this.matrix[i][j] + noise;
+                
+                // Assurer que la valeur du pixel bruité reste dans la plage des valeurs de gris (entre 0 et 255)
+                noisedPixel = Math.max(0, Math.min(255, noisedPixel));
+                
+                // Stocker le pixel bruité dans la matrice bruitée
+                this.noisedmatrix[i][j] = noisedPixel;
             }
         }
     }
+    
 
     //Créer une matrice à partir d'un fichier image
     public static int[][] createMatrix(String path) {
