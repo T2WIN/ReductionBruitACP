@@ -19,7 +19,6 @@ public class Error{
         for ( int i = 0 ; i < this.matrice1.length ; i++){
             for ( int j = 0 ; j < this.matrice1[0].length ; j++){
                 MSE = MSE + (this.matrice1[i][j] - this.matrice2[i][j])*(this.matrice1[i][j] - this.matrice2[i][j]);
-                System.out.println(MSE);
             }
         }
 
