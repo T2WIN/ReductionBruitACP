@@ -40,6 +40,12 @@ public class Image {
             for (int j = 0; j<this.matrix[0].length; j++) {
                 int coef = this.matrix[i][j];
                 this.noisedmatrix[i][j] = Math.abs((coef + (int) (rand.nextGaussian()*sigma))%255); 
+                if (this.noisedmatrix[i][j] < 0){
+                    this.noisedmatrix[i][j] = 0;
+                }
+                if (this.noisedmatrix[i][j] > 255){
+                    this.noisedmatrix[i][j] = 255;
+                }
             }
         }
     }
