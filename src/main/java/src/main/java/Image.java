@@ -194,7 +194,6 @@ public class Image {
                         Color newColor = new Color(a,a,a);
                         image.setRGB(i,j,newColor.getRGB());
                     } catch(Exception e) {
-                        e.printStackTrace();
                     }
                 }
             }
