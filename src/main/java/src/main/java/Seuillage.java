@@ -43,7 +43,6 @@ public class Seuillage {
     public double seuilV() {
         int L = image.getMatrix().length*image.getMatrix()[0].length;
         visuShrink = image.getSigma()*Math.sqrt(2*Math.log(L));
-        System.out.println(visuShrink);
         return visuShrink;
     }
 
