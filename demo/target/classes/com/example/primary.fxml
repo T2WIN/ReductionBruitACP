@@ -10,9 +10,10 @@
 <?import javafx.scene.control.*?>
 <?import java.lang.String?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.PrimaryController">
+<VBox fx:id="vbox1" alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.PrimaryController">
    <children>
-
+      <Label text="DÉBRUITAGE D'IMAGE PAR ANALYSE EN COMPOSANTES PRINCIPALES" />
+      <Label text = "        "/>
       <Label text="Choisissez l'écart type du bruit : " />
       <ChoiceBox fx:id="choiceSigma" value="10">
          <items>
@@ -31,11 +32,11 @@
       
        <Label text = "        "/>
       <Label text="Choisissez le type d'extraction de patchs : " />
-      <ChoiceBox fx:id="choiceMethode" value="Local">
+      <ChoiceBox fx:id="choiceMethode" value="Global" onAction="#updatePrimary">
          <items>
             <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Global" />  
                   <String fx:value="Local" />
-                  <String fx:value="Global" />     
             </FXCollections>
          </items>
       </ChoiceBox>

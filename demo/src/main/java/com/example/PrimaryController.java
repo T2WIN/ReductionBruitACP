@@ -8,6 +8,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 public class PrimaryController {
     
@@ -23,44 +26,129 @@ public class PrimaryController {
     private ChoiceBox<String> choiceSeuillage;
 
     private Image image;
+    private int sigma;
+
+    @FXML
+    private VBox vbox; 
+
+    @FXML
+    private VBox vbox1; 
+
+    @FXML
+    private ChoiceBox<String> choiceMethode;
+
+    @FXML
+    private TextArea W = new TextArea("");
+    
+    @FXML
+    private TextArea n = new TextArea("");
 
     @FXML
     private void switchToSecondary() throws IOException {
         App.setRoot("secondary");
         fillImage();
-        Seuillage seuillage = new Seuillage(this.image);
-        int choixSeuil = -1;
-        int choixSeuillage = -1;
-        if (choiceSeuil.getValue().equals("VisuShrink")) {
+        if(choiceMethode.getValue().equals("Global")) {
+         Seuillage seuillage = new Seuillage(this.image);
+         int choixSeuil = -1;
+         int choixSeuillage = -1;
+         if (choiceSeuil.getValue().equals("VisuShrink")) {
             choixSeuil = 1;
-        } else if (choiceSeuil.getValue().equals("BayesShrink")) {
+         } else if (choiceSeuil.getValue().equals("BayesShrink")) {
             choixSeuil = 2;
-        }
+         }
 
-        if (choiceSeuillage.getValue().equals("Seuillage dur")) {
+         if (choiceSeuillage.getValue().equals("Seuillage dur")) {
             choixSeuillage = 1;
-        } else if (choiceSeuillage.getValue().equals("Seuillage doux")) {
+         } else if (choiceSeuillage.getValue().equals("Seuillage doux")) {
             choixSeuillage = 2;
-        }
-        
-        int[][] assemblerMatrice = methodeGlobale(this.image, seuillage, image.getS(), choixSeuil, choixSeuillage);
-        Error error = new Error(image, new Image(image.getNoisedMatrix(), image.getNoisedMatrix(), image.getS()));
-        Error error2 = new Error(image, new Image(assemblerMatrice, assemblerMatrice, image.getS()));
+         }
+         
+         int[][] assemblerMatrice = methodeGlobale(this.image, seuillage, image.getS(), choixSeuil, choixSeuillage);
+         Error error = new Error(image, new Image(image.getNoisedMatrix(), image.getNoisedMatrix(), image.getS()));
+         Error error2 = new Error(image, new Image(assemblerMatrice, assemblerMatrice, image.getS()));
 
-        System.out.println("Erreur de départ");
-        System.out.println(error.MeanSquaredError());
-        System.out.println(error.PeakSignalToNoiseRatio());
-        System.out.println("Erreur de fin");
-        System.out.println(error2.MeanSquaredError());
-        System.out.println(error2.PeakSignalToNoiseRatio());
-        BufferedImage imagefinale = Image.createImageFromMatrix(assemblerMatrice);
-        Image.createfile(imagefinale,"global");
+         System.out.println("Erreur de départ");
+         System.out.println(error.MeanSquaredError());
+         System.out.println(error.PeakSignalToNoiseRatio());
+         System.out.println("Erreur de fin");
+         System.out.println(error2.MeanSquaredError());
+         System.out.println(error2.PeakSignalToNoiseRatio());
+         BufferedImage imagefinale = Image.createImageFromMatrix(assemblerMatrice);
+         Image.createfile(imagefinale,"global" + "_sigma:" + image.getSigma() + "_patch:" + image.getS() + "_seuil:" + choixSeuil + "_seuillage:" + choixSeuillage);
+         Image.createfile(imagefinale, "result");
+        } else {
+         
+         int imagetteSize = Integer.parseInt(W.getText());
+         int imagetteAmount = Integer.parseInt(n.getText());
+
+         Seuillage seuillage = new Seuillage(this.image);
+         int choixSeuil = -1;
+         int choixSeuillage = -1;
+         if (choiceSeuil.getValue().equals("VisuShrink")) {
+            choixSeuil = 1;
+         } else if (choiceSeuil.getValue().equals("BayesShrink")) {
+            choixSeuil = 2;
+         }
+
+         if (choiceSeuillage.getValue().equals("Seuillage dur")) {
+            choixSeuillage = 1;
+         } else if (choiceSeuillage.getValue().equals("Seuillage doux")) {
+            choixSeuillage = 2;
+         }
+
+         int [][] imageBruit = image.getNoisedMatrix();
+
+         //On sépare l'image de départ en n imagettes de taille W
+         ArrayList<Patch> listeImagette = image.extractImagettes(image.getMatrix(), imagetteSize, imagetteAmount);
+         ArrayList<Patch> listeImagetteBruité = image.extractImagettes(imageBruit, imagetteSize, imagetteAmount);
+
+         int [][] imagette = new int[imagetteSize][imagetteSize];
+         int [][] imagetteBruité = new int[imagetteSize][imagetteSize];
+         for (int i = 0; i < listeImagetteBruité.size(); i++) {
+            imagette = listeImagette.get(i).getMatrix();
+            imagetteBruité = listeImagetteBruité.get(i).getMatrix();
+            Image objImagette = new Image(imagette, imagetteBruité, image.getS());
+            //On applique la méthode globale aux n imagettes bruitées
+            imagetteBruité = methodeGlobale(objImagette, seuillage, image.getS(), choixSeuil, choixSeuillage);
+            listeImagetteBruité.get(i).setMatrix(imagetteBruité);
+         }
+         int l = imageBruit.length;
+         int c = imageBruit[0].length;
+         //On rassemble ensuite les n imagettes débruitées pour obtenir l'image finale
+         int[][] imageRecon = image.assemblageImagette(listeImagetteBruité, imageBruit, l,c, imagetteSize);
+
+         Error error = new Error(image, new Image(imageBruit, imageBruit, image.getS()));
+         Error error2 = new Error(image, new Image(imageRecon, imageRecon, image.getS()));
+
+         System.out.println("Erreur de départ");
+         System.out.println(error.MeanSquaredError());
+         System.out.println(error.PeakSignalToNoiseRatio());
+         System.out.println("Erreur de fin");
+         System.out.println(error2.MeanSquaredError());
+         System.out.println(error2.PeakSignalToNoiseRatio());
+         
+         BufferedImage imagefinale = Image.createImageFromMatrix(imageRecon);
+         Image.createfile(imagefinale,"local" + "_sigma:" + image.getSigma() + "_patch:" + image.getS() + "_seuil:" + choixSeuil + "_seuillage:" + choixSeuillage + "_imagetteS:" + imagetteSize + "_imagetteA:" + imagetteAmount);
+         Image.createfile(imagefinale, "result.jpg");
+      }
+        
     }
 
     @FXML
     private void fillImage() throws IOException {
         this.image = new Image("demo/src/main/java/com/example/lena.jpg", Integer.parseInt(choiceSigma.getValue()),  Integer.parseInt(outputText.getText()));
         this.image.noising();
+        this.sigma = Integer.parseInt(choiceSigma.getValue());
+        System.out.println(this.sigma);
+    }
+
+    @FXML private void updatePrimary() {
+      if(choiceMethode.getValue().equals("Local") && vbox1.getChildren().size() <= 18) {
+         this.W.setMaxWidth(30);
+         this.n.setMaxWidth(30);
+         vbox1.getChildren().add(16, this.W);
+         vbox1.getChildren().add(17, this.n);
+      }
     }
 
 
@@ -156,4 +244,35 @@ public class PrimaryController {
         int[][] assemblerMatrice = image.assemblagePatch(listePatch, l, c);
         return assemblerMatrice;
      }
+
+     @FXML
+     private void switchToPrimary() throws IOException {
+         App.setRoot("primary");
+     }
+ 
+
+ 
+     public void displayImage(){
+
+     if(vbox.getChildren().size() == 3) {
+      System.out.println(this.sigma);
+
+      javafx.scene.image.Image image = new javafx.scene.image.Image("file:sigma" + this.sigma + ".jpg");
+      ImageView imageView = new ImageView();
+      imageView.setImage(image);
+     
+      imageView.setFitWidth(300);
+      imageView.setFitHeight(300);
+   
+      javafx.scene.image.Image image2 = new javafx.scene.image.Image("file:result.jpg");
+      ImageView imageView2 = new ImageView();
+      imageView2.setImage(image2);
+      
+      imageView2.setFitWidth(300);
+      imageView2.setFitHeight(300);
+      vbox.getChildren().add(imageView);
+      vbox.getChildren().add(imageView2);
+     }
+     
+ }
 }
