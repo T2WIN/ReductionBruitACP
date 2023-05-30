@@ -12,7 +12,7 @@ public class Main {
       Image image = new Image("src/main/img/lenaa.png", sigma, taille);
       image.noising();
       BufferedImage sigma10 = Image.createImageFromMatrix(image.getNoisedMatrix());
-      Image.createfile(sigma10, "test10");
+      Image.createfile(sigma10, "test11");
       Seuillage seuillage = new Seuillage(image);
       int choixMethode = chooseMethode();
       int choixSeuil = chooseSeuil();
