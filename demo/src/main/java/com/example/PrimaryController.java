@@ -149,6 +149,9 @@ public class PrimaryController {
          this.n.setMaxWidth(30);
          vbox1.getChildren().add(16, this.W);
          vbox1.getChildren().add(17, this.n);
+      } else if (choiceMethode.getValue().equals("Global")) {
+         vbox1.getChildren().remove(W);
+         vbox1.getChildren().remove(n);
       }
     }
 
