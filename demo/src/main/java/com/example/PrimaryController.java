@@ -11,6 +11,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class PrimaryController {
     
@@ -26,7 +27,6 @@ public class PrimaryController {
     private ChoiceBox<String> choiceSeuillage;
 
     private Image image;
-    private int sigma;
 
     @FXML
     private VBox vbox; 
@@ -45,8 +45,8 @@ public class PrimaryController {
 
     @FXML
     private void switchToSecondary() throws IOException {
-        App.setRoot("secondary");
         fillImage();
+        App.setRoot("secondary");
         if(choiceMethode.getValue().equals("Global")) {
          Seuillage seuillage = new Seuillage(this.image);
          int choixSeuil = -1;
@@ -138,11 +138,12 @@ public class PrimaryController {
     private void fillImage() throws IOException {
         this.image = new Image("demo/src/main/java/com/example/lena.jpg", Integer.parseInt(choiceSigma.getValue()),  Integer.parseInt(outputText.getText()));
         this.image.noising();
-        this.sigma = Integer.parseInt(choiceSigma.getValue());
-        System.out.println(this.sigma);
+        Stage stage = (Stage) vbox1.getScene().getWindow();
+        stage.setUserData(this.image);
     }
 
-    @FXML private void updatePrimary() {
+    @FXML 
+    private void updatePrimary() {
       if(choiceMethode.getValue().equals("Local") && vbox1.getChildren().size() <= 18) {
          this.W.setMaxWidth(30);
          this.n.setMaxWidth(30);
@@ -255,9 +256,10 @@ public class PrimaryController {
      public void displayImage(){
 
      if(vbox.getChildren().size() == 3) {
-      System.out.println(this.sigma);
-
-      javafx.scene.image.Image image = new javafx.scene.image.Image("file:sigma" + this.sigma + ".jpg");
+      Stage stage = (Stage) vbox.getScene().getWindow();
+      Image imobj = (Image) stage.getUserData();
+      int sigma = imobj.getSigma();
+      javafx.scene.image.Image image = new javafx.scene.image.Image("file:sigma" + sigma + ".jpg");
       ImageView imageView = new ImageView();
       imageView.setImage(image);
      
