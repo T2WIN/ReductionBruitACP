@@ -5,18 +5,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
+
 import javafx.stage.Stage;
 
 public class PrimaryController {
     
     @FXML
     private ChoiceBox<String> choiceSigma;
+
     @FXML
     private TextArea outputText;
 
@@ -26,8 +27,8 @@ public class PrimaryController {
     @FXML
     private ChoiceBox<String> choiceSeuillage;
 
+   @FXML
     private Image image;
-
     @FXML
     private VBox vbox; 
 
@@ -42,6 +43,16 @@ public class PrimaryController {
     
     @FXML
     private TextArea n = new TextArea("");
+
+    @FXML
+    private Label text1 = new Label("Donnez la taille des imagettes :");
+    @FXML
+    private Label text2 = new Label("Donnez le nombre d'imagettes :");
+
+    @FXML
+    Label ErrorLabel1 = new Label("");
+    @FXML
+    Label ErrorLabel2 = new Label("");
 
     @FXML
     private void switchToSecondary() throws IOException {
@@ -67,13 +78,13 @@ public class PrimaryController {
          Error error = new Error(image, new Image(image.getNoisedMatrix(), image.getNoisedMatrix(), image.getS()));
          Error error2 = new Error(image, new Image(assemblerMatrice, assemblerMatrice, image.getS()));
 
-         System.out.println("Erreur de départ");
-         System.out.println(error.MeanSquaredError());
-         System.out.println(error.PeakSignalToNoiseRatio());
-         System.out.println("Erreur de fin");
-         System.out.println(error2.MeanSquaredError());
-         System.out.println(error2.PeakSignalToNoiseRatio());
+
          BufferedImage imagefinale = Image.createImageFromMatrix(assemblerMatrice);
+
+         this.image.setMatrix(assemblerMatrice);
+         this.image.error1 = error.PeakSignalToNoiseRatio();
+         this.image.error2 = error2.PeakSignalToNoiseRatio();
+
          Image.createfile(imagefinale,"global" + "_sigma:" + image.getSigma() + "_patch:" + image.getS() + "_seuil:" + choixSeuil + "_seuillage:" + choixSeuillage);
          Image.createfile(imagefinale, "result");
         } else {
@@ -119,15 +130,12 @@ public class PrimaryController {
 
          Error error = new Error(image, new Image(imageBruit, imageBruit, image.getS()));
          Error error2 = new Error(image, new Image(imageRecon, imageRecon, image.getS()));
-
-         System.out.println("Erreur de départ");
-         System.out.println(error.MeanSquaredError());
-         System.out.println(error.PeakSignalToNoiseRatio());
-         System.out.println("Erreur de fin");
-         System.out.println(error2.MeanSquaredError());
-         System.out.println(error2.PeakSignalToNoiseRatio());
          
          BufferedImage imagefinale = Image.createImageFromMatrix(imageRecon);
+         this.image.setMatrix(imageRecon);
+         this.image.error1 = error.PeakSignalToNoiseRatio();
+         this.image.error2 = error2.PeakSignalToNoiseRatio();
+
          Image.createfile(imagefinale,"local" + "_sigma:" + image.getSigma() + "_patch:" + image.getS() + "_seuil:" + choixSeuil + "_seuillage:" + choixSeuillage + "_imagetteS:" + imagetteSize + "_imagetteA:" + imagetteAmount);
          Image.createfile(imagefinale, "result.jpg");
       }
@@ -138,20 +146,25 @@ public class PrimaryController {
     private void fillImage() throws IOException {
         this.image = new Image("demo/src/main/java/com/example/lena.jpg", Integer.parseInt(choiceSigma.getValue()),  Integer.parseInt(outputText.getText()));
         this.image.noising();
-        Stage stage = (Stage) vbox1.getScene().getWindow();
-        stage.setUserData(this.image);
+        vbox1.getScene().getWindow().setUserData(image);
     }
 
     @FXML 
     private void updatePrimary() {
+      
       if(choiceMethode.getValue().equals("Local") && vbox1.getChildren().size() <= 18) {
          this.W.setMaxWidth(30);
          this.n.setMaxWidth(30);
-         vbox1.getChildren().add(16, this.W);
-         vbox1.getChildren().add(17, this.n);
+         vbox1.getChildren().add(17, this.text1);
+         vbox1.getChildren().add(18, this.W);
+         vbox1.getChildren().add(19,this.text2);
+         vbox1.getChildren().add(20, this.n);
       } else if (choiceMethode.getValue().equals("Global")) {
-         vbox1.getChildren().remove(W);
-         vbox1.getChildren().remove(n);
+         vbox1.getChildren().remove(this.W);
+         vbox1.getChildren().remove(this.n);
+         vbox1.getChildren().remove(this.text1);
+         vbox1.getChildren().remove(this.text2);
+
       }
     }
 
@@ -255,13 +268,14 @@ public class PrimaryController {
      }
  
 
- 
+     @FXML
      public void displayImage(){
 
      if(vbox.getChildren().size() == 3) {
       Stage stage = (Stage) vbox.getScene().getWindow();
-      Image imobj = (Image) stage.getUserData();
-      int sigma = imobj.getSigma();
+      Image img = (Image) stage.getUserData();
+
+      int sigma = img.getSigma();
       javafx.scene.image.Image image = new javafx.scene.image.Image("file:sigma" + sigma + ".jpg");
       ImageView imageView = new ImageView();
       imageView.setImage(image);
@@ -272,11 +286,16 @@ public class PrimaryController {
       javafx.scene.image.Image image2 = new javafx.scene.image.Image("file:result.jpg");
       ImageView imageView2 = new ImageView();
       imageView2.setImage(image2);
+
+      this.ErrorLabel1.setText("PSNR : " + img.error1);
+      this.ErrorLabel2.setText("PSNR : " + img.error2);
       
       imageView2.setFitWidth(300);
       imageView2.setFitHeight(300);
       vbox.getChildren().add(imageView);
+      vbox.getChildren().add(ErrorLabel1);
       vbox.getChildren().add(imageView2);
+      vbox.getChildren().add(ErrorLabel2);
      }
      
  }

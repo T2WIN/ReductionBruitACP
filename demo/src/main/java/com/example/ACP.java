@@ -193,8 +193,6 @@ public class ACP {
                 Vcontrib[k][i] = somme;
             }
         }
-        verifyContriv();
-        System.exit(0);
     }
 
 

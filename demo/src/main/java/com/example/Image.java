@@ -14,6 +14,8 @@ public class Image {
     private int[][] matrix;
     private int[][] noisedmatrix;
     private int s;
+    double error1;
+    double error2;
 
     public int getS() {
         return s;
